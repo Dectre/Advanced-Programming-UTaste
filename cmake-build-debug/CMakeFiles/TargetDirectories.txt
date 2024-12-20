@@ -1,0 +1,3 @@
+/media/dectre/New Volume/codes/C++/AP/UTaste/cmake-build-debug/CMakeFiles/UTaste.dir
+/media/dectre/New Volume/codes/C++/AP/UTaste/cmake-build-debug/CMakeFiles/edit_cache.dir
+/media/dectre/New Volume/codes/C++/AP/UTaste/cmake-build-debug/CMakeFiles/rebuild_cache.dir

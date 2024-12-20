@@ -1,10 +1,5 @@
-#include "../header/Food.h"
+//
+// Created by dectre on 12/20/24.
+//
 
-Food::Food (const string& n,const int& p){
-    name = n;
-    price = p;
-}
-
-void Food::print() {
-    cout << name << IN_DELIMITER << price << OUT_DELIMITER;
-}
+#include "Food.h"
