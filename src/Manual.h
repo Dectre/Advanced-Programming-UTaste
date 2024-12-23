@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <unordered_map>
 
 using namespace std;
 
@@ -14,7 +15,6 @@ typedef const string Command;
 typedef const string Argument;
 typedef const string Output;
 typedef const char Delimiter;
-
 
 Method GET_METHOD = "GET";
 Method PUT_METHOD = "PUT";

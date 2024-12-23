@@ -4,8 +4,8 @@ project(UTaste)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(UTaste src/main.cpp
-        src/UTaste.cpp
-        src/UTaste.h
+        src/Taste.cpp
+        src/Taste.h
         src/System.cpp
         src/System.h
         src/Food.cpp
@@ -16,4 +16,10 @@ add_executable(UTaste src/main.cpp
         src/District.h
         src/Table.cpp
         src/Table.h
-        src/Manual.h)
+        src/Manual.h
+        src/User.cpp
+        src/User.h
+        src/Reserve.cpp
+        src/Reserve.h
+        src/Taste.h
+        src/Taste.cpp)

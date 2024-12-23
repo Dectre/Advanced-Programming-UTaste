@@ -1,6 +1,10 @@
 #include <iostream>
 
+#include "System.h"
+#include "Taste.h"
+
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+    Taste uTaste;
+    System system(&uTaste);
+    system.run();
 }
