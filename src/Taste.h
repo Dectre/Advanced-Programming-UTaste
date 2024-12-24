@@ -7,9 +7,11 @@
 
 class Taste {
 private:
-    vector<District> districts;
+    vector<District*> districts;
     vector<User*> users;
     User* currentUser = nullptr;
+    vector<District*> handleNeighbors(vector<string> neighborsList);
+    District* findDistrictByName(string name);
 public:
     Taste();
     ~Taste();
@@ -17,6 +19,9 @@ public:
     void signUp(const string& username, const string& password);
     void login(const string& username, const string& password);
     void logout();
+
+    void handleDistrict(string name, vector<string> neighbors);
+    void handleRestaurant(vector<string> arguments, vector<map<string, string>> foods);
 };
 
 

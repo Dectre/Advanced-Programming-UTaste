@@ -1,9 +1,8 @@
 #include "District.h"
 
-District::District(string name_, vector<District*> neighbors_, vector<Restaurant> restaurants_) {
+District::District(string name_, vector<District*> neighbors_) {
     name = name_;
     neighbors = neighbors_;
-    restaurants = restaurants_;
 }
 
 District::District(std::string name_) {

@@ -1,11 +1,4 @@
 district,neighbors
-Aghdasie,Nobonyad;Niavaran;Andarzgoo
-Nobonyad,Aghdasie;Golzar
-Golzar,Nobonyad;Ozgol
-Ozgol,Golzar;Mahalati
-Mahalati,Ghaem;Ozgol;Sohanak
-Ghaem,Mahalati;Sohanak;Laleh
-Sohanak,Laleh;Ghaem
-Laleh,Sohanak;Ghaem
-Niavaran,Andarzgoo
-Andarzgoo,Niavaran
+Azadi,Behboodi;SatarKhan;Shadman
+Saadat Abad,Punak;Shahrak Gharb;Tajrish
+Enghelab,Jomhuri;Kargar

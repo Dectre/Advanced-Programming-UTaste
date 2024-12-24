@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "Manual.h"
 #include "System.h"
 #include "Taste.h"
 

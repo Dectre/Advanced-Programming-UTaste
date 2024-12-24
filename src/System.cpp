@@ -2,9 +2,10 @@
 
 System::System(Taste *uTaste_) {
     uTaste = uTaste_;
-    // uTaste->initFiles();
+    initFiles();
     running = true;
 }
+
 
 vector<string> System::splitStringBy(const string& sentence, const char& delimiter) {
     vector<string> words;
@@ -15,12 +16,60 @@ vector<string> System::splitStringBy(const string& sentence, const char& delimit
     return words;
 }
 
+
 void System::run() {
     try {
         inputWatcher();
     }catch (invalid_argument& err) {
         cout << err.what() << endl;
     }
+}
+
+void System::initFiles() {
+    handleDistrictsFile();
+    handleRestaurantsFile();
+}
+
+void System::handleDistrictsFile() {
+    ifstream file(DISTRICTS_FILE);
+    string line;
+    getline(file, line);
+    while(getline(file, line)) {
+        string tempName;
+        string tempNeighbors;
+        stringstream lineStream(line);
+        getline(lineStream, tempName, ',');
+        getline(lineStream, tempNeighbors, ',');
+        vector<string> tempNeighborsList = splitStringBy(tempNeighbors, ELEMENT_SEPERATOR_DELIMITER);
+        uTaste->handleDistrict(tempName, tempNeighborsList);
+    }
+    file.close();
+}
+
+void System::handleRestaurantsFile() {
+    ifstream file(RESTAURANTS_FILE);
+    string line;
+    getline(file, line);
+    while (getline(file, line)) {
+        string tempName;
+        string tempNeighbors;
+        stringstream lineStream(line);
+        vector<string> tempRestaurant = splitStringBy(line, SEPERATOR_DELIMITER);
+        vector<map<string, string>> tempFood = handleFood(tempRestaurant[2]);
+        uTaste->handleRestaurant(tempRestaurant, tempFood);
+        file.close();
+    }
+}
+
+vector<map<string, string>> System::handleFood(std::string menu) {
+    vector<string> seperatedMenu = splitStringBy(menu, ELEMENT_SEPERATOR_DELIMITER);
+    vector<map<string, string>> finalMenu;
+    for (auto item : seperatedMenu) {
+        vector<string> seperatedFood = splitStringBy(item, EXPLANATION_DELIMITER);
+        map<string, string> tempFood; tempFood[NAME_KEY] = seperatedFood[0]; tempFood[PRICE_KEY] = seperatedFood[1];
+        finalMenu.push_back(tempFood);
+    }
+    return finalMenu;
 }
 
 void System::inputWatcher() {
@@ -70,7 +119,6 @@ void System::parseArguments(string argument, vector<string> &expectedArguments) 
             throw invalid_argument(BAD_REQUEST_RESPONSE);
     }
 }
-
 
 void System::handleGetCommands(string command, string argument) {
 }

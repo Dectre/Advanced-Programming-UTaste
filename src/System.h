@@ -25,6 +25,11 @@ private:
     void handleGetCommands(string command, string arguments);
     void handlePostCommands(string command, string arguments);
 
+    void initFiles();
+    void handleDistrictsFile();
+    void handleRestaurantsFile();
+    vector<map<string, string>> handleFood(string menu);
+
     void uTasteSignUp(string argument);
     void uTasteLogin(string argument);
     void uTasteLogout(string argument);

@@ -1,31 +1,3 @@
 name,district,foods:prices,opening_time,closing_time,number_of_tables
-Felicity,Aghdasie,pizza:250;burger:200;steak:350,10,22,4
-TasteVille,Nobonyad,hotdog:180;shawarma:220;fries:90,11,23,3
-GreenGarden,Golzar,pasta:270;salad:150;sandwich:190,9,21,2
-BiteBazaar,Ozgol,kebab:300;rice:100;soup:120,12,20,3
-SaffronCorner,Mahalati,fish:400;lobster:600;shrimp:450,10,24,2
-UrbanGrill,Ghaem,steak:400;burger:250;hotdog:200,11,23,5
-RusticEats,Sohanak,pizza:220;shawarma:240;noodles:200,9,22,3
-CozyBites,Laleh,soup:150;rice:120;chicken:300,10,20,2
-EliteDining,Niavaran,steak:450;burger:280;fries:100,11,24,4
-FlavorHub,Andarzgoo,salad:150;shawarma:230;pasta:250,9,21,3
-GoldenSpoon,Aghdasie,ravioli:300;burger:180;pizza:250,11,22,5
-MetroEats,Nobonyad,noodles:210;pasta:240;hotdog:150,9,21,2
-SkylineBistro,Golzar,kebab:280;burger:200;steak:400,12,23,3
-VillageGrill,Ozgol,chicken:350;shawarma:230;rice:140,10,22,4
-RoyalTaste,Mahalati,lobster:600;salmon:500;shrimp:450,9,23,2
-UrbanEats,Ghaem,pizza:250;hotdog:180;burger:260,11,24,4
-SpiceHub,Sohanak,shawarma:220;noodles:230;fries:90,10,21,3
-CottageMeals,Laleh,salad:150;chicken:280;soup:130,9,22,3
-ParkLane,Niavaran,burger:200;pizza:270;steak:400,11,23,5
-FusionBites,Andarzgoo,kebab:300;pasta:260;rice:150,10,21,4
-BurgerHouse,Aghdasie,burger:250;fries:100;shake:90,12,23,2
-ShawarmaPoint,Nobonyad,shawarma:200;pasta:240;rice:130,9,20,3
-OceanEats,Golzar,fish:400;shrimp:450;squid:350,10,24,2
-RiversideCafe,Ozgol,cappuccino:80;cake:120;tea:50,9,21,1
-GourmetCorner,Mahalati,steak:500;burger:300;kebab:350,11,23,5
-TasteHeaven,Ghaem,noodles:200;pizza:250;shawarma:230,10,21,4
-Flavorscape,Sohanak,salad:150;soup:130;rice:140,9,22,3
-TableGrill,Laleh,chicken:300;burger:260;shawarma:250,11,23,3
-DeliDelight,Niavaran,soup:150;fries:100;salad:120,10,22,2
-FreshFeast,Andarzgoo,pasta:270;chicken:350;steak:400,11,24,5
+sib,Saadat Abad,pitza:220;berger:190;hotdog:185,9,23,45
+maman joon,Enghelab,pitza:290;berger:180;sandwich:95;food with space in name:20,11,1,20

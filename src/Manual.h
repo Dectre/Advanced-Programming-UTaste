@@ -5,16 +5,27 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <fstream>
 #include <unordered_map>
+#include <map>
+
 
 using namespace std;
 
+typedef const string Path;
 typedef const string Method;
 typedef const string Response;
 typedef const string Command;
 typedef const string Argument;
 typedef const string Output;
 typedef const char Delimiter;
+typedef const string Key;
+
+Path RESTAURANTS_FILE = "files/restaurants.csv";
+Path DISTRICTS_FILE = "files/districts.csv";
+
+Key NAME_KEY = "Name";
+Key PRICE_KEY = "Price";
 
 Method GET_METHOD = "GET";
 Method PUT_METHOD = "PUT";

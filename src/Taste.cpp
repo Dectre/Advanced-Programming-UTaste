@@ -1,9 +1,13 @@
 #include "Taste.h"
 #include "User.h"
 
-
- Taste::Taste() {}
+ Taste::Taste() {
+     districts.clear();
+}
  Taste::~Taste() {}
+
+
+
 
 bool Taste::usernameExists(const std::string &username) {
     for (auto user : users){
@@ -48,3 +52,43 @@ void Taste::logout() {
     else
         throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
 }
+
+District* Taste::findDistrictByName(std::string name) {
+    for (auto district : districts) {
+        if (name == district->getName())
+            return district;
+    }
+    return nullptr;
+}
+
+vector<District*> Taste::handleNeighbors(vector<string> neighborsList) {
+    vector<District*> districtNeighbors;
+    for (auto name : neighborsList) {
+        if (findDistrictByName(name) == nullptr) {
+            districts.push_back(new District(name));
+            districtNeighbors.push_back(districts[districts.size() - 1]);
+        }
+        else
+            districtNeighbors.push_back(findDistrictByName(name));
+    }
+    return districtNeighbors;
+}
+
+void Taste::handleDistrict(std::string name, vector<string> neighborsList) {
+    vector<District*> neighbors = handleNeighbors(neighborsList);
+    if (findDistrictByName(name) == nullptr)
+        districts.push_back(new District(name, neighbors));
+    else {
+        District* district = findDistrictByName(name);
+        for (auto neighbor: neighbors) {
+            district->addNeighbor(neighbor);
+        }
+    }
+
+}
+
+void Taste::handleRestaurant(vector<std::string> arguments, vector<map<std::string, std::string>> foods) {
+
+}
+
+
