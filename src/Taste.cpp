@@ -88,7 +88,8 @@ void Taste::handleDistrict(std::string name, vector<string> neighborsList) {
 }
 
 void Taste::handleRestaurant(vector<std::string> arguments, vector<map<std::string, std::string>> foods) {
-
+    District* restaurantLocation = findDistrictByName(arguments[1]);
+    restaurantLocation->newRestaurant(arguments, foods);
 }
 
 

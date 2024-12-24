@@ -10,16 +10,17 @@ class Restaurant {
 private:
     string name;
     District* location;
-    vector<Food> Menu;
+    vector<Food*> menu;
     int openingTime;
     int closingTime;
     vector<Table> tables;
+    void handleMenu(vector<map<string, string>> menu_);
 public:
-    Restaurant(string name_, District* location_, vector<Food> Menu_,
-               int openingTime_, int closingTime_, int numOfTables);
+    Restaurant(string name_, District* location_, vector<map<string, string>> menu_,
+               string openingTime_, string closingTime_, string numOfTables);
     string getName() { return name; }
     District* getLocation() { return location; }
-    vector<Food> getMenu() { return Menu; }
+    vector<Food*> getMenu() { return menu; }
 };
 
 

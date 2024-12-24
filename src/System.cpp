@@ -57,8 +57,8 @@ void System::handleRestaurantsFile() {
         vector<string> tempRestaurant = splitStringBy(line, SEPERATOR_DELIMITER);
         vector<map<string, string>> tempFood = handleFood(tempRestaurant[2]);
         uTaste->handleRestaurant(tempRestaurant, tempFood);
-        file.close();
     }
+    file.close();
 }
 
 vector<map<string, string>> System::handleFood(std::string menu) {
