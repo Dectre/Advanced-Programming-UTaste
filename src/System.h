@@ -24,6 +24,7 @@ private:
 
     void handleGetCommands(string command, string argument);
     void handlePostCommands(string command, string argument);
+    void handlePutCommands(string command, string argument);
 
     void initFiles();
     void handleDistrictsFile();
@@ -35,6 +36,10 @@ private:
     void uTasteLogout(string argument);
 
     void uTasteGetDistricts(string argument);
+    void uTasteSetLocation(string argument);
+
+    void uTasteGetRestaurants(string argument);
+
 };
 
 #endif //UTASTE_SYSTEM_H

@@ -118,3 +118,16 @@ void Taste::showSpecificDistrict(std::string districtName) {
     else
         throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
 }
+
+void Taste::setUserLocation(std::string districtName) {
+    if (currentUser != nullptr) {
+        District* district = findDistrictByName(districtName);
+        if (district == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
+        currentUser->setLocation(district);
+        cout << SUCCESSFUL_RESPONSE << endl;
+    }
+    else
+        throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
+}
+
+

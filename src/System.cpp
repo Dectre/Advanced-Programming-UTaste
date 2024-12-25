@@ -105,6 +105,8 @@ void System::inputSeperator(vector<string> command) {
         handleGetCommands(cmd, argument);
     else if (method == POST_METHOD)
         handlePostCommands(cmd, argument);
+    else if (method == PUT_METHOD)
+        handlePutCommands(cmd ,argument);
     else
         throw invalid_argument(BAD_REQUEST_RESPONSE);
 }
@@ -128,8 +130,8 @@ void System::parseArguments(string argument, vector<string> &expectedArguments) 
 
 void System::handleGetCommands(string command, string argument) {
     if (command == DISTRICTS_COMMAND)
-    if (command == DISTRICTS_COMMAND)
         uTasteGetDistricts(argument);
+    if (command == RESTAURANTS_COMMAND)
 }
 
 void System::handlePostCommands(string command, string argument) {
@@ -141,6 +143,11 @@ void System::handlePostCommands(string command, string argument) {
         uTasteLogout(argument);
     else
         throw invalid_argument(BAD_REQUEST_RESPONSE);
+}
+
+void System::handlePutCommands(std::string command, std::string argument) {
+    if (command == MY_DISTRICT_COMMAND)
+        uTasteSetLocation(argument);
 }
 
 void System::uTasteSignUp(string argument) {
@@ -162,6 +169,25 @@ void System::uTasteLogout(string argument) {
 }
 
 void System::uTasteGetDistricts(string argument) {
+    if (argument.size() == 0) {
+        vector<string> expectedArguments = {};
+        parseArguments(argument, expectedArguments);
+        uTaste->showDistricts();
+    }
+    else {
+        vector<string> expectedArguments = {DISTRICT};
+        parseArguments(argument, expectedArguments);
+        uTaste->showSpecificDistrict(arguments[DISTRICT]);
+    }
+}
+
+void System::uTasteSetLocation(std::string argument) {
+    vector<string> expectedArguments = {DISTRICT};
+    parseArguments(argument, expectedArguments);
+    uTaste->setUserLocation(arguments[DISTRICT]);
+}
+
+void System::uTasteGetRestaurants(std::string argument) {
     if (argument.size() == 0) {
         vector<string> expectedArguments = {};
         parseArguments(argument, expectedArguments);

@@ -18,6 +18,7 @@ public:
     string getPassword() { return password; }
     District* getLocation() { return location; }
     vector<Reserve*> getReserves() { return reserves; }
+    void setLocation(District* district) { location = district; }
 };
 
 

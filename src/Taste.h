@@ -27,6 +27,10 @@ public:
 
     void showDistricts();
     void showSpecificDistrict(string districtName);
+
+    void setUserLocation(string districtName);
+
+    void showRestaurants();
 };
 
 
