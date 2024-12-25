@@ -13,7 +13,7 @@ private:
     vector<Food*> menu;
     int openingTime;
     int closingTime;
-    vector<Table> tables;
+    vector<Table*> tables;
     void handleMenu(vector<map<string, string>> menu_);
 public:
     Restaurant(string name_, District* location_, vector<map<string, string>> menu_,
@@ -23,6 +23,9 @@ public:
     vector<Food*> getMenu() { return menu; }
     void shortPrint();
     bool hasFood(const std::string& foodName);
+    void detailedPrint();
+    void menuPrint();
+    void tablesPrint();
 };
 
 

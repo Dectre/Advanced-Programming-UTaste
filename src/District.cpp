@@ -28,7 +28,7 @@ void District::printNeighbors() {
 }
 
 void District::showRestaurants() {
-    for (auto restaurant : restaurants) {
+    for (auto restaurant: restaurants) {
         restaurant->shortPrint();
     }
 }
@@ -42,4 +42,14 @@ bool District::showRestaurantsByFood(const string& foodName) {
         }
     }
     return found;
+}
+
+void District::showRestaurantDetail(const string &restaurantName) {
+    for (auto restaurant : restaurants) {
+        if (restaurantName == restaurant->getName()) {
+            restaurant->detailedPrint();
+            return;
+        }
+    }
+    throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }

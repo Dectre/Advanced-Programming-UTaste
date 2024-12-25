@@ -40,7 +40,7 @@ private:
     void uTasteSetLocation(const string& argument);
 
     void uTasteGetRestaurants(const string& argument);
-
+    void uTasteGetRestaurantDetail(const string& argument);
 };
 
 #endif //UTASTE_SYSTEM_H

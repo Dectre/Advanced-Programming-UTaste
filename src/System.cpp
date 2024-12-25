@@ -128,8 +128,10 @@ void System::parseArguments(const string& argument, vector<string> &expectedArgu
 void System::handleGetCommands(const string& command, const string& argument) {
     if (command == DISTRICTS_COMMAND)
         uTasteGetDistricts(argument);
-    if (command == RESTAURANTS_COMMAND)
+    else if (command == RESTAURANTS_COMMAND)
         uTasteGetRestaurants(argument);
+    else if (command == RESTURANT_DETAIL_COMMAND)
+        uTasteGetRestaurantDetail(argument);
 }
 
 void System::handlePostCommands(const string& command, const string& argument) {
@@ -195,5 +197,15 @@ void System::uTasteGetRestaurants(const string& argument) {
         vector<string> expectedArguments = {FOOD_NAME};
         parseArguments(argument, expectedArguments);
         uTaste->showSpecificRestaurants(arguments[FOOD_NAME]);
+    }
+}
+
+void System::uTasteGetRestaurantDetail(const string &argument) {
+    vector<string> expectedArguments = {RESTAURANT_NAME};
+    parseArguments(argument, expectedArguments);
+    try {
+        uTaste->districtsShowRestaurantDetail(arguments[RESTAURANT_NAME]);
+    } catch (const invalid_argument& error) {
+        throw invalid_argument(NON_EXISTENCE_RESPONSE);
     }
 }

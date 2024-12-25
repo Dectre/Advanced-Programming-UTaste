@@ -129,8 +129,20 @@ void Taste::showRestaurants() {
     processDistrictsForRestaurants(visited, toVisit);
 }
 
-District* Taste::getUserLocation() {
-    return currentUser->getLocation();
+void Taste::showSpecificRestaurants(const string& foodName) {
+    checkIfLoggedIn();
+    District* currentLocation = getUserLocation();
+    checkLocationExists(currentLocation);
+
+    set<District*> visited;
+    queue<District*> toVisit;
+
+    initializeTraversal(currentLocation, visited, toVisit);
+    bool foundRestaurants = processSpecificDistrictsForRestaurants(foodName, visited, toVisit);
+
+    if (!foundRestaurants) {
+        throw invalid_argument(NON_EXISTENCE_RESPONSE);
+    }
 }
 
 void Taste::checkLocationExists(District* location) {
@@ -157,22 +169,6 @@ void Taste::processDistrictsForRestaurants(set<District*>& visited, queue<Distri
     }
 }
 
-void Taste::showSpecificRestaurants(const string& foodName) {
-    checkIfLoggedIn();
-    District* currentLocation = getUserLocation();
-    checkLocationExists(currentLocation);
-
-    set<District*> visited;
-    queue<District*> toVisit;
-
-    initializeTraversal(currentLocation, visited, toVisit);
-    bool foundRestaurants = processSpecificDistrictsForRestaurants(foodName, visited, toVisit);
-
-    if (!foundRestaurants) {
-        throw invalid_argument(NON_EXISTENCE_RESPONSE);
-    }
-}
-
 bool Taste::processSpecificDistrictsForRestaurants(const string& foodName, set<District*>& visited, queue<District*>& toVisit) {
     bool foundRestaurants = false;
     while (!toVisit.empty()) {
@@ -186,8 +182,21 @@ bool Taste::processSpecificDistrictsForRestaurants(const string& foodName, set<D
             }
         }
     }
-
     return foundRestaurants;
+}
+
+void Taste::districtsShowRestaurantDetail(const string &restaurantName) {
+    checkIfLoggedIn();
+    bool foundRestaurant = false;
+    for (auto district : districts) {
+        try {
+            district->showRestaurantDetail(restaurantName);
+            foundRestaurant = true;
+            break;
+        } catch (const invalid_argument& err) {}
+    }
+    if (!foundRestaurant)
+        throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
 
 

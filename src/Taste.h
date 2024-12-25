@@ -12,13 +12,14 @@ private:
     User* currentUser = nullptr;
     vector<District*> handleNeighbors(const vector<string>& neighborsList);
     District* findDistrictByName(const string& name);
+    bool usernameExists(const string & username);
+    void checkIfLoggedIn();
+    District* getUserLocation() { return currentUser-> getLocation(); }
     void checkLocationExists(District* location);
     void initializeTraversal(District* startDistrict, std::set<District*>& visited, std::queue<District*>& toVisit);
     void processDistrictsForRestaurants(std::set<District*>& visited, std::queue<District*>& toVisit);
     bool processSpecificDistrictsForRestaurants(const std::string& dishName, std::set<District*>& visited, std::queue<District*>& toVisit);
-    District* getUserLocation();
-    bool usernameExists(const string & username);
-    void checkIfLoggedIn();
+
 public:
     Taste();
     ~Taste();
@@ -38,8 +39,9 @@ public:
     void setUserLocation(const string& districtName);
 
     void showRestaurants();
-    void showSpecificRestaurants(const std::string& dishName);
+    void showSpecificRestaurants(const string& foodName);
 
+    void districtsShowRestaurantDetail(const string& restaurantName);
 };
 
 

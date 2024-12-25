@@ -13,6 +13,8 @@ public:
     Table(int id_);
     int getId() { return id; }
     vector<Reserve*> getReserves() { return reserves; }
+    void print();
+    void reservesTimePrint();
 };
 
 

@@ -10,6 +10,7 @@ public:
     Food(string n, int p);
     string getName() { return name; }
     int getPrice() { return price; }
+    void print();
 };
 
 

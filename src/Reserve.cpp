@@ -3,15 +3,18 @@
 #include "User.h"
 
 Reserve::Reserve(int s, int e, User *c) {
-    reserveStart = s;
-    reserveEnd = e;
+    startTime = s;
+    endTime = e;
     customer = c;
 }
 
 Reserve::Reserve(int s, int e, User *c, vector<Food*> o) {
-    reserveStart = s;
-    reserveEnd = e;
+    startTime = s;
+    endTime = e;
     customer = c;
     order = move(o);
 }
 
+void Reserve::timePrint() {
+    cout << IN_DELIMITER << startTime << TO_DELIMITER << endTime << OUT_DELIMITER;
+}

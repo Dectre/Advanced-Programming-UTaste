@@ -9,7 +9,7 @@ Restaurant::Restaurant(string name_, District* location_, vector<map<string, str
     openingTime = stoi(openingTime_);
     closingTime = stoi(closingTime_);
     for (int i = 0; i < stoi(numOfTables) ; i++) {
-        tables.push_back(Table(i));
+        tables.push_back(new Table(i + 1));
     }
 }
 
@@ -30,3 +30,30 @@ bool Restaurant::hasFood(const string& foodName) {
     }
     return false;
 }
+
+void Restaurant::detailedPrint() {
+    cout << NAME_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPERATOR_DELIMITER << name << endl;
+    cout << DISTRICT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPERATOR_DELIMITER << location->getName() << endl;
+    cout << TIME_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPERATOR_DELIMITER << openingTime << TO_DELIMITER << closingTime << endl;
+    cout << MENU_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPERATOR_DELIMITER;
+    menuPrint();
+    tablesPrint();
+}
+
+void Restaurant::menuPrint() {
+    for (size_t i = 0; i < menu.size(); i++) {
+        menu[i]->print();
+        if (i != menu.size() - 1)
+            cout << SEPERATOR_DELIMITER << WORD_SEPERATOR_DELIMITER;
+    }
+    cout << endl;
+}
+
+void Restaurant::tablesPrint() {
+    for (size_t i = 0; i < tables.size(); i++) {
+        tables[i]->print();
+        if (i != tables.size() - 1)
+            cout << endl;
+    }
+}
+

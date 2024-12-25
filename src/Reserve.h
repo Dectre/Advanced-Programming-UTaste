@@ -10,13 +10,14 @@ class Reserve {
 public:
     Reserve(int s, int e, User* c);
     Reserve(int s, int e, User* c, vector<Food*> o);
-    int getReserveStartTime() { return reserveStart; }
-    int getReserveEndTime() { return reserveEnd; }
+    int getStartTime() { return startTime; }
+    int getEndTime() { return endTime; }
     User* getUser() { return customer; }
     vector<Food*> getOrder() { return order; }
+    void timePrint();
 private:
-    int reserveStart;
-    int reserveEnd;
+    int startTime;
+    int endTime;
     User* customer;
     vector<Food*> order;
 };

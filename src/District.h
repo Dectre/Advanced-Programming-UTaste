@@ -24,6 +24,8 @@ public:
 
     void showRestaurants();
     bool showRestaurantsByFood(const string& foodName);
+
+    void showRestaurantDetail(const string& restaurantName);
 };
 
 
