@@ -22,6 +22,11 @@ public:
 
     void handleDistrict(string name, vector<string> neighbors);
     void handleRestaurant(vector<string> arguments, vector<map<string, string>> foods);
+
+    void sortDistricts();
+
+    void showDistricts();
+    void showSpecificDistrict(string districtName);
 };
 
 

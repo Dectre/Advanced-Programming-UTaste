@@ -12,7 +12,7 @@
 
 using namespace std;
 
-typedef const string Path;
+typedef string Path;
 typedef const string Method;
 typedef const string Response;
 typedef const string Command;
@@ -21,8 +21,8 @@ typedef const string Output;
 typedef const char Delimiter;
 typedef const string Key;
 
-Path RESTAURANTS_FILE = "files/restaurants.csv";
-Path DISTRICTS_FILE = "files/districts.csv";
+extern string RESTAURANTS_FILE;
+extern string DISTRICTS_FILE;
 
 Key NAME_KEY = "Name";
 Key PRICE_KEY = "Price";

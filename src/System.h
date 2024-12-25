@@ -22,8 +22,8 @@ private:
     void inputSeperator(vector<string> command);
     void parseArguments(string argument, vector<string> &expectedArguments);
 
-    void handleGetCommands(string command, string arguments);
-    void handlePostCommands(string command, string arguments);
+    void handleGetCommands(string command, string argument);
+    void handlePostCommands(string command, string argument);
 
     void initFiles();
     void handleDistrictsFile();
@@ -33,6 +33,8 @@ private:
     void uTasteSignUp(string argument);
     void uTasteLogin(string argument);
     void uTasteLogout(string argument);
+
+    void uTasteGetDistricts(string argument);
 };
 
 #endif //UTASTE_SYSTEM_H

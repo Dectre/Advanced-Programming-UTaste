@@ -84,7 +84,6 @@ void Taste::handleDistrict(std::string name, vector<string> neighborsList) {
             district->addNeighbor(neighbor);
         }
     }
-
 }
 
 void Taste::handleRestaurant(vector<std::string> arguments, vector<map<std::string, std::string>> foods) {
@@ -92,4 +91,30 @@ void Taste::handleRestaurant(vector<std::string> arguments, vector<map<std::stri
     restaurantLocation->newRestaurant(arguments, foods);
 }
 
+void Taste::sortDistricts() {
+    sort(districts.begin(), districts.end(), [](District* a, District* b) {
+        return a->getName() < b->getName();
+    });
+}
 
+void Taste::showDistricts() {
+    if (currentUser != nullptr) {
+        if (districts.empty()) throw invalid_argument(EMPTY_RESPONSE);
+        for (auto district : districts) {
+            district->print();
+        }
+    }
+    else
+        throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
+}
+
+void Taste::showSpecificDistrict(std::string districtName) {
+    if (currentUser != nullptr) {
+        if (districts.empty()) throw invalid_argument(EMPTY_RESPONSE);
+        District* district = findDistrictByName(districtName);
+        if (district == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
+        district->print();
+    }
+    else
+        throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
+}

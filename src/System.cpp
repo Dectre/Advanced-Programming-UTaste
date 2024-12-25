@@ -43,6 +43,7 @@ void System::handleDistrictsFile() {
         vector<string> tempNeighborsList = splitStringBy(tempNeighbors, ELEMENT_SEPERATOR_DELIMITER);
         uTaste->handleDistrict(tempName, tempNeighborsList);
     }
+    uTaste->sortDistricts();
     file.close();
 }
 
@@ -75,7 +76,10 @@ vector<map<string, string>> System::handleFood(std::string menu) {
 void System::inputWatcher() {
     while (running) {
         string line;
-        getline(cin, line);
+        if (!getline(cin, line)) {
+            running = false;
+            break;
+        }
 
         try {
             if (line.find(COMMAND_DELIMITER) == string::npos)
@@ -95,10 +99,12 @@ void System::inputSeperator(vector<string> command) {
 
     string method = mainCommands[0];
     string cmd = mainCommands[1];
-    string arguments = command.size() == 2 ? command[1] : "";
+    string argument = command.size() == 2 ? command[1] : "";
 
-    if (method == POST_METHOD)
-        handlePostCommands(cmd, arguments);
+    if (method == GET_METHOD)
+        handleGetCommands(cmd, argument);
+    else if (method == POST_METHOD)
+        handlePostCommands(cmd, argument);
     else
         throw invalid_argument(BAD_REQUEST_RESPONSE);
 }
@@ -121,15 +127,18 @@ void System::parseArguments(string argument, vector<string> &expectedArguments) 
 }
 
 void System::handleGetCommands(string command, string argument) {
+    if (command == DISTRICTS_COMMAND)
+    if (command == DISTRICTS_COMMAND)
+        uTasteGetDistricts(argument);
 }
 
-void System::handlePostCommands(string command, string arguments) {
+void System::handlePostCommands(string command, string argument) {
     if (command == SIGNUP_COMMAND)
-        uTasteSignUp(arguments);
+        uTasteSignUp(argument);
     else if (command == LOGIN_COMMAND)
-        uTasteLogin(arguments);
+        uTasteLogin(argument);
     else if (command == LOGOUT_COMMAND)
-        uTasteLogout(arguments);
+        uTasteLogout(argument);
     else
         throw invalid_argument(BAD_REQUEST_RESPONSE);
 }
@@ -150,4 +159,17 @@ void System::uTasteLogout(string argument) {
     vector<string> expectedArguments = {};
     parseArguments(argument, expectedArguments);
     uTaste->logout();
+}
+
+void System::uTasteGetDistricts(string argument) {
+    if (argument.size() == 0) {
+        vector<string> expectedArguments = {};
+        parseArguments(argument, expectedArguments);
+        uTaste->showDistricts();
+    }
+    else {
+        vector<string> expectedArguments = {DISTRICT};
+        parseArguments(argument, expectedArguments);
+        uTaste->showSpecificDistrict(arguments[DISTRICT]);
+    }
 }
