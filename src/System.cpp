@@ -6,7 +6,6 @@ System::System(Taste *uTaste_) {
     running = true;
 }
 
-
 vector<string> System::splitStringBy(const string& sentence, const char& delimiter) {
     vector<string> words;
     istringstream stream(sentence);
@@ -15,7 +14,6 @@ vector<string> System::splitStringBy(const string& sentence, const char& delimit
         words.push_back(word);
     return words;
 }
-
 
 void System::run() {
     try {
@@ -62,10 +60,10 @@ void System::handleRestaurantsFile() {
     file.close();
 }
 
-vector<map<string, string>> System::handleFood(std::string menu) {
+vector<map<string, string>> System::handleFood(const string& menu) {
     vector<string> seperatedMenu = splitStringBy(menu, ELEMENT_SEPERATOR_DELIMITER);
     vector<map<string, string>> finalMenu;
-    for (auto item : seperatedMenu) {
+    for (const auto& item : seperatedMenu) {
         vector<string> seperatedFood = splitStringBy(item, EXPLANATION_DELIMITER);
         map<string, string> tempFood; tempFood[NAME_KEY] = seperatedFood[0]; tempFood[PRICE_KEY] = seperatedFood[1];
         finalMenu.push_back(tempFood);
@@ -80,7 +78,6 @@ void System::inputWatcher() {
             running = false;
             break;
         }
-
         try {
             if (line.find(COMMAND_DELIMITER) == string::npos)
                 throw invalid_argument(BAD_REQUEST_RESPONSE);
@@ -97,8 +94,8 @@ void System::inputSeperator(vector<string> command) {
     if (mainCommands.size() != 2)
         throw invalid_argument(BAD_REQUEST_RESPONSE);
 
-    string method = mainCommands[0];
-    string cmd = mainCommands[1];
+    const string& method = mainCommands[0];
+    const string& cmd = mainCommands[1];
     string argument = command.size() == 2 ? command[1] : "";
 
     if (method == GET_METHOD)
@@ -111,12 +108,12 @@ void System::inputSeperator(vector<string> command) {
         throw invalid_argument(BAD_REQUEST_RESPONSE);
 }
 
-void System::parseArguments(string argument, vector<string> &expectedArguments) {
+void System::parseArguments(const string& argument, vector<string> &expectedArguments) {
     arguments.clear();
     vector<string> tokens = splitStringBy(argument, WORD_SEPERATOR_DELIMITER);
     for (size_t i = 0; i < tokens.size(); i++) {
         if (i + 1 < tokens.size() && tokens[i + 1][0] == ARGUMENT_DELIMITER) {
-            string key = tokens[i];
+            const string& key = tokens[i];
             string value = tokens[i + 1].substr(1, tokens[i + 1].size() - 2);
             arguments[key] = value;
             i++;
@@ -128,13 +125,14 @@ void System::parseArguments(string argument, vector<string> &expectedArguments) 
     }
 }
 
-void System::handleGetCommands(string command, string argument) {
+void System::handleGetCommands(const string& command, const string& argument) {
     if (command == DISTRICTS_COMMAND)
         uTasteGetDistricts(argument);
     if (command == RESTAURANTS_COMMAND)
+        uTasteGetRestaurants(argument);
 }
 
-void System::handlePostCommands(string command, string argument) {
+void System::handlePostCommands(const string& command, const string& argument) {
     if (command == SIGNUP_COMMAND)
         uTasteSignUp(argument);
     else if (command == LOGIN_COMMAND)
@@ -145,31 +143,31 @@ void System::handlePostCommands(string command, string argument) {
         throw invalid_argument(BAD_REQUEST_RESPONSE);
 }
 
-void System::handlePutCommands(std::string command, std::string argument) {
+void System::handlePutCommands(const string& command, const string& argument) {
     if (command == MY_DISTRICT_COMMAND)
         uTasteSetLocation(argument);
 }
 
-void System::uTasteSignUp(string argument) {
+void System::uTasteSignUp(const string& argument) {
     vector<string> expectedArguments = {USERNAME, PASSWORD};
     parseArguments(argument, expectedArguments);
     uTaste->signUp(arguments[USERNAME], arguments[PASSWORD]);
 }
 
-void System::uTasteLogin(string argument) {
+void System::uTasteLogin(const string& argument) {
     vector<string> expectedArguments = {USERNAME, PASSWORD};
     parseArguments(argument, expectedArguments);
     uTaste->login(arguments[USERNAME], arguments[PASSWORD]);
 }
 
-void System::uTasteLogout(string argument) {
+void System::uTasteLogout(const string& argument) {
     vector<string> expectedArguments = {};
     parseArguments(argument, expectedArguments);
     uTaste->logout();
 }
 
-void System::uTasteGetDistricts(string argument) {
-    if (argument.size() == 0) {
+void System::uTasteGetDistricts(const string& argument) {
+    if (argument.empty()) {
         vector<string> expectedArguments = {};
         parseArguments(argument, expectedArguments);
         uTaste->showDistricts();
@@ -181,21 +179,21 @@ void System::uTasteGetDistricts(string argument) {
     }
 }
 
-void System::uTasteSetLocation(std::string argument) {
+void System::uTasteSetLocation(const string& argument) {
     vector<string> expectedArguments = {DISTRICT};
     parseArguments(argument, expectedArguments);
     uTaste->setUserLocation(arguments[DISTRICT]);
 }
 
-void System::uTasteGetRestaurants(std::string argument) {
-    if (argument.size() == 0) {
+void System::uTasteGetRestaurants(const string& argument) {
+    if (argument.empty()) {
         vector<string> expectedArguments = {};
         parseArguments(argument, expectedArguments);
-        uTaste->showDistricts();
+        uTaste->showRestaurants();
     }
     else {
-        vector<string> expectedArguments = {DISTRICT};
+        vector<string> expectedArguments = {FOOD_NAME};
         parseArguments(argument, expectedArguments);
-        uTaste->showSpecificDistrict(arguments[DISTRICT]);
+        uTaste->showSpecificRestaurants(arguments[FOOD_NAME]);
     }
 }

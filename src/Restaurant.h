@@ -21,6 +21,8 @@ public:
     string getName() { return name; }
     District* getLocation() { return location; }
     vector<Food*> getMenu() { return menu; }
+    void shortPrint();
+    bool hasFood(const std::string& foodName);
 };
 
 

@@ -13,6 +13,7 @@ public:
     District(string name_);
     District();
 
+    vector<District*> getNeighbors() { return neighbors; }
     void addNeighbor(District* neighbor) { neighbors.push_back(neighbor); }
     void addRestaurant(Restaurant* restaurant) { restaurants.push_back(restaurant); }
     void newRestaurant(vector<string> arguments, vector<map<string, string>> menu);
@@ -20,6 +21,9 @@ public:
 
     void print();
     void printNeighbors();
+
+    void showRestaurants();
+    bool showRestaurantsByFood(const string& foodName);
 };
 
 

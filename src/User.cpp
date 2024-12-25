@@ -3,4 +3,5 @@
 User::User(string u, string p) {
     username = u;
     password = p;
+    location = nullptr;
 }

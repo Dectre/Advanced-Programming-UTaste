@@ -19,26 +19,27 @@ private:
     vector<string> splitStringBy(const string &sentence, const char &delimiter);
 
     void inputWatcher();
+    void checkIfNoCommandsRemaining();
     void inputSeperator(vector<string> command);
-    void parseArguments(string argument, vector<string> &expectedArguments);
+    void parseArguments(const string& argument, vector<string> &expectedArguments);
 
-    void handleGetCommands(string command, string argument);
-    void handlePostCommands(string command, string argument);
-    void handlePutCommands(string command, string argument);
+    void handleGetCommands(const string& command, const string& argument);
+    void handlePostCommands(const string& command, const string& argument);
+    void handlePutCommands(const string& command, const string& argument);
 
     void initFiles();
     void handleDistrictsFile();
     void handleRestaurantsFile();
-    vector<map<string, string>> handleFood(string menu);
+    vector<map<string, string>> handleFood(const string& menu);
 
-    void uTasteSignUp(string argument);
-    void uTasteLogin(string argument);
-    void uTasteLogout(string argument);
+    void uTasteSignUp(const string& argument);
+    void uTasteLogin(const string& argument);
+    void uTasteLogout(const string& argument);
 
-    void uTasteGetDistricts(string argument);
-    void uTasteSetLocation(string argument);
+    void uTasteGetDistricts(const string& argument);
+    void uTasteSetLocation(const string& argument);
 
-    void uTasteGetRestaurants(string argument);
+    void uTasteGetRestaurants(const string& argument);
 
 };
 

@@ -5,11 +5,11 @@ District::District(string name_, vector<District*> neighbors_) {
     neighbors = neighbors_;
 }
 
-District::District(std::string name_) {
+District::District(string name_) {
     name = name_;
 }
 
-void District::newRestaurant(vector<std::string> arguments, vector<map<std::string, std::string>> menu) {
+void District::newRestaurant(vector<string> arguments, vector<map<string, string>> menu) {
     addRestaurant(new Restaurant(arguments[0], this, menu, arguments[3], arguments[4], arguments[5]));
 }
 
@@ -27,3 +27,19 @@ void District::printNeighbors() {
     }
 }
 
+void District::showRestaurants() {
+    for (auto restaurant : restaurants) {
+        restaurant->shortPrint();
+    }
+}
+
+bool District::showRestaurantsByFood(const string& foodName) {
+    bool found = false;
+    for (auto restaurant : restaurants) {
+        if (restaurant->hasFood(foodName)) {
+            restaurant->shortPrint();
+            found = true;
+        }
+    }
+    return found;
+}

@@ -10,27 +10,36 @@ private:
     vector<District*> districts;
     vector<User*> users;
     User* currentUser = nullptr;
-    vector<District*> handleNeighbors(vector<string> neighborsList);
-    District* findDistrictByName(string name);
+    vector<District*> handleNeighbors(const vector<string>& neighborsList);
+    District* findDistrictByName(const string& name);
+    void checkLocationExists(District* location);
+    void initializeTraversal(District* startDistrict, std::set<District*>& visited, std::queue<District*>& toVisit);
+    void processDistrictsForRestaurants(std::set<District*>& visited, std::queue<District*>& toVisit);
+    bool processSpecificDistrictsForRestaurants(const std::string& dishName, std::set<District*>& visited, std::queue<District*>& toVisit);
+    District* getUserLocation();
+    bool usernameExists(const string & username);
+    void checkIfLoggedIn();
 public:
     Taste();
     ~Taste();
-    bool usernameExists(const string & username);
+
     void signUp(const string& username, const string& password);
     void login(const string& username, const string& password);
     void logout();
 
-    void handleDistrict(string name, vector<string> neighbors);
+    void handleDistrict(const string& name, const vector<string>& neighbors);
     void handleRestaurant(vector<string> arguments, vector<map<string, string>> foods);
 
     void sortDistricts();
 
     void showDistricts();
-    void showSpecificDistrict(string districtName);
+    void showSpecificDistrict(const string& districtName);
 
-    void setUserLocation(string districtName);
+    void setUserLocation(const string& districtName);
 
     void showRestaurants();
+    void showSpecificRestaurants(const std::string& dishName);
+
 };
 
 

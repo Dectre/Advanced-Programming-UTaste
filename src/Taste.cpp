@@ -1,15 +1,17 @@
 #include "Taste.h"
+
+#include <utility>
 #include "User.h"
 
- Taste::Taste() {
-     districts.clear();
+Taste::Taste() {}
+Taste::~Taste() {}
+
+void Taste::checkIfLoggedIn() {
+    if (currentUser == nullptr)
+        throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
 }
- Taste::~Taste() {}
 
-
-
-
-bool Taste::usernameExists(const std::string &username) {
+bool Taste::usernameExists(const string &username) {
     for (auto user : users){
         if (user->getUsername() == username)
             return true;
@@ -17,7 +19,7 @@ bool Taste::usernameExists(const std::string &username) {
     return false;
 }
 
-void Taste::signUp(const std::string &username, const std::string &password) {
+void Taste::signUp(const string &username, const string &password) {
     if (currentUser != nullptr)
         throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
     if (usernameExists(username))
@@ -27,7 +29,7 @@ void Taste::signUp(const std::string &username, const std::string &password) {
     cout << SUCCESSFUL_RESPONSE << endl;
 }
 
-void Taste::login(const std::string &username, const std::string &password) {
+void Taste::login(const string &username, const string &password) {
     if (currentUser == nullptr) {
         for (auto user: users) {
             if (user->getUsername() == username && user->getPassword() != password)
@@ -45,15 +47,12 @@ void Taste::login(const std::string &username, const std::string &password) {
 }
 
 void Taste::logout() {
-    if (currentUser != nullptr) {
-        currentUser = nullptr;
-        cout << SUCCESSFUL_RESPONSE << endl;
-    }
-    else
-        throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
+    checkIfLoggedIn();
+    currentUser = nullptr;
+    cout << SUCCESSFUL_RESPONSE << endl;
 }
 
-District* Taste::findDistrictByName(std::string name) {
+District* Taste::findDistrictByName(const string& name) {
     for (auto district : districts) {
         if (name == district->getName())
             return district;
@@ -61,9 +60,9 @@ District* Taste::findDistrictByName(std::string name) {
     return nullptr;
 }
 
-vector<District*> Taste::handleNeighbors(vector<string> neighborsList) {
+vector<District*> Taste::handleNeighbors(const vector<string>& neighborsList) {
     vector<District*> districtNeighbors;
-    for (auto name : neighborsList) {
+    for (const auto& name : neighborsList) {
         if (findDistrictByName(name) == nullptr) {
             districts.push_back(new District(name));
             districtNeighbors.push_back(districts[districts.size() - 1]);
@@ -74,7 +73,7 @@ vector<District*> Taste::handleNeighbors(vector<string> neighborsList) {
     return districtNeighbors;
 }
 
-void Taste::handleDistrict(std::string name, vector<string> neighborsList) {
+void Taste::handleDistrict(const string& name, const vector<string>& neighborsList) {
     vector<District*> neighbors = handleNeighbors(neighborsList);
     if (findDistrictByName(name) == nullptr)
         districts.push_back(new District(name, neighbors));
@@ -86,9 +85,9 @@ void Taste::handleDistrict(std::string name, vector<string> neighborsList) {
     }
 }
 
-void Taste::handleRestaurant(vector<std::string> arguments, vector<map<std::string, std::string>> foods) {
+void Taste::handleRestaurant(vector<string> arguments, vector<map<string, string>> foods) {
     District* restaurantLocation = findDistrictByName(arguments[1]);
-    restaurantLocation->newRestaurant(arguments, foods);
+    restaurantLocation->newRestaurant(arguments, std::move(foods));
 }
 
 void Taste::sortDistricts() {
@@ -98,36 +97,100 @@ void Taste::sortDistricts() {
 }
 
 void Taste::showDistricts() {
-    if (currentUser != nullptr) {
-        if (districts.empty()) throw invalid_argument(EMPTY_RESPONSE);
-        for (auto district : districts) {
-            district->print();
+    checkIfLoggedIn();
+    if (districts.empty()) throw invalid_argument(EMPTY_RESPONSE);
+    for (auto district : districts)
+        district->print();
+}
+
+void Taste::showSpecificDistrict(const string& districtName) {
+    checkIfLoggedIn();
+    if (districts.empty()) throw invalid_argument(EMPTY_RESPONSE);
+    District* district = findDistrictByName(districtName);
+    if (district == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
+    district->print();
+}
+
+void Taste::setUserLocation(const string& districtName) {
+    checkIfLoggedIn();
+    District* district = findDistrictByName(districtName);
+    if (district == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
+    currentUser->setLocation(district);
+    cout << SUCCESSFUL_RESPONSE << endl;
+}
+
+void Taste::showRestaurants() {
+    checkIfLoggedIn();
+    District* currentLocation = getUserLocation();
+    checkLocationExists(currentLocation);
+    set<District*> visited;
+    queue<District*> toVisit;
+    initializeTraversal(currentLocation, visited, toVisit);
+    processDistrictsForRestaurants(visited, toVisit);
+}
+
+District* Taste::getUserLocation() {
+    return currentUser->getLocation();
+}
+
+void Taste::checkLocationExists(District* location) {
+    if (location == nullptr)
+        throw invalid_argument(NON_EXISTENCE_RESPONSE);
+}
+
+void Taste::initializeTraversal(District* startDistrict, set<District*>& visited, queue<District*>& toVisit) {
+    toVisit.push(startDistrict);
+    visited.insert(startDistrict);
+}
+
+void Taste::processDistrictsForRestaurants(set<District*>& visited, queue<District*>& toVisit) {
+    while (!toVisit.empty()) {
+        District* currentDistrict = toVisit.front();
+        toVisit.pop();
+        currentDistrict->showRestaurants();
+        for (auto neighbor : currentDistrict->getNeighbors()) {
+            if (visited.find(neighbor) == visited.end()) {
+                toVisit.push(neighbor);
+                visited.insert(neighbor);
+            }
         }
     }
-    else
-        throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
 }
 
-void Taste::showSpecificDistrict(std::string districtName) {
-    if (currentUser != nullptr) {
-        if (districts.empty()) throw invalid_argument(EMPTY_RESPONSE);
-        District* district = findDistrictByName(districtName);
-        if (district == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
-        district->print();
+void Taste::showSpecificRestaurants(const string& foodName) {
+    checkIfLoggedIn();
+    District* currentLocation = getUserLocation();
+    checkLocationExists(currentLocation);
+
+    set<District*> visited;
+    queue<District*> toVisit;
+
+    initializeTraversal(currentLocation, visited, toVisit);
+    bool foundRestaurants = processSpecificDistrictsForRestaurants(foodName, visited, toVisit);
+
+    if (!foundRestaurants) {
+        throw invalid_argument(NON_EXISTENCE_RESPONSE);
     }
-    else
-        throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
 }
 
-void Taste::setUserLocation(std::string districtName) {
-    if (currentUser != nullptr) {
-        District* district = findDistrictByName(districtName);
-        if (district == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
-        currentUser->setLocation(district);
-        cout << SUCCESSFUL_RESPONSE << endl;
+bool Taste::processSpecificDistrictsForRestaurants(const string& foodName, set<District*>& visited, queue<District*>& toVisit) {
+    bool foundRestaurants = false;
+    while (!toVisit.empty()) {
+        District* currentDistrict = toVisit.front();
+        toVisit.pop();
+        if (currentDistrict->showRestaurantsByFood(foodName)) foundRestaurants = true;
+        for (auto neighbor : currentDistrict->getNeighbors()) {
+            if (visited.find(neighbor) == visited.end()) {
+                toVisit.push(neighbor);
+                visited.insert(neighbor);
+            }
+        }
     }
-    else
-        throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
+
+    return foundRestaurants;
 }
+
+
+
 
 

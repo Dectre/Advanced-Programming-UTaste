@@ -1,4 +1,5 @@
 #include "Restaurant.h"
+#include "District.h"
 
 Restaurant::Restaurant(string name_, District* location_, vector<map<string, string>> menu_,
                        string openingTime_, string closingTime_, string numOfTables) {
@@ -12,7 +13,20 @@ Restaurant::Restaurant(string name_, District* location_, vector<map<string, str
     }
 }
 
-void Restaurant::handleMenu(vector<map<std::string, std::string>> menu_) {
+void Restaurant::handleMenu(vector<map<string, string>> menu_) {
     for (auto food : menu_)
         menu.push_back(new Food(food[NAME_KEY], stoi(food[PRICE_KEY])));
+}
+
+void Restaurant::shortPrint() {
+    cout << name << WORD_SEPERATOR_DELIMITER << IN_DELIMITER << location->getName() << OUT_DELIMITER << endl;
+}
+
+bool Restaurant::hasFood(const string& foodName) {
+    for (auto menuItem : menu) {
+        if (menuItem->getName() == foodName) {
+            return true;
+        }
+    }
+    return false;
 }
