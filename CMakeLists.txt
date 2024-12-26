@@ -22,4 +22,5 @@ add_executable(UTaste src/main.cpp
         src/Reserve.cpp
         src/Reserve.h
         src/Taste.h
-        src/Taste.cpp)
+        src/Taste.cpp
+        src/Manual.cpp)

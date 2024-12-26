@@ -10,17 +10,15 @@ class Reserve {
 public:
     Reserve(const string& s, const string& e, Table* t);
     Reserve(const string& s, const string& e, Table* t, const vector<string>& o);
-    int getReserveID() { return id; }
-    Table* getTable() { return table; }
-    int getStartTime() { return startTime; }
-    int getEndTime() { return endTime; }
-    vector<Food*> getOrder() { return order; }
+    int getID() { return id; }
     void timePrint();
     bool checkConflict(const string& sTime, const string& eTime);
     void print();
     void shortPrint();
     void printOrders();
     bool checkRestaurant(const string& restaurantName);
+    Reserve* find(const string& restaurantName, const string& reserveID);
+    void removeReserveFromTable();
 private:
     int id;
     Table* table;
@@ -29,7 +27,7 @@ private:
     vector<Food*> order;
     int price = 0;
 
-    void initFoods(vector<string> foodsList);
+    void initFoods(const vector<string>& foodsList);
     void initID();
     void calculatePrice();
 };

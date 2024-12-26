@@ -15,11 +15,10 @@ private:
     District* location = nullptr;
     vector<Reserve*> reserves;
 public:
-    User(string u, string p);
+    User(const string& u,const string& p);
     string getUsername() { return username; }
     string getPassword() { return password; }
     District* getLocation() { return location; }
-    vector<Reserve*> getReserves() { return reserves; }
     void setLocation(District* district) { location = district; }
     void addReserve(Reserve* newReserve) { reserves.push_back(newReserve); }
     bool checkConflicts(const string& startTime, const string& endTime);
@@ -27,6 +26,10 @@ public:
     void showReserves();
     void showReservesForRestaurant(const string& restaurantName);
     vector<Reserve*> getSpecificRestaurantReserves(const string& restaurantName);
+    void showReserve(const string& restaurantName, const string& reserveID);
+    Reserve* findReserve(const string& restaurantName, const string& reserveID);
+
+    void deleteReserve(const string& restaurantName, const string& reserveID);
 };
 
 

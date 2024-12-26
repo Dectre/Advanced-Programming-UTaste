@@ -14,7 +14,6 @@
 
 using namespace std;
 
-typedef string Path;
 typedef const string Method;
 typedef const string Response;
 typedef const string Command;
@@ -46,7 +45,7 @@ Command LOGOUT_COMMAND = "logout";
 Command DISTRICTS_COMMAND = "districts";
 Command MY_DISTRICT_COMMAND = "my_district";
 Command RESTAURANTS_COMMAND = "restaurants";
-Command RESTURANT_DETAIL_COMMAND = "restaurant_detail";
+Command RESTAURANT_DETAIL_COMMAND = "restaurant_detail";
 Command RESERVE_COMMAND = "reserve";
 Command RESERVES_COMMAND = "reserves";
 
@@ -74,9 +73,9 @@ Output PRICE_OUTPUT = "Price";
 
 Delimiter COMMAND_DELIMITER = '?';
 Delimiter ARGUMENT_DELIMITER = '"';
-Delimiter SEPERATOR_DELIMITER = ',';
-Delimiter ELEMENT_SEPERATOR_DELIMITER = ';';
-Delimiter WORD_SEPERATOR_DELIMITER = ' ';
+Delimiter SEPARATOR_DELIMITER = ',';
+Delimiter ELEMENT_SEPARATOR_DELIMITER = ';';
+Delimiter WORD_SEPARATOR_DELIMITER = ' ';
 Delimiter EXPLANATION_DELIMITER = ':';
 Delimiter IN_DELIMITER = '(';
 Delimiter OUT_DELIMITER = ')';

@@ -7,7 +7,7 @@ private:
     string name;
     int price;
 public:
-    Food(string n, int p);
+    Food(const string& n,const int& p);
     string getName() { return name; }
     int getPrice() { return price; }
     void print();

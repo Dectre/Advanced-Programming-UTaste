@@ -1,5 +1,5 @@
-#ifndef TASTE_TASTE_H
-#define TASTE_TASTE_H
+#ifndef UTASTE_TASTE_H
+#define UTASTE_TASTE_H
 
 #include "Manual.h"
 #include "User.h"
@@ -32,7 +32,7 @@ public:
     void logout();
 
     void handleDistrict(const string& name, const vector<string>& neighbors);
-    void handleRestaurant(vector<string> arguments, vector<map<string, string>> foods);
+    void handleRestaurant(vector<string> arguments, const vector<map<string, string>>& foods);
 
     void sortDistricts();
 
@@ -51,7 +51,9 @@ public:
                                   const string& foods);
 
     void getUserReserves(const string& restaurantName, const string& reserveID);
+    bool checkRestaurantForReserve(const string& restaurantName, const string& reserveID);
 
+    void deleteUserReserve(const string& restaurantName, const string& reserveID);
 };
 
-#endif //TASTE_TASTE_H
+#endif //UTASTE_TASTE_H

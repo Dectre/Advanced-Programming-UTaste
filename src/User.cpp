@@ -1,5 +1,5 @@
 #include "User.h"
-User::User(string u, string p) {
+User::User(const string& u,const string& p) {
     username = u;
     password = p;
 }
@@ -28,5 +28,29 @@ vector<Reserve *> User::getSpecificRestaurantReserves(const std::string &restaur
     for (auto reserve : reserves)
         if (reserve->checkRestaurant(restaurantName)) reservesToShow.push_back(reserve);
     return reservesToShow;
+}
+
+void User::showReserve(const string &restaurantName, const string &reserveID) {
+    Reserve* reserve = findReserve(restaurantName, reserveID);
+    if (reserve == nullptr) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
+    reserve->shortPrint();
+}
+
+Reserve* User::findReserve(const string &restaurantName, const string &reserveID) {
+    for (auto reserve : reserves) {
+        if (reserve->find(restaurantName, reserveID) != nullptr)
+            return reserve;
+    }
+    return nullptr;
+}
+
+void User::deleteReserve(const string &restaurantName, const string &reserveID) {
+    Reserve* targetReserve = findReserve(restaurantName, reserveID);
+    if (targetReserve == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
+
+    targetReserve->removeReserveFromTable();
+    reserves.erase(std::remove(reserves.begin(), reserves.end(), targetReserve), reserves.end());
+
+    delete targetReserve;
 }
 

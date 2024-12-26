@@ -1,7 +1,7 @@
 #include "System.h"
 
 System::System(Taste *uTaste_) {
-    uTaste = move(uTaste_);
+    uTaste = uTaste_;
     initFiles();
     running = true;
 }
@@ -29,7 +29,7 @@ void System::handleDistrictsFile() {
         stringstream lineStream(line);
         getline(lineStream, tempName, ',');
         getline(lineStream, tempNeighbors, ',');
-        vector<string> tempNeighborsList = splitStringBy(tempNeighbors, ELEMENT_SEPERATOR_DELIMITER);
+        vector<string> tempNeighborsList = splitStringBy(tempNeighbors, ELEMENT_SEPARATOR_DELIMITER);
         uTaste->handleDistrict(tempName, tempNeighborsList);
     }
     uTaste->sortDistricts();
@@ -44,7 +44,7 @@ void System::handleRestaurantsFile() {
         string tempName;
         string tempNeighbors;
         stringstream lineStream(line);
-        vector<string> tempRestaurant = splitStringBy(line, SEPERATOR_DELIMITER);
+        vector<string> tempRestaurant = splitStringBy(line, SEPARATOR_DELIMITER);
         vector<map<string, string>> tempFood = handleFood(tempRestaurant[2]);
         uTaste->handleRestaurant(tempRestaurant, tempFood);
     }
@@ -52,7 +52,7 @@ void System::handleRestaurantsFile() {
 }
 
 vector<map<string, string>> System::handleFood(const string& menu) {
-    vector<string> seperatedMenu = splitStringBy(menu, ELEMENT_SEPERATOR_DELIMITER);
+    vector<string> seperatedMenu = splitStringBy(menu, ELEMENT_SEPARATOR_DELIMITER);
     vector<map<string, string>> finalMenu;
     for (const auto& item : seperatedMenu) {
         vector<string> seperatedFood = splitStringBy(item, EXPLANATION_DELIMITER);
@@ -82,7 +82,7 @@ void System::inputWatcher() {
 }
 
 void System::inputSeperator(vector<string> command) {
-    vector<string> mainCommands = splitStringBy(command[0], WORD_SEPERATOR_DELIMITER);
+    vector<string> mainCommands = splitStringBy(command[0], WORD_SEPARATOR_DELIMITER);
     if (mainCommands.size() != 2)
         throw invalid_argument(BAD_REQUEST_RESPONSE);
 
@@ -96,13 +96,15 @@ void System::inputSeperator(vector<string> command) {
         handlePostCommands(cmd, argument);
     else if (method == PUT_METHOD)
         handlePutCommands(cmd ,argument);
+    else if (method == DELETE_METHOD)
+        handleDeleteCommands(cmd, argument);
     else
         throw invalid_argument(BAD_REQUEST_RESPONSE);
 }
 
 void System::parseArguments(const string& argument, vector<string> &expectedArguments) {
     arguments.clear();
-    vector<string> tokens = splitStringBy(argument, WORD_SEPERATOR_DELIMITER);
+    vector<string> tokens = splitStringBy(argument, WORD_SEPARATOR_DELIMITER);
     for (size_t i = 0; i < tokens.size(); i++) {
         if (i + 1 < tokens.size() && tokens[i + 1][0] == ARGUMENT_DELIMITER) {
             const string& key = tokens[i];
@@ -122,7 +124,7 @@ void System::handleGetCommands(const string& command, const string& argument) {
         uTasteGetDistricts(argument);
     else if (command == RESTAURANTS_COMMAND)
         uTasteGetRestaurants(argument);
-    else if (command == RESTURANT_DETAIL_COMMAND)
+    else if (command == RESTAURANT_DETAIL_COMMAND)
         uTasteGetRestaurantDetail(argument);
     else if (command == RESERVES_COMMAND)
         uTasteGetUserReserves(argument);
@@ -146,6 +148,13 @@ void System::handlePostCommands(const string& command, const string& argument) {
 void System::handlePutCommands(const string& command, const string& argument) {
     if (command == MY_DISTRICT_COMMAND)
         uTasteSetLocation(argument);
+    else
+        throw invalid_argument(NON_EXISTENCE_RESPONSE);
+}
+
+void System::handleDeleteCommands(const std::string &command, const std::string &argument) {
+    if (command == RESERVE_COMMAND)
+        uTasteDeleteReserve(argument);
     else
         throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
@@ -220,4 +229,10 @@ void System::uTasteGetUserReserves(const string &argument) {
     vector<string> expectedArguments = {};
     parseArguments(argument, expectedArguments);
     uTaste->getUserReserves(arguments[RESTAURANT_NAME], arguments[RESERVE_ID]);
+}
+
+void System::uTasteDeleteReserve(const std::string &argument) {
+    vector<string> expectedArguments = {RESTAURANT_NAME, RESERVE_ID};
+    parseArguments(argument, expectedArguments);
+    uTaste->deleteUserReserve(arguments[RESTAURANT_NAME], arguments[RESERVE_ID]);
 }

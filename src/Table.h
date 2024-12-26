@@ -12,9 +12,8 @@ private:
     vector<Reserve*> reserves;
     Restaurant* restaurant;
 public:
-    Table(int id_, Restaurant* restaurant_);
+    Table(const int& id_, Restaurant* restaurant_);
     int getId() { return id; }
-    vector<Reserve*> getReserves() { return reserves; }
     void print();
     void reservesTimePrint();
     Restaurant* getRestaurant() { return restaurant; }
@@ -22,7 +21,8 @@ public:
     bool isConflicted(const string& startTime, const string& endTime);
     vector<string> handleFoods(const string& foods);
     Reserve* getLastReserve() { return reserves[reserves.size()-1];}
-    int findLastReserveId();
+    bool checkReserve(const string& reserveID);
+    void removeReserve(Reserve* targetReserve);
 };
 
 

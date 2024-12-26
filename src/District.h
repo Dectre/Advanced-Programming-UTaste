@@ -9,14 +9,14 @@ private:
     vector<District*> neighbors;
     vector<Restaurant*> restaurants;
 public:
-    District(string name_, vector<District*> neighbors_);
-    District(string name_);
+    District(const string& name_, const vector<District*>& neighbors_);
+    District(const string& name_);
     District();
 
     vector<District*> getNeighbors() { return neighbors; }
     void addNeighbor(District* neighbor) { neighbors.push_back(neighbor); }
     void addRestaurant(Restaurant* restaurant) { restaurants.push_back(restaurant); }
-    void newRestaurant(vector<string> arguments, vector<map<string, string>> menu);
+    void newRestaurant(const vector<string>& arguments,const vector<map<string, string>>& menu);
     string getName() { return name; }
 
     void print();

@@ -15,13 +15,11 @@ private:
     int closingTime;
     vector<Table*> tables;
     int lastReserveId = 0;
-    void handleMenu(vector<map<string, string>> menu_);
+    void handleMenu(const vector<map<string, string>>& menu_);
 public:
-    Restaurant(string name_, District* location_, vector<map<string, string>> menu_,
-               string openingTime_, string closingTime_, string numOfTables);
+    Restaurant(const string& name_, District* location_, const vector<map<string, string>>& menu_,
+               const string& openingTime_, const string& closingTime_, const string& numOfTables);
     string getName() { return name; }
-    District* getLocation() { return location; }
-    vector<Food*> getMenu() { return menu; }
 
     void shortPrint();
     bool hasFood(const std::string& foodName);
@@ -33,8 +31,8 @@ public:
     Table* findTableByID(const string& tableID);
     bool checkTimeConflicts(const string& startTime, const string& endTime);
     Food* getFoodByName(const string& foodName);
-    void findLastReserveID();
-    int getLastReserveID() {return lastReserveId;}
+    int getLastReserveID() const {return lastReserveId;}
+    bool checkReserve(const string& reserveID);
 };
 
 

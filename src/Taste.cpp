@@ -82,9 +82,9 @@ void Taste::handleDistrict(const string& name, const vector<string>& neighborsLi
     }
 }
 
-void Taste::handleRestaurant(vector<string> arguments, vector<map<string, string>> foods) {
+void Taste::handleRestaurant(vector<string> arguments, const vector<map<string, string>>& foods) {
     District* restaurantLocation = findDistrictByName(arguments[1]);
-    restaurantLocation->newRestaurant(arguments, move(foods));
+    restaurantLocation->newRestaurant(arguments, foods);
 }
 
 void Taste::sortDistricts() {
@@ -198,6 +198,7 @@ void Taste::districtsShowRestaurantDetail(const string &restaurantName) {
 
 void Taste::reserveTableInRestaurant(const string &restaurantName, const string &tableId, const string &startTime,
                                      const string &endTime, const string &foods) {
+    checkIfLoggedIn();
     if (currentUser->checkConflicts(startTime, endTime)) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
     District* district = getDistrictWithTheRestaurant(restaurantName);
     if (district == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
@@ -225,13 +226,31 @@ Reserve *Taste::getLastReserve(District* district, const string &restaurantName,
 }
 
 void Taste::getUserReserves(const string &restaurantName, const string &reserveID) {
+    checkIfLoggedIn();
     if (!reserveID.empty() && restaurantName.empty()) throw invalid_argument(BAD_REQUEST_RESPONSE);
     else if (restaurantName.empty() && reserveID.empty())
         currentUser->showReserves();
     else if (!restaurantName.empty() && reserveID.empty())
         currentUser->showReservesForRestaurant(restaurantName);
-    else
+    else {
+        if (!checkRestaurantForReserve(restaurantName, reserveID)) throw invalid_argument(NON_EXISTENCE_RESPONSE);
         currentUser->showReserve(restaurantName, reserveID);
+    }
 }
+
+bool Taste::checkRestaurantForReserve(const string &restaurantName, const string &reserveID) {
+    District* district = getDistrictWithTheRestaurant(restaurantName);
+    if (!district) return false;
+    Restaurant* restaurant = district->findRestaurantByName(restaurantName);
+    return restaurant->checkReserve(reserveID);
+}
+
+void Taste::deleteUserReserve(const string &restaurantName, const string &reserveID) {
+    checkIfLoggedIn();
+    if (!checkRestaurantForReserve(restaurantName, reserveID)) throw invalid_argument(NON_EXISTENCE_RESPONSE);
+    currentUser->deleteReserve(restaurantName, reserveID);
+    cout << SUCCESSFUL_RESPONSE << endl;
+}
+
 
 

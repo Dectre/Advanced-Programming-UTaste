@@ -15,16 +15,14 @@ private:
     unordered_map<string, string> arguments;
     bool running;
 
-
-
     void inputWatcher();
-    void checkIfNoCommandsRemaining();
     void inputSeperator(vector<string> command);
     void parseArguments(const string& argument, vector<string> &expectedArguments);
 
     void handleGetCommands(const string& command, const string& argument);
     void handlePostCommands(const string& command, const string& argument);
     void handlePutCommands(const string& command, const string& argument);
+    void handleDeleteCommands(const string& command, const string& argument);
 
     void initFiles();
     void handleDistrictsFile();
@@ -44,6 +42,8 @@ private:
     void uTasteReserve(const string& argument);
 
     void uTasteGetUserReserves(const string& argument);
+
+    void uTasteDeleteReserve(const string& argument);
 };
 
 #endif //UTASTE_SYSTEM_H

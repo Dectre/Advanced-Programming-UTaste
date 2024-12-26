@@ -1,5 +1,4 @@
 #include "Reserve.h"
-#include "Food.h"
 #include "Table.h"
 #include "Restaurant.h"
 
@@ -28,8 +27,8 @@ bool Reserve::checkConflict(const string &sTime, const string &eTime) {
         return false;
     return true;
 }
-void Reserve::initFoods(vector<string> foodsList) {
-    for (auto foodName : foodsList)
+void Reserve::initFoods(const vector<string>& foodsList) {
+    for (const auto& foodName : foodsList)
         order.push_back(table->getRestaurant()->getFoodByName(foodName));
 }
 
@@ -40,12 +39,12 @@ void Reserve::initID() {
 }
 
 void Reserve::print() {
-    cout << RESERVE_ID_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPERATOR_DELIMITER << id << endl;
-    cout << TABLE_OUTPUT << WORD_SEPERATOR_DELIMITER << table->getId() << WORD_SEPERATOR_DELIMITER
-    << FOR_OUTPUT << WORD_SEPERATOR_DELIMITER << startTime  << WORD_SEPERATOR_DELIMITER
-    << TO_OUTPUT << WORD_SEPERATOR_DELIMITER << endTime << WORD_SEPERATOR_DELIMITER
-            << IN_OUTPUT << WORD_SEPERATOR_DELIMITER  << table->getRestaurant()->getName() << endl;
-    cout << PRICE_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPERATOR_DELIMITER << price << endl;
+    cout << RESERVE_ID_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER << id << endl;
+    cout << TABLE_OUTPUT << WORD_SEPARATOR_DELIMITER << table->getId() << WORD_SEPARATOR_DELIMITER
+         << FOR_OUTPUT << WORD_SEPARATOR_DELIMITER << startTime << WORD_SEPARATOR_DELIMITER
+         << TO_OUTPUT << WORD_SEPARATOR_DELIMITER << endTime << WORD_SEPARATOR_DELIMITER
+         << IN_OUTPUT << WORD_SEPARATOR_DELIMITER << table->getRestaurant()->getName() << endl;
+    cout << PRICE_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER << price << endl;
 }
 
 void Reserve::calculatePrice() {
@@ -54,10 +53,10 @@ void Reserve::calculatePrice() {
 }
 
 void Reserve::shortPrint() {
-    cout << id << EXPLANATION_DELIMITER << WORD_SEPERATOR_DELIMITER
-    << table->getRestaurant()->getName() << WORD_SEPERATOR_DELIMITER
-    << table->getId() << WORD_SEPERATOR_DELIMITER
-    << startTime << TO_DELIMITER << endTime << WORD_SEPERATOR_DELIMITER;
+    cout << id << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
+         << table->getRestaurant()->getName() << WORD_SEPARATOR_DELIMITER
+         << table->getId() << WORD_SEPARATOR_DELIMITER
+         << startTime << TO_DELIMITER << endTime << WORD_SEPARATOR_DELIMITER;
     printOrders();
     cout << endl;
 }
@@ -76,13 +75,22 @@ void Reserve::printOrders() {
     });
 
     for (const auto& [foodName, count] : sortedFoods)
-        cout << foodName << IN_DELIMITER << count << OUT_DELIMITER << WORD_SEPERATOR_DELIMITER;
+        cout << foodName << IN_DELIMITER << count << OUT_DELIMITER << WORD_SEPARATOR_DELIMITER;
 }
 
 bool Reserve::checkRestaurant(const string &restaurantName) {
     if (restaurantName == table->getRestaurant()->getName())
         return true;
     return false;
+}
+
+Reserve* Reserve::find(const string &restaurantName, const string &reserveID) {
+    if (table->getRestaurant()->getName() == restaurantName && stoi(reserveID) == id) return this;
+    return nullptr;
+}
+
+void Reserve::removeReserveFromTable() {
+    table->removeReserve(this);
 }
 
 

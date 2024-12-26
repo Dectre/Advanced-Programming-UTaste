@@ -2,13 +2,13 @@
 #include "Reserve.h"
 #include "Restaurant.h"
 
-Table::Table(int id_, Restaurant* restaurant_) {
+Table::Table(const int& id_, Restaurant* restaurant_) {
     id = id_;
-    restaurant = move(restaurant_);
+    restaurant = restaurant_;
 }
 
 void Table::print() {
-    cout << id << EXPLANATION_DELIMITER << WORD_SEPERATOR_DELIMITER;
+    cout << id << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER;
     reservesTimePrint();
 }
 
@@ -16,7 +16,7 @@ void Table::reservesTimePrint() {
     for (size_t i = 0; i < reserves.size(); i++) {
         reserves[i]->timePrint();
         if (i != reserves.size() - 1)
-            cout << SEPERATOR_DELIMITER << WORD_SEPERATOR_DELIMITER;
+            cout << SEPARATOR_DELIMITER << WORD_SEPARATOR_DELIMITER;
     }
 }
 
@@ -37,16 +37,20 @@ bool Table::isConflicted(const string &startTime, const string &endTime) {
 }
 
 vector<string> Table::handleFoods(const string &foods) {
-    vector<string> foodsList = splitStringBy(foods, SEPERATOR_DELIMITER);
-    for (auto foodName : foodsList) {
+    vector<string> foodsList = splitStringBy(foods, SEPARATOR_DELIMITER);
+    for (const auto& foodName : foodsList) {
         if (!restaurant->hasFood(foodName))
             throw invalid_argument(NON_EXISTENCE_RESPONSE);
     }
     return foodsList;
 }
 
-int Table::findLastReserveId() {
-    if (!reserves.empty())
-        return reserves[reserves.size() - 1]->getReserveID() + 1;
-    return 1;
+bool Table::checkReserve(const string &reserveID) {
+    for (auto reserve : reserves)
+        if (reserve->getID() == stoi(reserveID)) return true;
+    return false;
+}
+
+void Table::removeReserve(Reserve* targetReserve) {
+    reserves.erase(std::remove(reserves.begin(), reserves.end(), targetReserve), reserves.end());
 }

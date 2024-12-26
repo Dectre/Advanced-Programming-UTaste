@@ -1,6 +1,6 @@
 #include "Food.h"
 
-Food::Food(string n, int p) {
+Food::Food (const string& n,const int& p){
     name = n;
     price = p;
 }
