@@ -178,16 +178,12 @@ void System::uTasteLogout(const string& argument) {
 }
 
 void System::uTasteGetDistricts(const string& argument) {
-    if (argument.empty()) {
-        vector<string> expectedArguments = {};
-        parseArguments(argument, expectedArguments);
+    vector<string> expectedArguments = {};
+    parseArguments(argument, expectedArguments);
+    if (arguments[DISTRICT].empty())
         uTaste->showDistricts();
-    }
-    else {
-        vector<string> expectedArguments = {DISTRICT};
-        parseArguments(argument, expectedArguments);
+    else
         uTaste->showSpecificDistrict(arguments[DISTRICT]);
-    }
 }
 
 void System::uTasteSetLocation(const string& argument) {
@@ -197,16 +193,12 @@ void System::uTasteSetLocation(const string& argument) {
 }
 
 void System::uTasteGetRestaurants(const string& argument) {
-    if (argument.empty()) {
-        vector<string> expectedArguments = {};
-        parseArguments(argument, expectedArguments);
+    vector<string> expectedArguments = {};
+    parseArguments(argument, expectedArguments);
+    if (arguments[FOOD_NAME].empty())
         uTaste->showRestaurants();
-    }
-    else {
-        vector<string> expectedArguments = {FOOD_NAME};
-        parseArguments(argument, expectedArguments);
+    else
         uTaste->showSpecificRestaurants(arguments[FOOD_NAME]);
-    }
 }
 
 void System::uTasteGetRestaurantDetail(const string &argument) {

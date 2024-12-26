@@ -76,7 +76,7 @@ bool Restaurant::checkTimeConflicts(const string &startTime, const string &endTi
         throw invalid_argument(BAD_REQUEST_RESPONSE);
     if (start < 1 || start > 24 || end < 1 || end > 24)
         return false;
-    if (end >= closingTime || start <= openingTime)
+    if (end > closingTime || start < openingTime)
         return false;
     return true;
 }
