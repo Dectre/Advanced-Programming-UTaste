@@ -1,6 +1,6 @@
-#include "Table.h"
-#include "Reserve.h"
-#include "Restaurant.h"
+#include "../header/Table.h"
+#include "../header/Reserve.h"
+#include "../header/Restaurant.h"
 
 Table::Table(const int& id_, Restaurant* restaurant_) {
     id = id_;
@@ -20,7 +20,7 @@ void Table::reservesTimePrint() {
     }
 }
 
-void Table::reserve(const std::string &startTime, const std::string &endTime, const std::string &foods) {
+void Table::reserve(const string &startTime, const string &endTime, const string &foods) {
     if (isConflicted(startTime, endTime)) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
     if (!foods.empty()){
         vector<string> foodsList = handleFoods(foods);
@@ -47,10 +47,10 @@ vector<string> Table::handleFoods(const string &foods) {
 
 bool Table::checkReserve(const string &reserveID) {
     for (auto reserve : reserves)
-        if (reserve->getID() == stoi(reserveID)) return true;
+        if (reserve->getID() == safeStoi(reserveID)) return true;
     return false;
 }
 
 void Table::removeReserve(Reserve* targetReserve) {
-    reserves.erase(std::remove(reserves.begin(), reserves.end(), targetReserve), reserves.end());
+    reserves.erase(remove(reserves.begin(), reserves.end(), targetReserve), reserves.end());
 }

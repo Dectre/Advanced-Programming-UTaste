@@ -1,4 +1,4 @@
-#include "Food.h"
+#include "../header/Food.h"
 
 Food::Food (const string& n,const int& p){
     name = n;

@@ -1,4 +1,4 @@
-#include "User.h"
+#include "../header/User.h"
 User::User(const string& u,const string& p) {
     username = u;
     password = p;
@@ -11,7 +11,7 @@ bool User::checkConflicts(const string &startTime, const string &endTime) {
 }
 
 void User::showReserves() {
-    if (reserves.empty()) throw invalid_argument(NON_EXISTENCE_RESPONSE);
+    if (reserves.empty()) throw invalid_argument(EMPTY_RESPONSE);
     for (auto reserve : reserves)
         reserve->shortPrint();
 }
@@ -23,7 +23,7 @@ void User::showReservesForRestaurant(const string& restaurantName) {
         reserve->shortPrint();
 }
 
-vector<Reserve *> User::getSpecificRestaurantReserves(const std::string &restaurantName) {
+vector<Reserve *> User::getSpecificRestaurantReserves(const string &restaurantName) {
     vector<Reserve*> reservesToShow;
     for (auto reserve : reserves)
         if (reserve->checkRestaurant(restaurantName)) reservesToShow.push_back(reserve);
@@ -46,11 +46,10 @@ Reserve* User::findReserve(const string &restaurantName, const string &reserveID
 
 void User::deleteReserve(const string &restaurantName, const string &reserveID) {
     Reserve* targetReserve = findReserve(restaurantName, reserveID);
-    if (targetReserve == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
+    if (targetReserve == nullptr) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
 
     targetReserve->removeReserveFromTable();
-    reserves.erase(std::remove(reserves.begin(), reserves.end(), targetReserve), reserves.end());
+    reserves.erase(remove(reserves.begin(), reserves.end(), targetReserve), reserves.end());
 
     delete targetReserve;
 }
-

@@ -1,21 +1,21 @@
-#include "Restaurant.h"
-#include "District.h"
+#include "../header/Restaurant.h"
+#include "../header/District.h"
 
 Restaurant::Restaurant(const string& name_, District* location_, const vector<map<string, string>>& menu_,
                        const string& openingTime_, const string& closingTime_, const string& numOfTables) {
     name = name_;
     location = location_;
     handleMenu(menu_);
-    openingTime = stoi(openingTime_);
-    closingTime = stoi(closingTime_);
-    for (int i = 0; i < stoi(numOfTables) ; i++) {
+    openingTime = safeStoi(openingTime_);
+    closingTime = safeStoi(closingTime_);
+    for (int i = 0; i < safeStoi(numOfTables) ; i++) {
         tables.push_back(new Table(i + 1, this));
     }
 }
 
 void Restaurant::handleMenu(const vector<map<string, string>>& menu_) {
     for (auto food : menu_)
-        menu.push_back(new Food(food[NAME_KEY], stoi(food[PRICE_KEY])));
+        menu.push_back(new Food(food[NAME_KEY], safeStoi(food[PRICE_KEY])));
 }
 
 void Restaurant::shortPrint() {
@@ -61,19 +61,26 @@ void Restaurant::reserveTable(const string &tableId, const string &startTime, co
     lastReserveId += 1;
 }
 
-Table* Restaurant::findTableByID(const std::string &tableID) {
+Table* Restaurant::findTableByID(const string &tableID) {
     for (auto table:tables) {
-        if (stoi(tableID) == table->getId())
+        if (safeStoi(tableID) == table->getId())
             return table;
     }
     return nullptr;
 }
 
-bool Restaurant::checkTimeConflicts(const std::string &startTime, const std::string &endTime) {
-    if (stoi(endTime) >= closingTime || stoi(startTime) <= openingTime)
+bool Restaurant::checkTimeConflicts(const string &startTime, const string &endTime) {
+    int start = safeStoi(startTime);
+    int end = safeStoi(endTime);
+    if (start == end)
+        throw invalid_argument(BAD_REQUEST_RESPONSE);
+    if (start < 1 || start > 24 || end < 1 || end > 24)
+        return false;
+    if (end >= closingTime || start <= openingTime)
         return false;
     return true;
 }
+
 
 Food* Restaurant::getFoodByName(const string &foodName) {
     for (auto food : menu)

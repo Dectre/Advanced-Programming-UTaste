@@ -1,4 +1,4 @@
-#include "Taste.h"
+#include "../header/Taste.h"
 
 Taste::Taste() {}
 Taste::~Taste() {}
@@ -251,6 +251,3 @@ void Taste::deleteUserReserve(const string &restaurantName, const string &reserv
     currentUser->deleteReserve(restaurantName, reserveID);
     cout << SUCCESSFUL_RESPONSE << endl;
 }
-
-
-

@@ -1,4 +1,4 @@
-#include "District.h"
+#include "../header/District.h"
 
 District::District(const string& name_, const vector<District*>& neighbors_) {
     name = name_;
@@ -70,11 +70,10 @@ void District::reserveTableInRestaurant(const string &restaurantName, const stri
     restaurant->reserveTable(tableId, startTime, endTime, foods);
 }
 
-Restaurant* District::findRestaurantByName(const std::string &restaurantName) {
+Restaurant* District::findRestaurantByName(const string &restaurantName) {
     for (auto restaurant : restaurants) {
         if (restaurantName == restaurant->getName())
             return restaurant;
     }
     return nullptr;
 }
-

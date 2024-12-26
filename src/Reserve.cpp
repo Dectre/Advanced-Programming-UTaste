@@ -1,17 +1,17 @@
-#include "Reserve.h"
-#include "Table.h"
-#include "Restaurant.h"
+#include "../header/Reserve.h"
+#include "../header/Table.h"
+#include "../header/Restaurant.h"
 
 Reserve::Reserve(const string& s, const string& e, Table* t) {
-    startTime = stoi(s);
-    endTime = stoi(e);
+    startTime = safeStoi(s);
+    endTime = safeStoi(e);
     table = t;
     initID();
 }
 
 Reserve::Reserve(const string& s, const string& e, Table* t, const vector<string>& o) {
-    startTime = stoi(s);
-    endTime = stoi(e);
+    startTime = safeStoi(s);
+    endTime = safeStoi(e);
     table = t;
     initFoods(o);
     initID();
@@ -23,7 +23,7 @@ void Reserve::timePrint() {
 }
 
 bool Reserve::checkConflict(const string &sTime, const string &eTime) {
-    if (stoi(sTime) >= endTime || stoi(eTime) <= startTime)
+    if (safeStoi(sTime) >= endTime || safeStoi(eTime) <= startTime)
         return false;
     return true;
 }
@@ -85,14 +85,10 @@ bool Reserve::checkRestaurant(const string &restaurantName) {
 }
 
 Reserve* Reserve::find(const string &restaurantName, const string &reserveID) {
-    if (table->getRestaurant()->getName() == restaurantName && stoi(reserveID) == id) return this;
+    if (table->getRestaurant()->getName() == restaurantName && safeStoi(reserveID) == id) return this;
     return nullptr;
 }
 
 void Reserve::removeReserveFromTable() {
     table->removeReserve(this);
 }
-
-
-
-

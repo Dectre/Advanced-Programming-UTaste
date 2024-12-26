@@ -1,4 +1,4 @@
-#include "System.h"
+#include "../header/System.h"
 
 System::System(Taste *uTaste_) {
     uTaste = uTaste_;
@@ -152,7 +152,7 @@ void System::handlePutCommands(const string& command, const string& argument) {
         throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
 
-void System::handleDeleteCommands(const std::string &command, const std::string &argument) {
+void System::handleDeleteCommands(const string &command, const string &argument) {
     if (command == RESERVE_COMMAND)
         uTasteDeleteReserve(argument);
     else
@@ -219,7 +219,7 @@ void System::uTasteGetRestaurantDetail(const string &argument) {
     }
 }
 
-void System::uTasteReserve(const std::string &argument) {
+void System::uTasteReserve(const string &argument) {
     vector<string> expectedArguments = {RESTAURANT_NAME, TABLE_ID, START_TIME, END_TIME};
     parseArguments(argument, expectedArguments);
     uTaste->reserveTableInRestaurant(arguments[RESTAURANT_NAME] ,arguments[TABLE_ID], arguments[START_TIME], arguments[END_TIME], arguments[FOODS]);
@@ -231,7 +231,7 @@ void System::uTasteGetUserReserves(const string &argument) {
     uTaste->getUserReserves(arguments[RESTAURANT_NAME], arguments[RESERVE_ID]);
 }
 
-void System::uTasteDeleteReserve(const std::string &argument) {
+void System::uTasteDeleteReserve(const string &argument) {
     vector<string> expectedArguments = {RESTAURANT_NAME, RESERVE_ID};
     parseArguments(argument, expectedArguments);
     uTaste->deleteUserReserve(arguments[RESTAURANT_NAME], arguments[RESERVE_ID]);

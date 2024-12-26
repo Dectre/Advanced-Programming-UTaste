@@ -1,6 +1,6 @@
-#include "Manual.h"
-#include "System.h"
-#include "Taste.h"
+#include "../header/Manual.h"
+#include "../header/System.h"
+#include "../header/Taste.h"
 
 string RESTAURANTS_FILE;
 string DISTRICTS_FILE;
