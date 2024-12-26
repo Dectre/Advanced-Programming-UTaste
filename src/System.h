@@ -8,7 +8,6 @@
 class System {
 public:
     System(Taste *uTaste_);
-
     void run();
 
 private:
@@ -16,7 +15,7 @@ private:
     unordered_map<string, string> arguments;
     bool running;
 
-    vector<string> splitStringBy(const string &sentence, const char &delimiter);
+
 
     void inputWatcher();
     void checkIfNoCommandsRemaining();
@@ -41,6 +40,10 @@ private:
 
     void uTasteGetRestaurants(const string& argument);
     void uTasteGetRestaurantDetail(const string& argument);
+
+    void uTasteReserve(const string& argument);
+
+    void uTasteGetUserReserves(const string& argument);
 };
 
 #endif //UTASTE_SYSTEM_H

@@ -53,3 +53,28 @@ void District::showRestaurantDetail(const string &restaurantName) {
     }
     throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
+
+District* District::checkIfItHasRestaurant(const string& restaurantName) {
+    for (auto restaurant : restaurants) {
+        if (restaurant->getName() == restaurantName) {
+            return this;
+        }
+    }
+    return nullptr;
+}
+
+void District::reserveTableInRestaurant(const string &restaurantName, const string &tableId, const string &startTime,
+                                        const string &endTime, const string &foods) {
+    Restaurant* restaurant = findRestaurantByName(restaurantName);
+    if (restaurant == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
+    restaurant->reserveTable(tableId, startTime, endTime, foods);
+}
+
+Restaurant* District::findRestaurantByName(const std::string &restaurantName) {
+    for (auto restaurant : restaurants) {
+        if (restaurantName == restaurant->getName())
+            return restaurant;
+    }
+    return nullptr;
+}
+

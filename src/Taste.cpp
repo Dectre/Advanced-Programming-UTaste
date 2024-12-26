@@ -1,8 +1,5 @@
 #include "Taste.h"
 
-#include <utility>
-#include "User.h"
-
 Taste::Taste() {}
 Taste::~Taste() {}
 
@@ -87,7 +84,7 @@ void Taste::handleDistrict(const string& name, const vector<string>& neighborsLi
 
 void Taste::handleRestaurant(vector<string> arguments, vector<map<string, string>> foods) {
     District* restaurantLocation = findDistrictByName(arguments[1]);
-    restaurantLocation->newRestaurant(arguments, std::move(foods));
+    restaurantLocation->newRestaurant(arguments, move(foods));
 }
 
 void Taste::sortDistricts() {
@@ -199,7 +196,42 @@ void Taste::districtsShowRestaurantDetail(const string &restaurantName) {
         throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
 
+void Taste::reserveTableInRestaurant(const string &restaurantName, const string &tableId, const string &startTime,
+                                     const string &endTime, const string &foods) {
+    if (currentUser->checkConflicts(startTime, endTime)) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
+    District* district = getDistrictWithTheRestaurant(restaurantName);
+    if (district == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
+    district->reserveTableInRestaurant(restaurantName, tableId, startTime, endTime, foods);
+    Reserve* reserve = getLastReserve(district, restaurantName, tableId);
+    currentUser->addReserve(reserve);
+    reserve->print();
+}
 
+District* Taste::getDistrictWithTheRestaurant(const string& restaurantName) {
+    District* districtWithTheRestaurant;
+    for (auto district:districts) {
+        districtWithTheRestaurant = district->checkIfItHasRestaurant(restaurantName);
+        if (districtWithTheRestaurant != nullptr)
+            return districtWithTheRestaurant;
+    }
+    return nullptr;
+}
 
+Reserve *Taste::getLastReserve(District* district, const string &restaurantName, const string &tableId) {
+    Restaurant* restaurant = district->findRestaurantByName(restaurantName);
+    Table* table = restaurant->findTableByID(tableId);
+    Reserve* reserve = table->getLastReserve();
+    return reserve;
+}
+
+void Taste::getUserReserves(const string &restaurantName, const string &reserveID) {
+    if (!reserveID.empty() && restaurantName.empty()) throw invalid_argument(BAD_REQUEST_RESPONSE);
+    else if (restaurantName.empty() && reserveID.empty())
+        currentUser->showReserves();
+    else if (!restaurantName.empty() && reserveID.empty())
+        currentUser->showReservesForRestaurant(restaurantName);
+    else
+        currentUser->showReserve(restaurantName, reserveID);
+}
 
 

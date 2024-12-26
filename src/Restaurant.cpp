@@ -9,7 +9,7 @@ Restaurant::Restaurant(string name_, District* location_, vector<map<string, str
     openingTime = stoi(openingTime_);
     closingTime = stoi(closingTime_);
     for (int i = 0; i < stoi(numOfTables) ; i++) {
-        tables.push_back(new Table(i + 1));
+        tables.push_back(new Table(i + 1, this));
     }
 }
 
@@ -23,11 +23,8 @@ void Restaurant::shortPrint() {
 }
 
 bool Restaurant::hasFood(const string& foodName) {
-    for (auto menuItem : menu) {
-        if (menuItem->getName() == foodName) {
-            return true;
-        }
-    }
+    for (auto menuItem : menu)
+        if (menuItem->getName() == foodName) return true;
     return false;
 }
 
@@ -52,8 +49,35 @@ void Restaurant::menuPrint() {
 void Restaurant::tablesPrint() {
     for (size_t i = 0; i < tables.size(); i++) {
         tables[i]->print();
-        if (i != tables.size() - 1)
-            cout << endl;
+        cout << endl;
     }
 }
 
+void Restaurant::reserveTable(const string &tableId, const string &startTime, const string &endTime, const string &foods) {
+    Table* table = findTableByID(tableId);
+    if (table == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
+    if (!checkTimeConflicts(startTime, endTime)) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
+    table->reserve(startTime, endTime, foods);
+    lastReserveId += 1;
+}
+
+Table* Restaurant::findTableByID(const std::string &tableID) {
+    for (auto table:tables) {
+        if (stoi(tableID) == table->getId())
+            return table;
+    }
+    return nullptr;
+}
+
+bool Restaurant::checkTimeConflicts(const std::string &startTime, const std::string &endTime) {
+    if (stoi(endTime) >= closingTime || stoi(startTime) <= openingTime)
+        return false;
+    return true;
+}
+
+Food* Restaurant::getFoodByName(const string &foodName) {
+    for (auto food : menu)
+        if (foodName == food->getName())
+            return food;
+    return nullptr;
+}

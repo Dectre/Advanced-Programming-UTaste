@@ -48,7 +48,7 @@ Command MY_DISTRICT_COMMAND = "my_district";
 Command RESTAURANTS_COMMAND = "restaurants";
 Command RESTURANT_DETAIL_COMMAND = "restaurant_detail";
 Command RESERVE_COMMAND = "reserve";
-Command RESERVES_COMMAND = "reserve";
+Command RESERVES_COMMAND = "reserves";
 
 Argument USERNAME = "username";
 Argument PASSWORD = "password";
@@ -66,6 +66,7 @@ Output DISTRICT_OUTPUT = "District";
 Output TIME_OUTPUT = "Time";
 Output MENU_OUTPUT = "Menu";
 Output RESERVE_ID_OUTPUT = "Reserve ID";
+Output TABLE_OUTPUT = "Table";
 Output FOR_OUTPUT = "for";
 Output TO_OUTPUT = "to";
 Output IN_OUTPUT = "in";
@@ -81,4 +82,5 @@ Delimiter IN_DELIMITER = '(';
 Delimiter OUT_DELIMITER = ')';
 Delimiter TO_DELIMITER = '-';
 
+vector<string> splitStringBy(const string& sentence, const char& delimiter);
 #endif //UTASTE_MANUAL_H

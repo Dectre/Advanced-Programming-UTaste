@@ -1,18 +1,9 @@
 #include "System.h"
 
 System::System(Taste *uTaste_) {
-    uTaste = uTaste_;
+    uTaste = move(uTaste_);
     initFiles();
     running = true;
-}
-
-vector<string> System::splitStringBy(const string& sentence, const char& delimiter) {
-    vector<string> words;
-    istringstream stream(sentence);
-    string word;
-    while(getline(stream, word, delimiter))
-        words.push_back(word);
-    return words;
 }
 
 void System::run() {
@@ -74,6 +65,7 @@ vector<map<string, string>> System::handleFood(const string& menu) {
 void System::inputWatcher() {
     while (running) {
         string line;
+        arguments.clear();
         if (!getline(cin, line)) {
             running = false;
             break;
@@ -132,6 +124,10 @@ void System::handleGetCommands(const string& command, const string& argument) {
         uTasteGetRestaurants(argument);
     else if (command == RESTURANT_DETAIL_COMMAND)
         uTasteGetRestaurantDetail(argument);
+    else if (command == RESERVES_COMMAND)
+        uTasteGetUserReserves(argument);
+    else
+        throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
 
 void System::handlePostCommands(const string& command, const string& argument) {
@@ -141,13 +137,17 @@ void System::handlePostCommands(const string& command, const string& argument) {
         uTasteLogin(argument);
     else if (command == LOGOUT_COMMAND)
         uTasteLogout(argument);
+    else if (command == RESERVE_COMMAND)
+        uTasteReserve(argument);
     else
-        throw invalid_argument(BAD_REQUEST_RESPONSE);
+        throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
 
 void System::handlePutCommands(const string& command, const string& argument) {
     if (command == MY_DISTRICT_COMMAND)
         uTasteSetLocation(argument);
+    else
+        throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
 
 void System::uTasteSignUp(const string& argument) {
@@ -208,4 +208,16 @@ void System::uTasteGetRestaurantDetail(const string &argument) {
     } catch (const invalid_argument& error) {
         throw invalid_argument(NON_EXISTENCE_RESPONSE);
     }
+}
+
+void System::uTasteReserve(const std::string &argument) {
+    vector<string> expectedArguments = {RESTAURANT_NAME, TABLE_ID, START_TIME, END_TIME};
+    parseArguments(argument, expectedArguments);
+    uTaste->reserveTableInRestaurant(arguments[RESTAURANT_NAME] ,arguments[TABLE_ID], arguments[START_TIME], arguments[END_TIME], arguments[FOODS]);
+}
+
+void System::uTasteGetUserReserves(const string &argument) {
+    vector<string> expectedArguments = {};
+    parseArguments(argument, expectedArguments);
+    uTaste->getUserReserves(arguments[RESTAURANT_NAME], arguments[RESERVE_ID]);
 }

@@ -26,6 +26,12 @@ public:
     bool showRestaurantsByFood(const string& foodName);
 
     void showRestaurantDetail(const string& restaurantName);
+
+    District* checkIfItHasRestaurant(const string& restaurantName);
+    void reserveTableInRestaurant(const string &restaurantName, const string &tableId, const string &startTime,
+                                  const string &endTime, const string &foods);
+    Restaurant* findRestaurantByName(const string& restaurantName);
+
 };
 
 

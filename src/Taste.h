@@ -5,6 +5,8 @@
 #include "User.h"
 #include "District.h"
 
+class System;
+
 class Taste {
 private:
     vector<District*> districts;
@@ -19,7 +21,8 @@ private:
     void initializeTraversal(District* startDistrict, std::set<District*>& visited, std::queue<District*>& toVisit);
     void processDistrictsForRestaurants(std::set<District*>& visited, std::queue<District*>& toVisit);
     bool processSpecificDistrictsForRestaurants(const std::string& dishName, std::set<District*>& visited, std::queue<District*>& toVisit);
-
+    District* getDistrictWithTheRestaurant(const string& restaurantName);
+    Reserve* getLastReserve(District* district, const string& restaurantName, const string& tableId);
 public:
     Taste();
     ~Taste();
@@ -42,7 +45,13 @@ public:
     void showSpecificRestaurants(const string& foodName);
 
     void districtsShowRestaurantDetail(const string& restaurantName);
-};
 
+    void reserveTableInRestaurant(const string& restaurantName, const string& tableId,
+                                  const string& startTime, const string& endTime,
+                                  const string& foods);
+
+    void getUserReserves(const string& restaurantName, const string& reserveID);
+
+};
 
 #endif //TASTE_TASTE_H

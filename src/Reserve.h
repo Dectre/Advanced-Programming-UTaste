@@ -4,22 +4,34 @@
 #include "Manual.h"
 
 class Food;
-class User;
+class Table;
 
 class Reserve {
 public:
-    Reserve(int s, int e, User* c);
-    Reserve(int s, int e, User* c, vector<Food*> o);
+    Reserve(const string& s, const string& e, Table* t);
+    Reserve(const string& s, const string& e, Table* t, const vector<string>& o);
+    int getReserveID() { return id; }
+    Table* getTable() { return table; }
     int getStartTime() { return startTime; }
     int getEndTime() { return endTime; }
-    User* getUser() { return customer; }
     vector<Food*> getOrder() { return order; }
     void timePrint();
+    bool checkConflict(const string& sTime, const string& eTime);
+    void print();
+    void shortPrint();
+    void printOrders();
+    bool checkRestaurant(const string& restaurantName);
 private:
+    int id;
+    Table* table;
     int startTime;
     int endTime;
-    User* customer;
     vector<Food*> order;
+    int price = 0;
+
+    void initFoods(vector<string> foodsList);
+    void initID();
+    void calculatePrice();
 };
 
 
