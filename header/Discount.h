@@ -5,11 +5,14 @@
 
 class Discount {
 public:
-    void getMinimum();
+    virtual int getValue() const = 0;
+    virtual int getDiscountedPrice(int price) const = 0;
+    int getMinimum() const { return minimumPrice; }
+    string getType() const { return type; }
+
 protected:
-    int minimumPrice= 0;
-    int getValue();
-    int getDiscountedPrice(int price);
+    int minimumPrice = 0;
+    string type;
 };
 
 class DiscountPerAmount : public Discount {
@@ -18,18 +21,18 @@ private:
 public:
     DiscountPerAmount(const string& minimum_, const string& amount_);
     DiscountPerAmount(const string& amount_);
-    int getAmount() { return amount; }
-    int getDiscountedPrice(int price);
+    int getValue() const override;
+    int getDiscountedPrice(int price) const override;
 };
 
 class DiscountPerPercent : public Discount {
 private:
-    double percent;
+    int percent;
 public:
     DiscountPerPercent(const string& minimum_, const string& percent_);
     DiscountPerPercent(const string& percent_);
-    double getPercent() { return percent; }
-    int getDiscountedPrice(int price);
+    int getValue() const override;
+    int getDiscountedPrice(int price) const override;
 };
 
-#endif //UTASTE_DISCOUNT_H
+#endif // UTASTE_DISCOUNT_H

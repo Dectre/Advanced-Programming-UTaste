@@ -1,30 +1,42 @@
 #include "../header/Discount.h"
 
-DiscountPerPercent::DiscountPerPercent(const string& minimum_, const string& percent_) {
-    minimumPrice = stoi(minimum_);
-    percent = stod(percent_);
-}
-
-DiscountPerPercent::DiscountPerPercent(const string& percent_) {
-    this->percent = stod(percent_);
-}
-
 DiscountPerAmount::DiscountPerAmount(const string& minimum_, const string& amount_) {
     minimumPrice = stoi(minimum_);
     amount = stoi(amount_);
+    type = byAMOUNT;
 }
 
 DiscountPerAmount::DiscountPerAmount(const string& amount_) {
     amount = stoi(amount_);
+    type = byAMOUNT;
 }
 
-int DiscountPerAmount::getDiscountedPrice(int price) {
+int DiscountPerAmount::getValue() const {
+    return amount;
+}
+
+int DiscountPerAmount::getDiscountedPrice(int price) const {
     if (price >= minimumPrice)
-        return price - amount;
+        return price - amount > 0 ? price - amount : 0;
     return price;
 }
 
-int DiscountPerPercent::getDiscountedPrice(int price) {
+DiscountPerPercent::DiscountPerPercent(const string& minimum_, const string& percent_) {
+    minimumPrice = stoi(minimum_);
+    percent = stoi(percent_);
+    type = byPERCENT;
+}
+
+DiscountPerPercent::DiscountPerPercent(const string& percent_) {
+    percent = stoi(percent_);
+    type = byPERCENT;
+}
+
+int DiscountPerPercent::getValue() const {
+    return percent;
+}
+
+int DiscountPerPercent::getDiscountedPrice(int price) const {
     if (price >= minimumPrice)
         return price - (price * percent / 100);
     return price;

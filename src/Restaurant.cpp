@@ -35,6 +35,7 @@ void Restaurant::detailedPrint() {
     cout << MENU_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER;
     menuPrint();
     tablesPrint();
+    discountsPrint();
 }
 
 void Restaurant::menuPrint() {
@@ -131,4 +132,44 @@ void Restaurant::handleFoodsDiscount(vector<std::string> foodsDiscountDetails) {
         food->setDiscount(discountDetails[0], foodDetails[1]);
 
     }
+}
+
+void Restaurant::discountsPrint() {
+    if (totalPriceDiscount != nullptr)
+        cout << TOTAL_ORDER_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER <<
+             totalPriceDiscount->getType() << SEPARATOR_DELIMITER << WORD_SEPARATOR_DELIMITER <<
+             totalPriceDiscount->getMinimum() << SEPARATOR_DELIMITER << WORD_SEPARATOR_DELIMITER <<
+             totalPriceDiscount->getValue() << endl;
+    foodsDiscountPrint();
+    if (firstOrderDiscount != nullptr)
+        cout << FIRST_ORDER_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER <<
+             totalPriceDiscount->getType() << SEPARATOR_DELIMITER << WORD_SEPARATOR_DELIMITER <<
+             totalPriceDiscount->getValue() << endl;
+}
+
+void Restaurant::foodsDiscountPrint() {
+    if (checkIfRestaurantHasFoodDiscount()) {
+        cout << ITEM_SPECIFIC_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER;
+        size_t count = 0;
+        for (auto food : menu) {
+            if (food->getDiscount() != nullptr) {
+                Discount* discount = food->getDiscount();
+                cout << food->getName() << IN_DELIMITER
+                     << discount->getType() << EXPLANATION_DELIMITER
+                     << WORD_SEPARATOR_DELIMITER << discount->getValue() << OUT_DELIMITER;
+                count++;
+                if (count < menu.size() && menu[count]->getDiscount() != nullptr)
+                    cout << SEPARATOR_DELIMITER << WORD_SEPARATOR_DELIMITER;
+            }
+        }
+        cout << endl;
+    }
+}
+
+bool Restaurant::checkIfRestaurantHasFoodDiscount() {
+    for (auto food : menu) {
+        if (food->getDiscount() != nullptr)
+            return true;
+    }
+    return false;
 }

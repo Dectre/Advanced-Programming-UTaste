@@ -16,8 +16,8 @@ private:
     int closingTime;
     vector<Table*> tables;
     int lastReserveId = 0;
-    Discount* firstOrderDiscount;
-    Discount* totalPriceDiscount;
+    Discount* firstOrderDiscount = nullptr;
+    Discount* totalPriceDiscount = nullptr;
     void handleMenu(const vector<map<string, string>>& menu_);
 public:
     Restaurant(const string& name_, District* location_, const vector<map<string, string>>& menu_,
@@ -41,6 +41,10 @@ public:
     void handleTotalPriceDiscount(vector<string> totalPriceDetails);
     void handleFirstOrderDiscount(vector<string> firstOrderDetails);
     void handleFoodsDiscount(vector<string> foodsDiscountDetails);
+
+    void discountsPrint();
+    void foodsDiscountPrint();
+    bool checkIfRestaurantHasFoodDiscount();
 };
 
 #endif //UTASTE_RESTAURANT_H
