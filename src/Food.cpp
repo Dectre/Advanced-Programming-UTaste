@@ -10,7 +10,7 @@ void Food::print() {
 }
 
 void Food::setDiscount(string type, string value) {
-    if (type == PERCENT)
+    if (type == byPERCENT)
         discount = new DiscountPerPercent(value);
     else
         discount = new DiscountPerAmount(value);

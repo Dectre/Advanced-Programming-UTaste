@@ -260,3 +260,13 @@ void Taste::handleDiscounts(vector<string> arguments) {
     Restaurant* restaurant = district->findRestaurantByName(restaurantName);
     restaurant->setDiscounts(discounts);
 }
+
+void Taste::increaseUserBudget(string amount) {
+    checkIfLoggedIn();
+    currentUser->increaseBudget(amount);
+}
+
+void Taste::showUserBudget() {
+    checkIfLoggedIn();
+    currentUser->showBudget();
+}

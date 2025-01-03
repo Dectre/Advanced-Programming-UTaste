@@ -25,7 +25,7 @@ public:
     string getName() { return name; }
 
     void shortPrint();
-    bool hasFood(const std::string& foodName);
+    bool hasFood(const string& foodName);
     void detailedPrint();
     void menuPrint();
     void tablesPrint();
@@ -41,7 +41,6 @@ public:
     void handleTotalPriceDiscount(vector<string> totalPriceDetails);
     void handleFirstOrderDiscount(vector<string> firstOrderDetails);
     void handleFoodsDiscount(vector<string> foodsDiscountDetails);
-
 };
 
 #endif //UTASTE_RESTAURANT_H

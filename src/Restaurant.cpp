@@ -108,7 +108,7 @@ void Restaurant::setDiscounts(vector<std::string> discounts) {
 void Restaurant::handleTotalPriceDiscount(vector<string> totalPriceDetails) {
     if (totalPriceDetails[0] == NONE)
         totalPriceDiscount = nullptr;
-    else if (totalPriceDetails[0] == PERCENT)
+    else if (totalPriceDetails[0] == byPERCENT)
         totalPriceDiscount = new DiscountPerPercent(totalPriceDetails[1], totalPriceDetails[2]);
     else
         totalPriceDiscount = new DiscountPerAmount(totalPriceDetails[1], totalPriceDetails[2]);
@@ -117,7 +117,7 @@ void Restaurant::handleTotalPriceDiscount(vector<string> totalPriceDetails) {
 void Restaurant::handleFirstOrderDiscount(vector<string> firstOrderDetails) {
     if (firstOrderDetails[0] == NONE)
         firstOrderDiscount = nullptr;
-    else if (firstOrderDetails[0] == PERCENT)
+    else if (firstOrderDetails[0] == byPERCENT)
         firstOrderDiscount = new DiscountPerPercent(firstOrderDetails[1]);
     else
         firstOrderDiscount = new DiscountPerAmount(firstOrderDetails[1]);

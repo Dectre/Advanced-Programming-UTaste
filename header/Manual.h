@@ -50,6 +50,8 @@ Command RESTAURANTS_COMMAND = "restaurants";
 Command RESTAURANT_DETAIL_COMMAND = "restaurant_detail";
 Command RESERVE_COMMAND = "reserve";
 Command RESERVES_COMMAND = "reserves";
+Command INCREASE_BUDGET_COMMAND = "increase_budget";
+Command SHOW_BUDGET_COMMAND = "show_budget";
 
 Argument USERNAME = "username";
 Argument PASSWORD = "password";
@@ -61,6 +63,7 @@ Argument START_TIME = "start_time";
 Argument END_TIME = "end_time";
 Argument FOODS = "foods";
 Argument RESERVE_ID = "reserve_id";
+Argument AMOUNT = "amount";
 
 Output NAME_OUTPUT = "Name";
 Output DISTRICT_OUTPUT = "District";
@@ -84,8 +87,8 @@ Delimiter OUT_DELIMITER = ')';
 Delimiter TO_DELIMITER = '-';
 Delimiter FOOD_SEPERATOR_DELIMITER = '|';
 
-Type PERCENT = "percent";
-Type AMOUNT = "amount";
+Type byPERCENT = "percent";
+Type byAMOUNT = "amount";
 Type NONE = "none";
 
 vector<string> splitStringBy(const string& sentence, const char& delimiter);

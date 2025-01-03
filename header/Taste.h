@@ -56,6 +56,9 @@ public:
     void deleteUserReserve(const string& restaurantName, const string& reserveID);
 
     void handleDiscounts(vector<string> arguments);
+
+    void increaseUserBudget(string amount);
+    void showUserBudget();
 };
 
 #endif //UTASTE_TASTE_H

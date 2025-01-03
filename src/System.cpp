@@ -138,6 +138,8 @@ void System::handleGetCommands(const string& command, const string& argument) {
         uTasteGetRestaurantDetail(argument);
     else if (command == RESERVES_COMMAND)
         uTasteGetUserReserves(argument);
+    else if (command == SHOW_BUDGET_COMMAND)
+        uTasteShowUserBudget(argument);
     else
         throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
@@ -151,6 +153,8 @@ void System::handlePostCommands(const string& command, const string& argument) {
         uTasteLogout(argument);
     else if (command == RESERVE_COMMAND)
         uTasteReserve(argument);
+    else if (command == INCREASE_BUDGET_COMMAND)
+        uTasteIncreaseUserBudget(argument);
     else
         throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
@@ -237,4 +241,16 @@ void System::uTasteDeleteReserve(const string &argument) {
     vector<string> expectedArguments = {RESTAURANT_NAME, RESERVE_ID};
     parseArguments(argument, expectedArguments);
     uTaste->deleteUserReserve(arguments[RESTAURANT_NAME], arguments[RESERVE_ID]);
+}
+
+void System::uTasteIncreaseUserBudget(const string &argument) {
+    vector<string> expectedArguments = {AMOUNT};
+    parseArguments(argument, expectedArguments);
+    uTaste->increaseUserBudget(arguments[AMOUNT]);
+}
+
+void System::uTasteShowUserBudget(const string &argument) {
+    vector<string> expectedArguments = {};
+    parseArguments(argument, expectedArguments);
+    uTaste->showUserBudget();
 }

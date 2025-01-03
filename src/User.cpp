@@ -53,3 +53,9 @@ void User::deleteReserve(const string &restaurantName, const string &reserveID) 
 
     delete targetReserve;
 }
+
+void User::increaseBudget(const string& amount) {
+    int tempAmount = safeStoi(amount);
+    if (tempAmount < 0) throw invalid_argument(BAD_REQUEST_RESPONSE);
+    budget += tempAmount;
+}

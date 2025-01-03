@@ -46,6 +46,10 @@ private:
     void uTasteGetUserReserves(const string& argument);
 
     void uTasteDeleteReserve(const string& argument);
+
+    void uTasteIncreaseUserBudget(const string& argument);
+
+    void uTasteShowUserBudget(const string& argument);
 };
 
 #endif //UTASTE_SYSTEM_H
