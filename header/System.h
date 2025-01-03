@@ -28,6 +28,8 @@ private:
     void handleDistrictsFile();
     void handleRestaurantsFile();
     vector<map<string, string>> handleFood(const string& menu);
+    void handleDiscountsFile();
+    vector<map<string, string>> handleFoodDiscounts(const string& foods);
 
     void uTasteSignUp(const string& argument);
     void uTasteLogin(const string& argument);

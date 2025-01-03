@@ -17,6 +17,7 @@ void System::run() {
 void System::initFiles() {
     handleDistrictsFile();
     handleRestaurantsFile();
+    handleDiscountsFile();
 }
 
 void System::handleDistrictsFile() {
@@ -41,8 +42,6 @@ void System::handleRestaurantsFile() {
     string line;
     getline(file, line);
     while (getline(file, line)) {
-        string tempName;
-        string tempNeighbors;
         stringstream lineStream(line);
         vector<string> tempRestaurant = splitStringBy(line, SEPARATOR_DELIMITER);
         vector<map<string, string>> tempFood = handleFood(tempRestaurant[2]);
@@ -62,6 +61,17 @@ vector<map<string, string>> System::handleFood(const string& menu) {
     return finalMenu;
 }
 
+void System::handleDiscountsFile() {
+    ifstream file(DISCOUNTS_FILE);
+    string line;
+    getline(file, line);
+    while (getline(file, line)) {
+        stringstream lineStream(line);
+        vector<string> tempRestaurant = splitStringBy(line, SEPARATOR_DELIMITER);
+        uTaste->handleDiscounts(tempRestaurant);
+    }
+    file.close();
+}
 void System::inputWatcher() {
     while (running) {
         string line;

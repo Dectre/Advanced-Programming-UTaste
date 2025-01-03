@@ -95,3 +95,40 @@ bool Restaurant::checkReserve(const string &reserveID) {
     }
     return false;
 }
+
+void Restaurant::setDiscounts(vector<std::string> discounts) {
+    vector<string> totalPriceDetails = splitStringBy(discounts[0], ELEMENT_SEPARATOR_DELIMITER);
+    handleTotalPriceDiscount(totalPriceDetails);
+    vector<string> firstOrderDetails = splitStringBy(discounts[1], ELEMENT_SEPARATOR_DELIMITER);
+    handleFirstOrderDiscount(firstOrderDetails);
+    vector<string> foodsDiscount = splitStringBy(discounts[2], FOOD_SEPERATOR_DELIMITER);
+    handleFoodsDiscount(foodsDiscount);
+}
+
+void Restaurant::handleTotalPriceDiscount(vector<string> totalPriceDetails) {
+    if (totalPriceDetails[0] == NONE)
+        totalPriceDiscount = nullptr;
+    else if (totalPriceDetails[0] == PERCENT)
+        totalPriceDiscount = new DiscountPerPercent(totalPriceDetails[1], totalPriceDetails[2]);
+    else
+        totalPriceDiscount = new DiscountPerAmount(totalPriceDetails[1], totalPriceDetails[2]);
+}
+
+void Restaurant::handleFirstOrderDiscount(vector<string> firstOrderDetails) {
+    if (firstOrderDetails[0] == NONE)
+        firstOrderDiscount = nullptr;
+    else if (firstOrderDetails[0] == PERCENT)
+        firstOrderDiscount = new DiscountPerPercent(firstOrderDetails[1]);
+    else
+        firstOrderDiscount = new DiscountPerAmount(firstOrderDetails[1]);
+}
+
+void Restaurant::handleFoodsDiscount(vector<std::string> foodsDiscountDetails) {
+    for (auto foodDiscountDetails : foodsDiscountDetails) {
+        vector<string> discountDetails = splitStringBy(foodDiscountDetails, ELEMENT_SEPARATOR_DELIMITER);
+        vector<string> foodDetails = splitStringBy(discountDetails[1], EXPLANATION_DELIMITER);
+        Food* food = getFoodByName(foodDetails[0]);
+        food->setDiscount(discountDetails[0], foodDetails[1]);
+
+    }
+}

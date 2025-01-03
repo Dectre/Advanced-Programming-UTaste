@@ -87,6 +87,7 @@ void Taste::handleRestaurant(vector<string> arguments, const vector<map<string, 
     restaurantLocation->newRestaurant(arguments, foods);
 }
 
+
 void Taste::sortDistricts() {
     sort(districts.begin(), districts.end(), [](District* a, District* b) {
         return a->getName() < b->getName();
@@ -250,4 +251,12 @@ void Taste::deleteUserReserve(const string &restaurantName, const string &reserv
     if (!checkRestaurantForReserve(restaurantName, reserveID)) throw invalid_argument(NON_EXISTENCE_RESPONSE);
     currentUser->deleteReserve(restaurantName, reserveID);
     cout << SUCCESSFUL_RESPONSE << endl;
+}
+
+void Taste::handleDiscounts(vector<string> arguments) {
+    string restaurantName = arguments[0];
+    vector<string> discounts = vector<string>(arguments.begin() + 1, arguments.end());
+    District* district = getDistrictWithTheRestaurant(restaurantName);
+    Restaurant* restaurant = district->findRestaurantByName(restaurantName);
+    restaurant->setDiscounts(discounts);
 }

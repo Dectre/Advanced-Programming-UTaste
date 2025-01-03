@@ -3,6 +3,7 @@
 
 #include "Food.h"
 #include "Table.h"
+#include "Discount.h"
 
 class District;
 
@@ -15,6 +16,8 @@ private:
     int closingTime;
     vector<Table*> tables;
     int lastReserveId = 0;
+    Discount* firstOrderDiscount;
+    Discount* totalPriceDiscount;
     void handleMenu(const vector<map<string, string>>& menu_);
 public:
     Restaurant(const string& name_, District* location_, const vector<map<string, string>>& menu_,
@@ -33,6 +36,12 @@ public:
     Food* getFoodByName(const string& foodName);
     int getLastReserveID() const {return lastReserveId;}
     bool checkReserve(const string& reserveID);
+
+    void setDiscounts(vector<string> discounts);
+    void handleTotalPriceDiscount(vector<string> totalPriceDetails);
+    void handleFirstOrderDiscount(vector<string> firstOrderDetails);
+    void handleFoodsDiscount(vector<string> foodsDiscountDetails);
+
 };
 
 #endif //UTASTE_RESTAURANT_H

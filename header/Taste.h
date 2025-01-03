@@ -54,6 +54,8 @@ public:
     bool checkRestaurantForReserve(const string& restaurantName, const string& reserveID);
 
     void deleteUserReserve(const string& restaurantName, const string& reserveID);
+
+    void handleDiscounts(vector<string> arguments);
 };
 
 #endif //UTASTE_TASTE_H

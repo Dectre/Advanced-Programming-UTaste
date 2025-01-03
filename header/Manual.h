@@ -21,9 +21,11 @@ typedef const string Argument;
 typedef const string Output;
 typedef const char Delimiter;
 typedef const string Key;
+typedef const string Type;
 
 extern string RESTAURANTS_FILE;
 extern string DISTRICTS_FILE;
+extern string DISCOUNTS_FILE;
 
 Key NAME_KEY = "Name";
 Key PRICE_KEY = "Price";
@@ -80,6 +82,11 @@ Delimiter EXPLANATION_DELIMITER = ':';
 Delimiter IN_DELIMITER = '(';
 Delimiter OUT_DELIMITER = ')';
 Delimiter TO_DELIMITER = '-';
+Delimiter FOOD_SEPERATOR_DELIMITER = '|';
+
+Type PERCENT = "percent";
+Type AMOUNT = "amount";
+Type NONE = "none";
 
 vector<string> splitStringBy(const string& sentence, const char& delimiter);
 int safeStoi(const string& str);

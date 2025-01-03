@@ -1,0 +1,2 @@
+restaurant_name,total_price_discount,first_order_discount,food_discount
+ParkLane,none,percent;7,percent;burger:10|amount;pizza:40
