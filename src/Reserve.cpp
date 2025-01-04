@@ -96,7 +96,7 @@ void Reserve::shortPrint() const {
          << table->getId() << WORD_SEPARATOR_DELIMITER
          << startTime << TO_DELIMITER << endTime << WORD_SEPARATOR_DELIMITER;
     printOrders();
-    cout << endl;
+    cout << priceBeforeDiscount << WORD_SEPARATOR_DELIMITER <<  priceAfterDiscount << endl;
 }
 
 void Reserve::printOrders() const {
