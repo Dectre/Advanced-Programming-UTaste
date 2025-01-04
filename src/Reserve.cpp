@@ -64,6 +64,8 @@ void Reserve::pricePrint() const {
         if (discounts[1] != 0)
             cout << TOTAL_ITEM_SPECIFIC_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
                  << discounts[0] << endl;
+        cout << TOTAL_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
+             << discounts[0] + discounts[1] + discounts[2] << endl;
         cout << TOTAL_PRICE_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER << priceAfterDiscount << endl;
     }
     else

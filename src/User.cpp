@@ -60,6 +60,7 @@ void User::increaseBudget(const string& amount) {
     int tempAmount = safeStoi(amount);
     if (tempAmount < 0) throw invalid_argument(BAD_REQUEST_RESPONSE);
     budget += tempAmount;
+    cout << SUCCESSFUL_RESPONSE << endl;
 }
 
 void User::addReserve(Reserve* newReserve) {

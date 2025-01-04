@@ -81,8 +81,7 @@ Output ITEM_SPECIFIC_DISCOUNT_OUTPUT = "Item Specific Discount";
 Output FIRST_ORDER_DISCOUNT_OUTPUT = "First Order Discount";
 Output TOTAL_ITEM_SPECIFIC_DISCOUNT_OUTPUT = "Total ItemSpecific Discount";
 Output TOTAL_PRICE_OUTPUT = "Total Price";
-
-
+Output TOTAL_DISCOUNT_OUTPUT = "Total Discount";
 
 Delimiter COMMAND_DELIMITER = '?';
 Delimiter ARGUMENT_DELIMITER = '"';
