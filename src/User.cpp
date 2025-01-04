@@ -49,11 +49,9 @@ Reserve* User::findReserve(const string &restaurantName, const string &reserveID
 void User::deleteReserve(const string &restaurantName, const string &reserveID) {
     Reserve* targetReserve = findReserve(restaurantName, reserveID);
     if (targetReserve == nullptr) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
-
-    targetReserve->removeReserveFromTable();
     reserves.erase(remove(reserves.begin(), reserves.end(), targetReserve), reserves.end());
-
-    delete targetReserve;
+    budget += returnRate * targetReserve->getPriceAfterDiscount();
+    targetReserve->removeReserveFromTable();
 }
 
 void User::increaseBudget(const string& amount) {

@@ -16,12 +16,12 @@ Reserve::Reserve(const string& s, const string& e, Table* t, const vector<string
     endTime = safeStoi(e);
     table = t;
     initFoods(o);
+    customer = u;
     calculatePrice();
     if (priceAfterDiscount > u->getBudget()) {
         throw invalid_argument(BAD_REQUEST_RESPONSE);
     }
     initID();
-    customer = u;
 }
 
 void Reserve::timePrint() const {
@@ -62,7 +62,7 @@ void Reserve::pricePrint() const {
             cout << TOTAL_ITEM_SPECIFIC_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
                  << discounts[0] << endl;
         if (discounts[1] != 0)
-            cout << TOTAL_ITEM_SPECIFIC_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
+            cout << FIRST_ORDER_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
                  << discounts[0] << endl;
         cout << TOTAL_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
              << discounts[0] + discounts[1] + discounts[2] << endl;
@@ -81,7 +81,7 @@ void Reserve::calculatePrice() {
     }
     discounts[0] = priceBeforeDiscount - priceAfterDiscount;
     int tempPrice = priceAfterDiscount;
-    if (!restaurant->findCustomer(customer)) {
+    if (!restaurant->findCustomer(this->customer)) {
         priceAfterDiscount = restaurant->getPriceAfterFirstOrderDiscount(priceAfterDiscount);
         discounts[1] = tempPrice - priceAfterDiscount;
     }

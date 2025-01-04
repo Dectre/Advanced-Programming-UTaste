@@ -98,6 +98,8 @@ Type byPERCENT = "percent";
 Type byAMOUNT = "amount";
 Type NONE = "none";
 
+const double returnRate = 0.6;
+
 vector<string> splitStringBy(const string& sentence, const char& delimiter);
 int safeStoi(const string& str);
 

@@ -19,7 +19,7 @@ private:
     int lastReserveId = 0;
     Discount* firstOrderDiscount = nullptr;
     Discount* totalPriceDiscount = nullptr;
-    vector<User*> customersClub;
+    set<User*> customersClub;
     void handleMenu(const vector<map<string, string>>& menu_);
 public:
     Restaurant(const string& name_, District* location_, const vector<map<string, string>>& menu_,
@@ -48,7 +48,7 @@ public:
     void foodsDiscountPrint();
     bool checkIfRestaurantHasFoodDiscount();
 
-    void addCustomer(User* customer) { customersClub.push_back(customer); }
+    void addCustomer(User* customer) { customersClub.insert(customer); }
     bool findCustomer(User* customer);
     int getPriceAfterFirstOrderDiscount(int price);
     int getPriceAfterTotalOrderDiscount(int price);
