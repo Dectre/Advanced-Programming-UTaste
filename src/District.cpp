@@ -64,10 +64,10 @@ District* District::checkIfItHasRestaurant(const string& restaurantName) {
 }
 
 void District::reserveTableInRestaurant(const string &restaurantName, const string &tableId, const string &startTime,
-                                        const string &endTime, const string &foods) {
+                                        const string &endTime, const string &foods, User* user) {
     Restaurant* restaurant = findRestaurantByName(restaurantName);
     if (restaurant == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
-    restaurant->reserveTable(tableId, startTime, endTime, foods);
+    restaurant->reserveTable(tableId, startTime, endTime, foods, user);
 }
 
 Restaurant* District::findRestaurantByName(const string &restaurantName) {

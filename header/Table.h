@@ -5,6 +5,7 @@
 
 class Reserve;
 class Restaurant;
+class User;
 
 class Table {
 private:
@@ -17,7 +18,7 @@ public:
     void print();
     void reservesTimePrint();
     Restaurant* getRestaurant() { return restaurant; }
-    void reserve(const string& startTime, const string& endTime, const string& foods);
+    void reserve(const string& startTime, const string& endTime, const string& foods, User* user);
     bool isConflicted(const string& startTime, const string& endTime);
     vector<string> handleFoods(const string& foods);
     Reserve* getLastReserve() { return reserves[reserves.size()-1];}

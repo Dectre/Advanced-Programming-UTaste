@@ -15,6 +15,7 @@ public:
     void print();
     void setDiscount(string type, string value);
     Discount* getDiscount() { return discount; }
+    int getDiscountedPrice();
 };
 
 #endif //UTASTE_FOOD_H

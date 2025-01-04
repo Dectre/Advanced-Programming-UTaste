@@ -203,9 +203,10 @@ void Taste::reserveTableInRestaurant(const string &restaurantName, const string 
     if (currentUser->checkConflicts(startTime, endTime)) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
     District* district = getDistrictWithTheRestaurant(restaurantName);
     if (district == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
-    district->reserveTableInRestaurant(restaurantName, tableId, startTime, endTime, foods);
+    district->reserveTableInRestaurant(restaurantName, tableId, startTime, endTime, foods, currentUser);
     Reserve* reserve = getLastReserve(district, restaurantName, tableId);
     currentUser->addReserve(reserve);
+    district->findRestaurantByName(restaurantName)->addCustomer(currentUser);
     reserve->print();
 }
 

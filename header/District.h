@@ -3,6 +3,8 @@
 
 #include "Restaurant.h"
 
+class User;
+
 class District {
 private:
     string name;
@@ -29,7 +31,7 @@ public:
 
     District* checkIfItHasRestaurant(const string& restaurantName);
     void reserveTableInRestaurant(const string &restaurantName, const string &tableId, const string &startTime,
-                                  const string &endTime, const string &foods);
+                                  const string &endTime, const string &foods, User* user);
     Restaurant* findRestaurantByName(const string& restaurantName);
 
 };

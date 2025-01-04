@@ -6,7 +6,6 @@
 
 
 class District;
-class Reserve;
 
 class User {
 private:
@@ -21,7 +20,7 @@ public:
     string getPassword() { return password; }
     District* getLocation() { return location; }
     void setLocation(District* district) { location = district; }
-    void addReserve(Reserve* newReserve) { reserves.push_back(newReserve); }
+    void addReserve(Reserve* newReserve);
     bool checkConflicts(const string& startTime, const string& endTime);
 
     void showReserves();
@@ -34,6 +33,7 @@ public:
 
     void increaseBudget(const string& amount);
     void showBudget() { cout << budget << endl; }
+    int getBudget() { return budget; }
 };
 
 #endif //UTASTE_USER_H

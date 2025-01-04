@@ -2,6 +2,7 @@
 #include "../header/Reserve.h"
 #include "../header/Restaurant.h"
 
+
 Table::Table(const int& id_, Restaurant* restaurant_) {
     id = id_;
     restaurant = restaurant_;
@@ -20,15 +21,22 @@ void Table::reservesTimePrint() {
     }
 }
 
-void Table::reserve(const string &startTime, const string &endTime, const string &foods) {
+void Table::reserve(const string &startTime, const string &endTime, const string &foods, User* user) {
     if (isConflicted(startTime, endTime)) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
-    if (!foods.empty()){
-        vector<string> foodsList = handleFoods(foods);
-        reserves.push_back(new Reserve(startTime, endTime, this, foodsList));
+    Reserve* newReserve = nullptr;
+    try {
+        if (!foods.empty()) {
+            vector<string> foodsList = handleFoods(foods);
+            newReserve = new Reserve(startTime, endTime, this, foodsList, user);
+        } else
+            newReserve = new Reserve(startTime, endTime, this, user);
+        reserves.push_back(newReserve);
+    } catch (const invalid_argument&) {
+        delete newReserve;
+        throw;
     }
-    else
-        reserves.push_back(new Reserve(startTime, endTime, this));
 }
+
 
 bool Table::isConflicted(const string &startTime, const string &endTime) {
     for (auto reserve : reserves)
@@ -52,5 +60,10 @@ bool Table::checkReserve(const string &reserveID) {
 }
 
 void Table::removeReserve(Reserve* targetReserve) {
-    reserves.erase(remove(reserves.begin(), reserves.end(), targetReserve), reserves.end());
+    auto it = remove(reserves.begin(), reserves.end(), targetReserve);
+    if (it != reserves.end()) {
+        delete *it;
+        reserves.erase(it, reserves.end());
+    }
 }
+

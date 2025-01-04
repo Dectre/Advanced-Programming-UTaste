@@ -15,3 +15,8 @@ void Food::setDiscount(string type, string value) {
     else
         discount = new DiscountPerAmount(value);
 }
+
+int Food::getDiscountedPrice() {
+    if (discount != nullptr) return discount->getDiscountedPrice(price);
+    return price;
+}

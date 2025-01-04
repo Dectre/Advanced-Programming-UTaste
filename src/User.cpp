@@ -1,4 +1,6 @@
 #include "../header/User.h"
+#include "../header/Restaurant.h"
+
 User::User(const string& u,const string& p) {
     username = u;
     password = p;
@@ -59,3 +61,9 @@ void User::increaseBudget(const string& amount) {
     if (tempAmount < 0) throw invalid_argument(BAD_REQUEST_RESPONSE);
     budget += tempAmount;
 }
+
+void User::addReserve(Reserve* newReserve) {
+    reserves.push_back(newReserve);
+    budget -= newReserve->getPriceAfterDiscount();
+}
+

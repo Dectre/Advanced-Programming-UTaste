@@ -75,9 +75,14 @@ Output FOR_OUTPUT = "for";
 Output TO_OUTPUT = "to";
 Output IN_OUTPUT = "in";
 Output PRICE_OUTPUT = "Price";
+Output ORIGINAL_PRICE_OUTPUT = "Original Price";
 Output TOTAL_ORDER_DISCOUNT_OUTPUT = "Order Amount Discount";
 Output ITEM_SPECIFIC_DISCOUNT_OUTPUT = "Item Specific Discount";
 Output FIRST_ORDER_DISCOUNT_OUTPUT = "First Order Discount";
+Output TOTAL_ITEM_SPECIFIC_DISCOUNT_OUTPUT = "Total ItemSpecific Discount";
+Output TOTAL_PRICE_OUTPUT = "Total Price";
+
+
 
 Delimiter COMMAND_DELIMITER = '?';
 Delimiter ARGUMENT_DELIMITER = '"';

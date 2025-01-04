@@ -6,6 +6,7 @@
 #include "Discount.h"
 
 class District;
+class User;
 
 class Restaurant {
 private:
@@ -18,6 +19,7 @@ private:
     int lastReserveId = 0;
     Discount* firstOrderDiscount = nullptr;
     Discount* totalPriceDiscount = nullptr;
+    vector<User*> customersClub;
     void handleMenu(const vector<map<string, string>>& menu_);
 public:
     Restaurant(const string& name_, District* location_, const vector<map<string, string>>& menu_,
@@ -30,7 +32,7 @@ public:
     void menuPrint();
     void tablesPrint();
 
-    void reserveTable(const string &tableId, const string &startTime, const string &endTime, const string &foods);
+    void reserveTable(const string &tableId, const string &startTime, const string &endTime, const string &foods, User* user);
     Table* findTableByID(const string& tableID);
     bool checkTimeConflicts(const string& startTime, const string& endTime);
     Food* getFoodByName(const string& foodName);
@@ -45,6 +47,11 @@ public:
     void discountsPrint();
     void foodsDiscountPrint();
     bool checkIfRestaurantHasFoodDiscount();
+
+    void addCustomer(User* customer) { customersClub.push_back(customer); }
+    bool findCustomer(User* customer);
+    int getPriceAfterFirstOrderDiscount(int price);
+    int getPriceAfterTotalOrderDiscount(int price);
 };
 
 #endif //UTASTE_RESTAURANT_H

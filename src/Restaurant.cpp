@@ -1,5 +1,6 @@
 #include "../header/Restaurant.h"
 #include "../header/District.h"
+#include "../header/User.h"
 
 Restaurant::Restaurant(const string& name_, District* location_, const vector<map<string, string>>& menu_,
                        const string& openingTime_, const string& closingTime_, const string& numOfTables) {
@@ -54,11 +55,11 @@ void Restaurant::tablesPrint() {
     }
 }
 
-void Restaurant::reserveTable(const string &tableId, const string &startTime, const string &endTime, const string &foods) {
+void Restaurant::reserveTable(const string &tableId, const string &startTime, const string &endTime, const string &foods, User* user) {
     Table* table = findTableByID(tableId);
     if (table == nullptr) throw invalid_argument(NON_EXISTENCE_RESPONSE);
     if (!checkTimeConflicts(startTime, endTime)) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
-    table->reserve(startTime, endTime, foods);
+    table->reserve(startTime, endTime, foods, user);
     lastReserveId += 1;
 }
 
@@ -125,12 +126,13 @@ void Restaurant::handleFirstOrderDiscount(vector<string> firstOrderDetails) {
 }
 
 void Restaurant::handleFoodsDiscount(vector<std::string> foodsDiscountDetails) {
-    for (auto foodDiscountDetails : foodsDiscountDetails) {
-        vector<string> discountDetails = splitStringBy(foodDiscountDetails, ELEMENT_SEPARATOR_DELIMITER);
-        vector<string> foodDetails = splitStringBy(discountDetails[1], EXPLANATION_DELIMITER);
-        Food* food = getFoodByName(foodDetails[0]);
-        food->setDiscount(discountDetails[0], foodDetails[1]);
-
+    if (foodsDiscountDetails[0] != NONE) {
+        for (auto foodDiscountDetails: foodsDiscountDetails) {
+            vector<string> discountDetails = splitStringBy(foodDiscountDetails, ELEMENT_SEPARATOR_DELIMITER);
+            vector<string> foodDetails = splitStringBy(discountDetails[1], EXPLANATION_DELIMITER);
+            Food *food = getFoodByName(foodDetails[0]);
+            food->setDiscount(discountDetails[0], foodDetails[1]);
+        }
     }
 }
 
@@ -143,8 +145,8 @@ void Restaurant::discountsPrint() {
     foodsDiscountPrint();
     if (firstOrderDiscount != nullptr)
         cout << FIRST_ORDER_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER <<
-             totalPriceDiscount->getType() << SEPARATOR_DELIMITER << WORD_SEPARATOR_DELIMITER <<
-             totalPriceDiscount->getValue() << endl;
+             firstOrderDiscount->getType() << SEPARATOR_DELIMITER << WORD_SEPARATOR_DELIMITER <<
+             firstOrderDiscount->getValue() << endl;
 }
 
 void Restaurant::foodsDiscountPrint() {
@@ -172,4 +174,22 @@ bool Restaurant::checkIfRestaurantHasFoodDiscount() {
             return true;
     }
     return false;
+}
+
+bool Restaurant::findCustomer(User* user) {
+    for (auto customer : customersClub)
+        if (customer == user) return true;
+    return false;
+}
+
+int Restaurant::getPriceAfterFirstOrderDiscount(int price) {
+    if (firstOrderDiscount != nullptr)
+        return firstOrderDiscount->getDiscountedPrice(price);
+    return price;
+}
+
+int Restaurant::getPriceAfterTotalOrderDiscount(int price) {
+    if (totalPriceDiscount != nullptr)
+        return totalPriceDiscount->getDiscountedPrice(price);
+    return price;
 }
