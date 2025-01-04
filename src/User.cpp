@@ -14,7 +14,11 @@ bool User::checkConflicts(const string &startTime, const string &endTime) {
 
 void User::showReserves() {
     if (reserves.empty()) throw invalid_argument(EMPTY_RESPONSE);
-    for (auto reserve : reserves)
+    vector<Reserve*> sortedReserves(reserves.begin(), reserves.end());
+    sort(sortedReserves.begin(), sortedReserves.end(), [](Reserve* a, Reserve* b) {
+        return a->getStartTime() < b->getStartTime();
+    });
+    for (auto reserve : sortedReserves)
         reserve->shortPrint();
 }
 

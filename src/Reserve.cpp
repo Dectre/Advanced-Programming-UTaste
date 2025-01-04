@@ -53,23 +53,16 @@ void Reserve::print() const {
 }
 
 void Reserve::pricePrint() const {
-    if (discounts[0] != 0 || discounts[1] != 0 || discounts[2] != 0) {
-        cout << ORIGINAL_PRICE_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER << priceBeforeDiscount << endl;
-        if (discounts[2] != 0)
-            cout << TOTAL_ORDER_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER << discounts[2]
-                 << endl;
-        if (discounts[0] != 0)
-            cout << TOTAL_ITEM_SPECIFIC_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
-                 << discounts[0] << endl;
-        if (discounts[1] != 0)
-            cout << FIRST_ORDER_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
-                 << discounts[0] << endl;
-        cout << TOTAL_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
-             << discounts[0] + discounts[1] + discounts[2] << endl;
-        cout << TOTAL_PRICE_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER << priceAfterDiscount << endl;
-    }
-    else
-        cout << PRICE_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER << priceBeforeDiscount << endl;
+    cout << ORIGINAL_PRICE_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER << priceBeforeDiscount << endl;
+    cout << TOTAL_ORDER_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER << discounts[2]
+         << endl;
+    cout << TOTAL_ITEM_SPECIFIC_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
+         << discounts[0] << endl;
+    cout << FIRST_ORDER_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
+         << discounts[1] << endl;
+    cout << TOTAL_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER
+         << discounts[0] + discounts[1] + discounts[2] << endl;
+    cout << TOTAL_PRICE_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER << priceAfterDiscount << endl;
 }
 
 
@@ -105,11 +98,10 @@ void Reserve::printOrders() const {
         foodCounts[food->getName()]++;
 
     vector<pair<string, int>> sortedFoods(foodCounts.begin(), foodCounts.end());
-
     sort(sortedFoods.begin(), sortedFoods.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
-        if (a.second != b.second)
-            return a.second > b.second;
-        return a.first < b.first;
+        if (a.first != b.first)
+            return a.first < b.first;
+        return a.second > b.second;
     });
 
     for (const auto& [foodName, count] : sortedFoods)

@@ -14,9 +14,13 @@ void Table::print() {
 }
 
 void Table::reservesTimePrint() {
-    for (size_t i = 0; i < reserves.size(); i++) {
-        reserves[i]->timePrint();
-        if (i != reserves.size() - 1)
+    vector<Reserve*> sortedReserves(reserves.begin(), reserves.end());
+    sort(sortedReserves.begin(), sortedReserves.end(), [](Reserve* a, Reserve* b) {
+        return a->getStartTime() < b->getStartTime();
+    });
+    for (size_t i = 0; i < sortedReserves.size(); i++) {
+        sortedReserves[i]->timePrint();
+        if (i != sortedReserves.size() - 1)
             cout << SEPARATOR_DELIMITER << WORD_SEPARATOR_DELIMITER;
     }
 }
@@ -66,4 +70,3 @@ void Table::removeReserve(Reserve* targetReserve) {
         reserves.erase(it, reserves.end());
     }
 }
-

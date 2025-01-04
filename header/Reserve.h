@@ -22,6 +22,7 @@ public:
     void removeReserveFromTable();
     Table* getTable() const { return table; }
     int getPriceAfterDiscount() { return priceAfterDiscount; }
+    int getStartTime() { return startTime; }
 
 private:
     int id;
