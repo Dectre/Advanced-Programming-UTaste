@@ -112,15 +112,23 @@ void System::inputSeperator(vector<string> command) {
         throw invalid_argument(BAD_REQUEST_RESPONSE);
 }
 
-void System::parseArguments(const string& argument, vector<string> &expectedArguments) {
+void System::parseArguments(const string& argument, vector<string>& expectedArguments) {
     arguments.clear();
-    vector<string> tokens = splitStringBy(argument, WORD_SEPARATOR_DELIMITER);
-    for (size_t i = 0; i < tokens.size(); i++) {
-        if (i + 1 < tokens.size() && tokens[i + 1][0] == ARGUMENT_DELIMITER) {
-            const string& key = tokens[i];
-            string value = tokens[i + 1].substr(1, tokens[i + 1].size() - 2);
-            arguments[key] = value;
-            i++;
+    istringstream iss(argument);
+    string token;
+
+    while (iss >> token) {
+        if (token == AMOUNT) {
+            string value;
+            iss >> value;
+            arguments[token] = value;
+        } else {
+            iss >> ws;
+            char c;
+            iss.get(c);
+            string value;
+            getline(iss, value, ARGUMENT_DELIMITER);
+            arguments[token] = value;
         }
     }
     for (const string& arg : expectedArguments) {
@@ -128,6 +136,8 @@ void System::parseArguments(const string& argument, vector<string> &expectedArgu
             throw invalid_argument(BAD_REQUEST_RESPONSE);
     }
 }
+
+
 
 void System::handleGetCommands(const string& command, const string& argument) {
     if (command == DISTRICTS_COMMAND)

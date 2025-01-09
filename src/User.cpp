@@ -24,6 +24,7 @@ void User::showReserves() {
 
 void User::showReservesForRestaurant(const string& restaurantName) {
     vector<Reserve*> reservesToShow = getSpecificRestaurantReserves(restaurantName);
+    if (reserves.empty()) throw invalid_argument(EMPTY_RESPONSE);
     if (reservesToShow.empty()) throw invalid_argument(NON_EXISTENCE_RESPONSE);
     for (auto reserve : reservesToShow)
         reserve->shortPrint();
@@ -69,4 +70,5 @@ void User::addReserve(Reserve* newReserve) {
     reserves.push_back(newReserve);
     budget -= newReserve->getPriceAfterDiscount();
 }
+
 

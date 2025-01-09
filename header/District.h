@@ -18,7 +18,9 @@ public:
     vector<District*> getNeighbors() { return neighbors; }
     void addNeighbor(District* neighbor) { neighbors.push_back(neighbor); }
     void addRestaurant(Restaurant* restaurant) { restaurants.push_back(restaurant); }
+    void sortRestaurants();
     void newRestaurant(const vector<string>& arguments,const vector<map<string, string>>& menu);
+
     string getName() { return name; }
 
     void print();

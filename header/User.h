@@ -22,6 +22,7 @@ public:
     void setLocation(District* district) { location = district; }
     void addReserve(Reserve* newReserve);
     bool checkConflicts(const string& startTime, const string& endTime);
+    void checkReserves();
 
     void showReserves();
     void showReservesForRestaurant(const string& restaurantName);

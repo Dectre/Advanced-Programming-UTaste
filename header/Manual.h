@@ -95,6 +95,7 @@ Delimiter TO_DELIMITER = '-';
 Delimiter FOOD_SEPERATOR_DELIMITER = '|';
 
 Type byPERCENT = "percent";
+Type PERCENTAGE = "percentage";
 Type byAMOUNT = "amount";
 Type NONE = "none";
 

@@ -139,7 +139,7 @@ void Taste::showSpecificRestaurants(const string& foodName) {
     bool foundRestaurants = processSpecificDistrictsForRestaurants(foodName, visited, toVisit);
 
     if (!foundRestaurants) {
-        throw invalid_argument(NON_EXISTENCE_RESPONSE);
+        throw invalid_argument(EMPTY_RESPONSE);
     }
 }
 
@@ -232,12 +232,19 @@ void Taste::getUserReserves(const string &restaurantName, const string &reserveI
     if (!reserveID.empty() && restaurantName.empty()) throw invalid_argument(BAD_REQUEST_RESPONSE);
     else if (restaurantName.empty() && reserveID.empty())
         currentUser->showReserves();
-    else if (!restaurantName.empty() && reserveID.empty())
+    else if (!restaurantName.empty() && reserveID.empty()) {
+        checkIfRestaurantExist(restaurantName);
         currentUser->showReservesForRestaurant(restaurantName);
+    }
     else {
         if (!checkRestaurantForReserve(restaurantName, reserveID)) throw invalid_argument(NON_EXISTENCE_RESPONSE);
         currentUser->showReserve(restaurantName, reserveID);
     }
+}
+
+void Taste::checkIfRestaurantExist(const std::string &restaurantName) {
+    District* district = getDistrictWithTheRestaurant(restaurantName);
+    if (!district) throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
 
 bool Taste::checkRestaurantForReserve(const string &restaurantName, const string &reserveID) {
@@ -262,7 +269,7 @@ void Taste::handleDiscounts(vector<string> arguments) {
     restaurant->setDiscounts(discounts);
 }
 
-void Taste::increaseUserBudget(string amount) {
+void Taste::increaseUserBudget(const string& amount) {
     checkIfLoggedIn();
     currentUser->increaseBudget(amount);
 }

@@ -153,19 +153,29 @@ void Restaurant::foodsDiscountPrint() {
     if (checkIfRestaurantHasFoodDiscount()) {
         cout << ITEM_SPECIFIC_DISCOUNT_OUTPUT << EXPLANATION_DELIMITER << WORD_SEPARATOR_DELIMITER;
         size_t count = 0;
-        for (auto food : menu) {
+        vector<Food*> foodsWithDiscount = getFoodsWithDiscount();
+        for (auto food : foodsWithDiscount) {
             if (food->getDiscount() != nullptr) {
                 Discount* discount = food->getDiscount();
                 cout << food->getName() << IN_DELIMITER
                      << discount->getType() << EXPLANATION_DELIMITER
                      << WORD_SEPARATOR_DELIMITER << discount->getValue() << OUT_DELIMITER;
                 count++;
-                if (count < menu.size() && menu[count]->getDiscount() != nullptr)
+                if (count < foodsWithDiscount.size())
                     cout << SEPARATOR_DELIMITER << WORD_SEPARATOR_DELIMITER;
             }
         }
         cout << endl;
     }
+}
+
+vector<Food *> Restaurant::getFoodsWithDiscount() {
+    vector<Food*> foodsWithDiscount;
+    for (auto food : menu) {
+        if (food->getDiscount() != nullptr )
+            foodsWithDiscount.push_back(food);
+    }
+    return foodsWithDiscount;
 }
 
 bool Restaurant::checkIfRestaurantHasFoodDiscount() {

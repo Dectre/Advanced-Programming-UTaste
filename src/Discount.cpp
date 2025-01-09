@@ -24,12 +24,12 @@ int DiscountPerAmount::getDiscountedPrice(int price) const {
 DiscountPerPercent::DiscountPerPercent(const string& minimum_, const string& percent_) {
     minimumPrice = stoi(minimum_);
     percent = stoi(percent_);
-    type = byPERCENT;
+    type = PERCENTAGE;
 }
 
 DiscountPerPercent::DiscountPerPercent(const string& percent_) {
     percent = stoi(percent_);
-    type = byPERCENT;
+    type = PERCENTAGE;
 }
 
 int DiscountPerPercent::getValue() const {

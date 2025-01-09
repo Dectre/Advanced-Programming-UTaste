@@ -51,13 +51,14 @@ public:
                                   const string& foods);
 
     void getUserReserves(const string& restaurantName, const string& reserveID);
+    void checkIfRestaurantExist(const string& restaurantName);
     bool checkRestaurantForReserve(const string& restaurantName, const string& reserveID);
 
     void deleteUserReserve(const string& restaurantName, const string& reserveID);
 
     void handleDiscounts(vector<string> arguments);
 
-    void increaseUserBudget(string amount);
+    void increaseUserBudget(const string& amount);
     void showUserBudget();
 };
 

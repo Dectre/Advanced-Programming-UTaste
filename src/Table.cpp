@@ -64,9 +64,6 @@ bool Table::checkReserve(const string &reserveID) {
 }
 
 void Table::removeReserve(Reserve* targetReserve) {
-    auto it = remove(reserves.begin(), reserves.end(), targetReserve);
-    if (it != reserves.end()) {
-        delete *it;
-        reserves.erase(it, reserves.end());
-    }
+    reserves.erase(remove(reserves.begin(), reserves.end(), targetReserve), reserves.end());
+    delete targetReserve;
 }

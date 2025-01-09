@@ -13,4 +13,5 @@ int main(int argc, char* argv[]) {
     Taste uTaste;
     System system(&uTaste);
     system.run();
+    return 0;
 }

@@ -11,6 +11,13 @@ District::District(const string& name_) {
 
 void District::newRestaurant(const vector<string>& arguments,const vector<map<string, string>>& menu) {
     addRestaurant(new Restaurant(arguments[0], this, menu, arguments[3], arguments[4], arguments[5]));
+    sortRestaurants();
+}
+
+void District::sortRestaurants() {
+    sort(restaurants.begin(), restaurants.end(), [](Restaurant* a, Restaurant* b) {
+        return a->getName() < b->getName();
+    });
 }
 
 void District::print() {

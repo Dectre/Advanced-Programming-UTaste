@@ -46,6 +46,7 @@ public:
 
     void discountsPrint();
     void foodsDiscountPrint();
+    vector<Food*> getFoodsWithDiscount();
     bool checkIfRestaurantHasFoodDiscount();
 
     void addCustomer(User* customer) { customersClub.insert(customer); }
