@@ -10,12 +10,13 @@
 #include <map>
 #include <set>
 #include <queue>
+#include <algorithm>
 
 
 using namespace std;
 
 typedef const string Method;
-typedef const string Response;
+typedef const string Responses;
 typedef const string Command;
 typedef const string Argument;
 typedef const string Output;
@@ -35,11 +36,11 @@ Method PUT_METHOD = "PUT";
 Method POST_METHOD = "POST";
 Method DELETE_METHOD = "DELETE";
 
-Response SUCCESSFUL_RESPONSE = "OK";
-Response EMPTY_RESPONSE = "Empty";
-Response NON_EXISTENCE_RESPONSE = "Not Found";
-Response BAD_REQUEST_RESPONSE = "Bad Request";
-Response UNABLE_TO_ACCESS_RESPONSE = "Permission Denied";
+Responses SUCCESSFUL_RESPONSE = "OK";
+Responses EMPTY_RESPONSE = "Empty";
+Responses NON_EXISTENCE_RESPONSE = "Not Found";
+Responses BAD_REQUEST_RESPONSE = "Bad Request";
+Responses UNABLE_TO_ACCESS_RESPONSE = "Permission Denied";
 
 Command SIGNUP_COMMAND = "signup";
 Command LOGIN_COMMAND = "login";

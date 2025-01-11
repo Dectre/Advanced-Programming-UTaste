@@ -30,6 +30,7 @@ public:
     void signUp(const string& username, const string& password);
     void login(const string& username, const string& password);
     void logout();
+    User* getCurrentUser() { return currentUser; }
 
     void handleDistrict(const string& name, const vector<string>& neighbors);
     void handleRestaurant(vector<string> arguments, const vector<map<string, string>>& foods);
