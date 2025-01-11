@@ -51,11 +51,11 @@ bool District::showRestaurantsByFood(const string& foodName) {
     return found;
 }
 
-void District::showRestaurantDetail(const string &restaurantName) {
+Restaurant* District::showRestaurantDetail(const string &restaurantName) {
     for (auto restaurant : restaurants) {
         if (restaurantName == restaurant->getName()) {
             restaurant->detailedPrint();
-            return;
+            return restaurant;
         }
     }
     throw invalid_argument(NON_EXISTENCE_RESPONSE);

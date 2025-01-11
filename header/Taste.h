@@ -61,6 +61,13 @@ public:
 
     void increaseUserBudget(const string& amount);
     void showUserBudget();
+
+    Restaurant* findRestaurantByName(const string& name);
+
+    void handleDistrictsFile();
+    void handleRestaurantsFile();
+    vector<map<string, string>> handleFood(const string& menu);
+    void handleDiscountsFile();
 };
 
 #endif //UTASTE_TASTE_H

@@ -1,6 +1,10 @@
 #include "../header/Taste.h"
 
-Taste::Taste() {}
+Taste::Taste() {
+    handleDistrictsFile();
+    handleRestaurantsFile();
+    handleDiscountsFile();
+}
 Taste::~Taste() {}
 
 void Taste::checkIfLoggedIn() {
@@ -183,19 +187,18 @@ bool Taste::processSpecificDistrictsForRestaurants(const string& foodName, set<D
     return foundRestaurants;
 }
 
-void Taste::districtsShowRestaurantDetail(const string &restaurantName) {
+void Taste::districtsShowRestaurantDetail(const string& restaurantName) {
     checkIfLoggedIn();
-    bool foundRestaurant = false;
     for (auto district : districts) {
         try {
-            district->showRestaurantDetail(restaurantName);
-            foundRestaurant = true;
-            break;
-        } catch (const invalid_argument& err) {}
+            Restaurant* restaurant = district->showRestaurantDetail(restaurantName);
+            return;
+        } catch (const invalid_argument& err) {
+        }
     }
-    if (!foundRestaurant)
-        throw invalid_argument(NON_EXISTENCE_RESPONSE);
+    throw invalid_argument(NON_EXISTENCE_RESPONSE);
 }
+
 
 void Taste::reserveTableInRestaurant(const string &restaurantName, const string &tableId, const string &startTime,
                                      const string &endTime, const string &foods) {
@@ -277,4 +280,68 @@ void Taste::increaseUserBudget(const string& amount) {
 void Taste::showUserBudget() {
     checkIfLoggedIn();
     currentUser->showBudget();
+}
+
+void Taste::handleDistrictsFile() {
+    ifstream file(DISTRICTS_FILE);
+    string line;
+    getline(file, line);
+    while(getline(file, line)) {
+        string tempName;
+        string tempNeighbors;
+        stringstream lineStream(line);
+        getline(lineStream, tempName, ',');
+        getline(lineStream, tempNeighbors, ',');
+        vector<string> tempNeighborsList = splitStringBy(tempNeighbors, ELEMENT_SEPARATOR_DELIMITER);
+        this->handleDistrict(tempName, tempNeighborsList);
+    }
+    this->sortDistricts();
+    file.close();
+}
+
+void Taste::handleRestaurantsFile() {
+    ifstream file(RESTAURANTS_FILE);
+    string line;
+    getline(file, line);
+    while (getline(file, line)) {
+        stringstream lineStream(line);
+        vector<string> tempRestaurant = splitStringBy(line, SEPARATOR_DELIMITER);
+        vector<map<string, string>> tempFood = handleFood(tempRestaurant[2]);
+        this->handleRestaurant(tempRestaurant, tempFood);
+    }
+    file.close();
+}
+
+vector<map<string, string>> Taste::handleFood(const string& menu) {
+    vector<string> seperatedMenu = splitStringBy(menu, ELEMENT_SEPARATOR_DELIMITER);
+    vector<map<string, string>> finalMenu;
+    for (const auto& item : seperatedMenu) {
+        vector<string> seperatedFood = splitStringBy(item, EXPLANATION_DELIMITER);
+        map<string, string> tempFood; tempFood[NAME_KEY] = seperatedFood[0]; tempFood[PRICE_KEY] = seperatedFood[1];
+        finalMenu.push_back(tempFood);
+    }
+    return finalMenu;
+}
+
+void Taste::handleDiscountsFile() {
+    ifstream file(DISCOUNTS_FILE);
+    string line;
+    getline(file, line);
+    while (getline(file, line)) {
+        stringstream lineStream(line);
+        vector<string> tempRestaurant = splitStringBy(line, SEPARATOR_DELIMITER);
+        this->handleDiscounts(tempRestaurant);
+    }
+    file.close();
+}
+
+
+Restaurant* Taste::findRestaurantByName(const string& name) {
+    for (District* district : districts) {
+        Restaurant* restaurant = district->findRestaurantByName(name);
+        if (restaurant) {
+            return restaurant;
+        }
+    }
+    return nullptr;
 }

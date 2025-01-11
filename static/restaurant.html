@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* استایل‌های قبلی (همان‌طور که بود) */
+        body {
+            font-family: 'Raleway', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #d4af37, #f9d976);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .restaurant-header {
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            opacity: 0; /* مخفی در ابتدا */
+            animation: fadeIn 1s ease forwards; /* انیمیشن fade-in */
+        }
+
+        .restaurant-header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            color: #333;
+        }
+
+        .restaurant-header p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .restaurant-container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            opacity: 0; /* مخفی در ابتدا */
+            animation: fadeIn 1s ease 0.5s forwards; /* انیمیشن fade-in با تاخیر */
+        }
+
+        .menu-section {
+            flex: 2;
+            padding-right: 20px;
+        }
+
+        .menu-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            opacity: 0; /* مخفی در ابتدا */
+            animation: fadeIn 0.5s ease forwards; /* انیمیشن fade-in */
+        }
+
+        .menu-item img {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            margin-right: 20px;
+            transition: transform 0.3s ease; /* افکت hover */
+        }
+
+        .menu-item img:hover {
+            transform: scale(1.1); /* بزرگ‌شدن عکس هنگام hover */
+        }
+
+        .menu-item-details {
+            flex: 1;
+        }
+
+        .menu-item-details h3 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: #333;
+        }
+
+        .menu-item-details p {
+            font-size: 1rem;
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .discount-info {
+            color: #ff4444;
+            font-size: 0.9rem;
+        }
+
+        .reservation-section {
+            flex: 1;
+            padding-left: 20px;
+            border-left: 1px solid #ddd;
+        }
+
+        .reservation-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .reservation-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .reservation-section ul li {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #555;
+            opacity: 0; /* مخفی در ابتدا */
+            animation: fadeIn 0.5s ease forwards; /* انیمیشن fade-in */
+        }
+
+        .discounts-section {
+            margin-top: 20px;
+        }
+
+        .discounts-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .discounts-section p {
+            font-size: 1rem;
+            margin: 5px 0;
+            color: #555;
+            opacity: 0; /* مخفی در ابتدا */
+            animation: fadeIn 0.5s ease forwards; /* انیمیشن fade-in */
+        }
+
+        /* استایل دکمه Back */
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #d4af37;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            opacity: 0; /* مخفی در ابتدا */
+            animation: fadeIn 1s ease 1s forwards; /* انیمیشن fade-in با تاخیر */
+        }
+
+        .back-button:hover {
+            background: #f9d976;
+            color: #000;
+            transform: translateY(-3px);
+        }
+
+        /* تعریف انیمیشن fade-in */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px); /* حرکت از پایین به بالا */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="restaurant-header">
+    <h1 id="restaurant-name">RESTAURANT_NAME_PLACEHOLDER</h1>
+    <p id="restaurant-district">District: DISTRICT_PLACEHOLDER</p>
+    <p id="restaurant-time">Time: OPENING_TIME_PLACEHOLDER - CLOSING_TIME_PLACEHOLDER</p>
+</div>
+
+<div class="restaurant-container">
+    <!-- منوی رستوران -->
+    <div class="menu-section">
+        <h2>Menu</h2>
+        <div id="menu-items">
+            <!-- آیتم‌های منو اینجا وارد می‌شوند -->
+            MENU_ITEMS_PLACEHOLDER
+        </div>
+    </div>
+
+    <!-- بخش رزرو و تخفیف‌ها -->
+    <div class="reservation-section">
+        <h2>Reservations</h2>
+        <ul id="reservation-list">
+            RESERVATIONS_PLACEHOLDER
+        </ul>
+
+        <div class="discounts-section">
+            <h3>Discounts</h3>
+            <p id="order-discount">Order Amount Discount: ORDER_DISCOUNT_PLACEHOLDER</p>
+            <p id="first-order-discount">First Order Discount: FIRST_ORDER_DISCOUNT_PLACEHOLDER</p>
+        </div>
+    </div>
+</div>
+
+<!-- دکمه Back -->
+<a href="/search" class="back-button">Back to Search</a>
+</body>
+</html>

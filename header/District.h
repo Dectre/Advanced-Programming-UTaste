@@ -29,7 +29,7 @@ public:
     void showRestaurants();
     bool showRestaurantsByFood(const string& foodName);
 
-    void showRestaurantDetail(const string& restaurantName);
+    Restaurant* showRestaurantDetail(const string& restaurantName);
 
     District* checkIfItHasRestaurant(const string& restaurantName);
     void reserveTableInRestaurant(const string &restaurantName, const string &tableId, const string &startTime,

@@ -15,6 +15,7 @@ private:
 public:
     Table(const int& id_, Restaurant* restaurant_);
     int getId() { return id; }
+    vector<Reserve*> getReserves() const { return reserves; }
     void print();
     void reservesTimePrint();
     Restaurant* getRestaurant() { return restaurant; }

@@ -1,31 +1,21 @@
 name,district,foods:prices,opening_time,closing_time,number_of_tables
-Felicity,Aghdasie,pizza:250000;burger:200000;steak:350000,10,22,4
-TasteVille,Nobonyad,hotdog:180000;shawarma:220000;fries:90000,11,23,3
-GreenGarden,Golzar,pasta:270000;salad:150000;sandwich:190000,9,21,2
-BiteBazaar,Ozgol,kebab:300000;rice:100000;soup:120000,12,20,3
-SaffronCorner,Mahalati,fish:400000;lobster:600000;shrimp:450000,10,24,2
-UrbanGrill,Ghaem,steak:400000;burger:250000;hotdog:200000,11,23,5
-RusticEats,Sohanak,pizza:220000;shawarma:240000;noodles:200000,9,22,3
-CozyBites,Laleh,soup:150000;rice:120000;chicken:300000,10,20,2
-EliteDining,Niavaran,steak:450000;burger:280000;fries:100000,11,24,4
-FlavorHub,Andarzgoo,salad:150000;shawarma:230000;pasta:250000,9,21,3
-GoldenSpoon,Aghdasie,ravioli:300000;burger:180000;pizza:250000,11,22,5
-MetroEats,Nobonyad,noodles:210000;pasta:240000;hotdog:150000,9,21,2
-SkylineBistro,Golzar,kebab:280000;burger:200000;steak:400000,12,23,3
-VillageGrill,Ozgol,chicken:350000;shawarma:230000;rice:140000,10,22,4
-RoyalTaste,Mahalati,lobster:600000;salmon:500000;shrimp:450000,9,23,2
-UrbanEats,Ghaem,pizza:250000;hotdog:180000;burger:260000,11,24,4
-SpiceHub,Sohanak,shawarma:220000;noodles:230000;fries:90000,10,21,3
-CottageMeals,Laleh,salad:150000;chicken:280000;soup:130000,9,22,3
-ParkLane,Niavaran,burger:200000;pizza:270000;steak:400000,11,23,5
-FusionBites,Andarzgoo,kebab:300000;pasta:260000;rice:150000,10,21,4
-BurgerHouse,Aghdasie,burger:250000;fries:100000;shake:90000,12,23,2
-ShawarmaPoint,Nobonyad,shawarma:200000;pasta:240000;rice:130000,9,20,3
-OceanEats,Golzar,fish:400000;shrimp:450000;squid:350000,10,24,2
-RiversideCafe,Ozgol,cappuccino:80000;cake:120000;tea:50000,9,21,1
-GourmetCorner,Mahalati,steak:500000;burger:300000;kebab:350000,11,23,5
-TasteHeaven,Ghaem,noodles:200000;pizza:250000;shawarma:230000,10,21,4
-Flavorscape,Sohanak,salad:150000;soup:130000;rice:140000,9,22,3
-TableGrill,Laleh,chicken:300000;burger:260000;shawarma:250000,11,23,3
-DeliDelight,Niavaran,soup:150000;fries:100000;salad:120000,10,22,2
-FreshFeast,Andarzgoo,pasta:270000;chicken:350000;steak:400000,11,24,5
+rouhi,Tajrish,berenj:120;cholo morgh:220;joojeh:250;kabab koobideh:270;shishlik:350,9,23,3
+shila1,Tajrish,burger:290;hotdog:285;morgh sookhari:200;pitza:320,14,22,4
+khorsand,Tajrish,berenj:130;ghalyeh mahi:215;mahi:230;meigo:340,8,21,6
+sib,Meydan Sanat,burger:210;hotdog:205;pitza:350,9,23,2
+fish & chips,Meydan Sanat,mahi:230;mahi sookhari:240;meigo:310,10,23,5
+lidoma,Meydan Sanat,cholo morgh:310;joojeh:320;kabab koobideh:360;shishlik:550,7,19,2
+niko sefat,Enghelab,ash:120;halim:130;kabab koobideh:200,6,15,6
+shila2,Enghelab,hotdog:290;pitza:330;burger:170,10,22,2
+yas,Enghelab,berenj:130;cholo morgh:220;joojeh:240;kabab koobideh:270,10,23,4
+shiraz,Enghelab,burger:250;morgh sookhari:240;pitza:350,7,23,5
+orkideh,Karegar,berenj:130;cholo morgh:250;joojeh:270;kabab koobideh:280,9,23,7
+martin,Karegar,burger:260;hotdog:285;pitza:320,9,23,3
+hossein garden,Hossein Abad,berenj:150;cholo morgh:240;joojeh:260;kabab koobideh:270;shishlik:360,9,23,8
+burger land,Tehranpars,burger:210;hotdog:195;pitza:340,12,23,2
+shila3,Tehranpars,burger:230;morgh sookhari:230;pitza:340,9,22,5
+gardino,Pirouzi,burger:270;pitza:370;salad ceasar:335,7,21,4
+eram,Dowlat Abad,berenj:130;cholo morgh:230;joojeh:270;kabab koobideh:280,9,23,3
+majid,Payane Jonoub,burger:190;hotdog:185;pitza:220,15,23,5
+tehroonchi,Mirdamad,berenj:120;cholo morgh:320;joojeh:350;kabab koobideh:350;shishlik:540,9,23,2
+hani,Mirdamad,berenj:125;cholo morgh:240;joojeh:260;kabab koobideh:280,8,22,3

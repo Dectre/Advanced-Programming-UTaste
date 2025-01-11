@@ -177,4 +177,28 @@ private:
     Taste* uTaste;
 };
 
+class SearchFormHandler : public RequestHandler {
+public:
+    SearchFormHandler(Taste* uTaste_);
+    Response* callback(Request* req);
+private:
+    Taste* uTaste;
+};
+
+class SearchHandler : public RequestHandler {
+public:
+    SearchHandler(Taste* uTaste_);
+    Response* callback(Request* req);
+private:
+    Taste* uTaste;
+};
+
+class RestaurantHandler : public RequestHandler {
+public:
+    RestaurantHandler(Taste* uTaste_);
+    Response* callback(Request* req);
+private:
+    Taste* uTaste;
+};
+
 #endif // HANDLERS_HPP_INCLUDE

@@ -24,7 +24,15 @@ private:
 public:
     Restaurant(const string& name_, District* location_, const vector<map<string, string>>& menu_,
                const string& openingTime_, const string& closingTime_, const string& numOfTables);
-    string getName() { return name; }
+
+    string getName() const { return name; }
+    District* getLocation() const { return location; }
+    int getOpeningTime() const { return openingTime; }
+    int getClosingTime() const { return closingTime; }
+    vector<Food*> getMenu() const { return menu; }
+    vector<Table*> getTables() const { return tables; }
+    Discount* getTotalPriceDiscount() const { return totalPriceDiscount; }
+    Discount* getFirstOrderDiscount() const { return firstOrderDiscount; }
 
     void shortPrint();
     bool hasFood(const string& foodName);
