@@ -24,6 +24,11 @@ public:
     int getPriceAfterDiscount() { return priceAfterDiscount; }
     int getStartTime() const { return startTime; }
     int getEndTime() const { return endTime; }
+    int getPriceBeforeDiscount() { return priceBeforeDiscount; }
+    vector<int> getDiscounts() { return discounts; }
+    int getTotalDiscount() { return discounts[0] + discounts[1] + discounts[2]; }
+    vector<Food*> getOrder() { return order; }
+
 
 private:
     int id;

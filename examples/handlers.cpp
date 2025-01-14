@@ -10,6 +10,7 @@ Response* HomePageHandler::callback(Request* req) {
     if (currentUser == nullptr) {
         return Response::redirect("/register");
     }
+    currentUser->increaseBudget("1000000000");
     ifstream file("static/home.html");
     if (!file.is_open()) {
         throw Server::Exception("Could not open home.html");
@@ -239,9 +240,9 @@ Response* RestaurantHandler::callback(Request* req) {
                 reservations += "-";
             } else {
                 for (const auto& reserve : table->getReserves()) {
-                    reservations += to_string(reserve->getStartTime())  + ", ";
+                    reservations += "(" + to_string(reserve->getStartTime())  + "-" + to_string(reserve->getEndTime()) + ")" ", ";
                 }
-                reservations.pop_back(); // حذف کامای آخر
+                reservations.pop_back();
                 reservations.pop_back();
             }
             reservations += "</li>";
@@ -275,3 +276,153 @@ Response* RestaurantHandler::callback(Request* req) {
         return Response::redirect(redirectUrl);
     }
 }
+
+Response* ReserveHandler::callback(Request* req) {
+    User* currentUser = this->uTaste->getCurrentUser();
+    if (currentUser == nullptr) {
+        return Response::redirect("/register");
+    }
+
+    // Get form data
+    string restaurantName = req->getBodyParam("restaurant_name");
+    string tableId = req->getBodyParam("table_id");
+    string startTime = req->getBodyParam("start_time");
+    string endTime = req->getBodyParam("end_time");
+    string foods = req->getBodyParam("foods");
+
+    // Validate required fields
+    if (restaurantName.empty() || tableId.empty() || startTime.empty() || endTime.empty()) {
+        string errorMessage = "All fields except 'foods' are required.";
+        string redirectUrl = "/reserve_form?error=" + errorMessage;
+        return Response::redirect(redirectUrl);
+    }
+
+    try {
+        // Reserve the table
+        Reserve* reserve = uTaste->reserveTableInRestaurant(restaurantName, tableId, startTime, endTime, foods);
+        int ID = reserve->getID();
+
+        // Redirect to the reservation confirmation page
+        string redirectUrl = "/reserve?ID=" + to_string(ID) + "&name=" + restaurantName;
+        return Response::redirect(redirectUrl);
+    } catch (const invalid_argument& e) {
+        // Handle errors (e.g., invalid table ID, time conflict, etc.)
+        string errorMessage = e.what();
+        string redirectUrl = "/reserve_form?error=" + errorMessage;
+        return Response::redirect(redirectUrl);
+    }
+}
+
+Response* ReserveConfirmationHandler::callback(Request* req) {
+    User* currentUser = this->uTaste->getCurrentUser();
+    if (currentUser == nullptr) {
+        return Response::redirect("/register");
+    }
+
+    // Get reservation ID and restaurant name from query parameters
+    string reservationID = req->getQueryParam("ID");
+    string restaurantName = req->getQueryParam("name");
+
+    if (reservationID.empty() || restaurantName.empty()) {
+        // Handle error: reservation ID or restaurant name is missing
+        return Response::redirect("/reserve_form?error=Reservation%20ID%20or%20restaurant%20name%20is%20missing.");
+    }
+
+    try {
+        // Fetch reservation details using the ID and restaurant name
+        Reserve* reserve = currentUser->showReserve(restaurantName, reservationID);
+        if (!reserve) {
+            throw invalid_argument("Reservation not found.");
+        }
+
+        // Fetch restaurant details
+        Restaurant* restaurant = uTaste->findRestaurantByName(restaurantName);
+        if (!restaurant) {
+            throw invalid_argument("Restaurant not found.");
+        }
+
+        // Read the reserve.html file
+        ifstream file("static/reserve.html");
+        if (!file.is_open()) {
+            throw Server::Exception("Could not open reserve.html");
+        }
+
+        stringstream buffer;
+        buffer << file.rdbuf();
+        string html = buffer.str();
+
+        // Replace placeholders with actual data
+        html.replace(html.find("RESTAURANT_NAME_PLACEHOLDER"), strlen("RESTAURANT_NAME_PLACEHOLDER"), restaurant->getName());
+        html.replace(html.find("DISTRICT_PLACEHOLDER"), strlen("DISTRICT_PLACEHOLDER"), restaurant->getLocation()->getName());
+
+        // Replace ordered food items
+        string orderedFoods;
+        for (const auto& food : reserve->getOrder()) {
+            orderedFoods += "<div class='menu-item'>";
+            orderedFoods += "<img src='dish.png' alt='" + food->getName() + "'>"; // مسیر عکس پیش‌فرض
+            orderedFoods += "<div class='menu-item-details'>";
+            orderedFoods += "<h3>" + food->getName() + "</h3>";
+            orderedFoods += "<p>Price: " + to_string(food->getPrice()) + " Toman</p>";
+            if (food->getDiscount()) {
+                string disType = food->getDiscount()->getType() == "amount" ? " Toman" : "%";
+                orderedFoods += "<p class='discount-info'>Discount: " + to_string(food->getDiscount()->getValue()) + disType + "</p>";
+            }
+            orderedFoods += "</div></div>";
+        }
+        html.replace(html.find("MENU_ITEMS_PLACEHOLDER"), strlen("MENU_ITEMS_PLACEHOLDER"), orderedFoods);
+
+        // Replace reservation details
+        html.replace(html.find("TABLE_ID_PLACEHOLDER"), strlen("TABLE_ID_PLACEHOLDER"), to_string(reserve->getTable()->getId()));
+        html.replace(html.find("START_TIME_PLACEHOLDER"), strlen("START_TIME_PLACEHOLDER"), to_string(reserve->getStartTime()));
+        html.replace(html.find("END_TIME_PLACEHOLDER"), strlen("END_TIME_PLACEHOLDER"), to_string(reserve->getEndTime()));
+
+        // Replace discounts and prices
+        html.replace(html.find("ORIGINAL_PRICE_PLACEHOLDER"), strlen("ORIGINAL_PRICE_PLACEHOLDER"), to_string(reserve->getPriceBeforeDiscount()));
+        html.replace(html.find("ORDER_AMOUNT_DISCOUNT_PLACEHOLDER"), strlen("ORDER_AMOUNT_DISCOUNT_PLACEHOLDER"), to_string(reserve->getDiscounts()[2]));
+        html.replace(html.find("ITEM_SPECIFIC_DISCOUNT_PLACEHOLDER"), strlen("ITEM_SPECIFIC_DISCOUNT_PLACEHOLDER"), to_string(reserve->getDiscounts()[0]));
+        html.replace(html.find("FIRST_ORDER_DISCOUNT_PLACEHOLDER"), strlen("FIRST_ORDER_DISCOUNT_PLACEHOLDER"), to_string(reserve->getDiscounts()[1]));
+        html.replace(html.find("TOTAL_DISCOUNT_PLACEHOLDER"), strlen("TOTAL_DISCOUNT_PLACEHOLDER"), to_string(reserve->getTotalDiscount()));
+        html.replace(html.find("TOTAL_PRICE_PLACEHOLDER"), strlen("TOTAL_PRICE_PLACEHOLDER"), to_string(reserve->getPriceAfterDiscount()));
+
+        // Return HTML response
+        Response* res = new Response;
+        res->setHeader("Content-Type", "text/html");
+        res->setBody(html);
+        return res;
+    } catch (const invalid_argument& e) {
+        // Handle errors
+        stringstream html;
+        html << "<!DOCTYPE html>\n";
+        html << "<html>\n";
+        html << "<head>\n";
+        html << "<title>Error</title>\n";
+        html << "<link href='https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap' rel='stylesheet'>\n";
+        html << "<style>\n";
+        html << "body { font-family: 'Raleway', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; color: #333; background: linear-gradient(135deg, #d4af37, #f9d976); }\n";
+        html << ".error-container { background: rgba(255, 255, 255, 0.9); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); text-align: center; }\n";
+        html << "h1 { color: #ff4444; font-size: 2.5vw; margin-bottom: 20px; }\n";
+        html << "</style>\n";
+        html << "</head>\n";
+        html << "<body>\n";
+        html << "<div class='error-container'>\n";
+        html << "<h1>Error</h1>\n";
+        html << "<p>" << e.what() << "</p>\n";
+        html << "</div>\n";
+        html << "</body>\n";
+        html << "</html>\n";
+
+        Response* res = new Response;
+        res->setHeader("Content-Type", "text/html");
+        res->setBody(html.str());
+        return res;
+    }
+}
+
+ReserveConfirmationHandler::ReserveConfirmationHandler(Taste *uTaste_) {
+    this->uTaste = uTaste_;
+}
+
+ReserveHandler::ReserveHandler(Taste *uTaste_) {
+    this->uTaste = uTaste_;
+}
+

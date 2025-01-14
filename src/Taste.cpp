@@ -200,7 +200,7 @@ void Taste::districtsShowRestaurantDetail(const string& restaurantName) {
 }
 
 
-void Taste::reserveTableInRestaurant(const string &restaurantName, const string &tableId, const string &startTime,
+Reserve* Taste::reserveTableInRestaurant(const string &restaurantName, const string &tableId, const string &startTime,
                                      const string &endTime, const string &foods) {
     checkIfLoggedIn();
     if (currentUser->checkConflicts(startTime, endTime)) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
@@ -211,6 +211,7 @@ void Taste::reserveTableInRestaurant(const string &restaurantName, const string 
     currentUser->addReserve(reserve);
     district->findRestaurantByName(restaurantName)->addCustomer(currentUser);
     reserve->print();
+    return reserve;
 }
 
 District* Taste::getDistrictWithTheRestaurant(const string& restaurantName) {

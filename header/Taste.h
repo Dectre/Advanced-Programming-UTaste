@@ -47,7 +47,7 @@ public:
 
     void districtsShowRestaurantDetail(const string& restaurantName);
 
-    void reserveTableInRestaurant(const string& restaurantName, const string& tableId,
+    Reserve* reserveTableInRestaurant(const string& restaurantName, const string& tableId,
                                   const string& startTime, const string& endTime,
                                   const string& foods);
 

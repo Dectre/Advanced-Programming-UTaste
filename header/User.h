@@ -27,7 +27,7 @@ public:
     void showReserves();
     void showReservesForRestaurant(const string& restaurantName);
     vector<Reserve*> getSpecificRestaurantReserves(const string& restaurantName);
-    void showReserve(const string& restaurantName, const string& reserveID);
+    Reserve* showReserve(const string& restaurantName, const string& reserveID);
     Reserve* findReserve(const string& restaurantName, const string& reserveID);
 
     void deleteReserve(const string& restaurantName, const string& reserveID);

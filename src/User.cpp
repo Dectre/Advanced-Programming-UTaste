@@ -37,10 +37,11 @@ vector<Reserve *> User::getSpecificRestaurantReserves(const string &restaurantNa
     return reservesToShow;
 }
 
-void User::showReserve(const string &restaurantName, const string &reserveID) {
+Reserve* User::showReserve(const string &restaurantName, const string &reserveID) {
     Reserve* reserve = findReserve(restaurantName, reserveID);
     if (reserve == nullptr) throw invalid_argument(UNABLE_TO_ACCESS_RESPONSE);
     reserve->shortPrint();
+    return reserve;
 }
 
 Reserve* User::findReserve(const string &restaurantName, const string &reserveID) {

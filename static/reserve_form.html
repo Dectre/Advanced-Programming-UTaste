@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reserve Table</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="/static/favicon.ico"> <!-- مسیر مطلق برای favicon -->
+    <style>
+        body {
+            font-family: 'Raleway', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+            background: linear-gradient(135deg, #d4af37, #f9d976);
+            overflow: hidden;
+        }
+
+        .reserve-form-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5vw;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #f9d976;
+        }
+
+        input[type="submit"] {
+            background: #d4af37;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            transform: scale(1.05);
+            background: #f9d976;
+            color: #000;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 16px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="reserve-form-container">
+    <h1>Reserve a Table</h1>
+    <p id="error-message" class="error-message"></p>
+    <form action="/reserve" method="post">
+        <input type="text" name="restaurant_name" placeholder="Restaurant Name" required>
+        <input type="number" name="table_id" placeholder="Table ID" required>
+        <input type="number" name="start_time" placeholder="Start Time (e.g., 15)" required>
+        <input type="number" name="end_time" placeholder="End Time (e.g., 17)" required>
+        <input type="text" name="foods" placeholder="Foods (e.g., burger, pizza)">
+        <input type="submit" value="Reserve">
+    </form>
+</div>
+
+<script>
+    const form = document.querySelector("form");
+    const errorMessage = document.getElementById("error-message");
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+
+        // Clear previous error message
+        errorMessage.textContent = "";
+        errorMessage.style.display = "none";
+
+        try {
+            const response = await fetch("/reserve", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams(formData),
+            });
+
+            if (response.redirected) {
+                // If the server redirects, follow the redirect
+                window.location.href = response.url;
+            } else if (response.ok) {
+                // Handle other successful responses
+                const data = await response.json();
+                if (data.error) {
+                    errorMessage.textContent = data.error;
+                    errorMessage.style.display = "block";
+                }
+            } else {
+                // Handle errors
+                errorMessage.textContent = "An error occurred. Please try again.";
+                errorMessage.style.display = "block";
+            }
+        } catch (error) {
+            errorMessage.textContent = "An error occurred. Please try again.";
+            errorMessage.style.display = "block";
+            console.error(error);
+        }
+    });
+</script>
+</body>
+</html>
