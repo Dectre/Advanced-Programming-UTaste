@@ -29,9 +29,10 @@ void mapServerPaths(Server& server, Taste& uTaste) {
     server.get("/search", new SearchFormHandler(&uTaste));
     server.post("/search", new SearchHandler(&uTaste));
     server.get("/restaurant", new RestaurantHandler(&uTaste));
-    server.get("/reserve_form", new ShowPage("static/reserve_form.html")); // نمایش فرم رزرو
-    server.post("/reserve", new ReserveHandler(&uTaste)); // پردازش فرم رزرو
-    server.get("/reserve", new ReserveConfirmationHandler(&uTaste)); // نمایش صفحه تأیید رزرو
+    server.get("/reserve_form", new ShowPage("static/reserve_form.html"));
+    server.post("/reserve", new ReserveHandler(&uTaste));
+    server.get("/reserve", new ReserveConfirmationHandler(&uTaste));
+    server.get("/show_reserves", new ShowReservesHandler(&uTaste));
 }
 
 int main(int argc, char** argv) {

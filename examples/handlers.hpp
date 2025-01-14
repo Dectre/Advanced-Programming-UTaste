@@ -104,4 +104,12 @@ private:
     Taste* uTaste;
 };
 
+class ShowReservesHandler : public RequestHandler {
+private:
+    Taste* uTaste;
+public:
+    ShowReservesHandler(Taste* uTaste_);
+    Response* callback(Request* req) override;
+};
+
 #endif // HANDLERS_HPP_INCLUDE

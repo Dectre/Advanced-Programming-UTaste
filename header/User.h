@@ -13,7 +13,7 @@ private:
     string password;
     District* location = nullptr;
     vector<Reserve*> reserves;
-    int budget = 0;
+    int budget = 100000000000;
 public:
     User(const string& u,const string& p);
     string getUsername() { return username; }
@@ -27,6 +27,7 @@ public:
     void showReserves();
     void showReservesForRestaurant(const string& restaurantName);
     vector<Reserve*> getSpecificRestaurantReserves(const string& restaurantName);
+    vector<Reserve*> getReserves() { return reserves; }
     Reserve* showReserve(const string& restaurantName, const string& reserveID);
     Reserve* findReserve(const string& restaurantName, const string& reserveID);
 

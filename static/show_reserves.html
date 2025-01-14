@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Reserves</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Raleway', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #d4af37, #f9d976);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .reserves-container {
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 10px;
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            flex: 1;
+        }
+
+        .search-bar input[type="submit"] {
+            padding: 10px 20px;
+            background: #d4af37;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .search-bar input[type="submit"]:hover {
+            background: #f9d976;
+            color: #000;
+            transform: translateY(-3px);
+        }
+
+        .reserve-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .reserve-item h3 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: #333;
+        }
+
+        .reserve-item p {
+            font-size: 1rem;
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .reserve-item a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: #d4af37;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .reserve-item a:hover {
+            background: #f9d976;
+            color: #000;
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="reserves-container">
+    <h1>Your Reservations</h1>
+
+    <!-- Search Bar -->
+    <form class="search-bar" onsubmit="handleSearch(event)">
+        <input type="text" name="restaurant_name" placeholder="Enter restaurant name">
+        <input type="text" name="reservation_id" placeholder="Enter reservation ID">
+        <input type="submit" value="Search">
+    </form>
+
+    <div id="error-message">ERROR_MESSAGE_PLACEHOLDER</div>
+    <div id="reserves-list">
+        RESERVES_LIST_PLACEHOLDER
+    </div>
+</div>
+
+<script>
+    function handleSearch(event) {
+        event.preventDefault(); // جلوگیری از ارسال خودکار فرم
+
+        const restaurantName = document.querySelector("input[name='restaurant_name']").value;
+        const reservationID = document.querySelector("input[name='reservation_id']").value;
+
+        let url = "/show_reserves?";
+        if (restaurantName) {
+            url += "restaurant_name=" + encodeURIComponent(restaurantName);
+        }
+        if (reservationID) {
+            if (restaurantName) {
+                url += "&";
+            }
+            url += "reservation_id=" + encodeURIComponent(reservationID);
+        }
+
+        window.location.href = url; // هدایت به URL ساخته‌شده
+    }
+</script>
+</body>
+</html>

@@ -70,6 +70,7 @@ void User::increaseBudget(const string& amount) {
 void User::addReserve(Reserve* newReserve) {
     reserves.push_back(newReserve);
     budget -= newReserve->getPriceAfterDiscount();
+    cout << "Budget = " << budget << endl;
 }
 
 
