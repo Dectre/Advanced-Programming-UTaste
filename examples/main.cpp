@@ -12,7 +12,6 @@ string DISCOUNTS_FILE;
 void mapServerPaths(Server& server, Taste& uTaste) {
     server.setNotFoundErrPage("static/404.html");
     server.get("/", new HomePageHandler(&uTaste));
-    server.get("/home", new HomePageHandler(&uTaste));
     server.get("/dish.png", new ShowImage("static/dish.png"));
     server.get("/forkknife.png", new ShowImage("static/forkknife.png"));
     server.get("/list.png", new ShowImage("static/list.png"));

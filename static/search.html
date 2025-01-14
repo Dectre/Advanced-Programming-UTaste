@@ -109,12 +109,11 @@
             }
         }
 
-        /* Error message styling */
         .error-message {
             color: red;
             font-size: 14px;
             margin-top: 10px;
-            display: none; /* Hidden by default */
+            display: none;
             background-color: #ffe6e6;
             padding: 10px;
             border-radius: 5px;
@@ -158,21 +157,16 @@
         const formData = new FormData(form);
         const searchQuery = formData.get("restaurant_name");
 
-        // Clear previous error message
         errorMessageDiv.textContent = "";
         errorMessageDiv.style.display = "none";
 
         try {
-            // Encode the restaurant name for URL
             const encodedQuery = encodeURIComponent(searchQuery);
-
-            // Send the search request
             const response = await fetch(`/search?name=${encodedQuery}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch search results.");
             }
 
-            // Redirect to the restaurant details page
             window.location.href = `/restaurant?name=${encodedQuery}`;
         } catch (error) {
             errorMessageDiv.textContent = "An error occurred. Please try again.";

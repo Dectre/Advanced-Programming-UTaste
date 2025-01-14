@@ -1,9 +1,5 @@
 #include "handlers.hpp"
-
 #include <iostream>
-
-// handlers.cpp
-#include "handlers.hpp"
 
 Response* HomePageHandler::callback(Request* req) {
     User* currentUser = this->uTaste->getCurrentUser();
@@ -25,7 +21,6 @@ Response* HomePageHandler::callback(Request* req) {
     Response* res = new Response;
     res->setHeader("Content-Type", "text/html");
     res->setBody(html);
-
     return res;
 }
 
@@ -34,11 +29,10 @@ HomePageHandler::HomePageHandler(Taste *uTaste_) {
 }
 
 Response* RegisterHandler::callback(Request* req) {
-    if (this->uTaste->getCurrentUser() != nullptr) {
-        return Response::redirect("/home");
-    } else {
+    if (this->uTaste->getCurrentUser() != nullptr)
+        return Response::redirect("/");
+    else
         return Response::redirect("/register-page");
-    }
 }
 
 RegisterHandler::RegisterHandler(Taste *uTaste_) {
@@ -68,12 +62,14 @@ SignupHandler::SignupHandler(Taste* uTaste_) {
 }
 
 Response* LoginHandler::callback(Request* req) {
+    if (this->uTaste->getCurrentUser() != nullptr) {
+        return Response::redirect("/");
+    }
     string username = req->getBodyParam("username");
     string password = req->getBodyParam("password");
-
     try {
         this->uTaste->login(username, password);
-        Response* res = Response::redirect("/home");
+        Response* res = Response::redirect("/");
         res->setSessionId(username);
         return res;
     } catch (invalid_argument& err) {
@@ -139,7 +135,6 @@ Response* SearchHandler::callback(Request* req) {
         return Response::redirect("/register");
     }
     string restaurantName = req->getBodyParam("restaurant_name");
-    // Encode the restaurant name for URL
     string encodedRestaurantName;
     for (char c : restaurantName) {
         if (c == ' ') {
@@ -167,19 +162,15 @@ RestaurantHandler::RestaurantHandler(Taste *uTaste_) {
 
 std::string urlDecode(const std::string& str) {
     std::string result;
-    char ch;
-    int i, j;
-    for (i = 0; i < str.length(); i++) {
+    for (size_t i = 0; i < str.length(); i++) {
         if (str[i] == '%') {
+            unsigned int j;
             sscanf(str.substr(i + 1, 2).c_str(), "%x", &j);
-            ch = static_cast<char>(j);
-            result += ch;
+            result += static_cast<char>(j);
             i += 2;
-        } else if (str[i] == '+') {
-            result += ' ';
-        } else {
-            result += str[i];
         }
+        else if (str[i] == '+') result += ' ';
+        else result += str[i];
     }
     return result;
 }
@@ -193,29 +184,20 @@ Response* RestaurantHandler::callback(Request* req) {
     if (restaurantName.empty()) {
         return Response::redirect("/search");
     }
-
-    // Decode the restaurant name
     restaurantName = urlDecode(restaurantName);
-
     Restaurant* restaurant = uTaste->findRestaurantByName(restaurantName);
     if (restaurant && restaurant->getName() == restaurantName) {
         ifstream file("static/restaurant.html");
         if (!file.is_open()) {
             throw Server::Exception("Could not open restaurant.html");
         }
-
-        // خواندن کل فایل HTML
         stringstream buffer;
         buffer << file.rdbuf();
         string html = buffer.str();
-
-        // جای‌گذاری اطلاعات رستوران
         html.replace(html.find("RESTAURANT_NAME_PLACEHOLDER"), strlen("RESTAURANT_NAME_PLACEHOLDER"), restaurant->getName());
         html.replace(html.find("DISTRICT_PLACEHOLDER"), strlen("DISTRICT_PLACEHOLDER"), restaurant->getLocation()->getName());
         html.replace(html.find("OPENING_TIME_PLACEHOLDER"), strlen("OPENING_TIME_PLACEHOLDER"), to_string(restaurant->getOpeningTime()));
         html.replace(html.find("CLOSING_TIME_PLACEHOLDER"), strlen("CLOSING_TIME_PLACEHOLDER"), to_string(restaurant->getClosingTime()));
-
-        // جای‌گذاری منو
         string menuItems;
         for (const auto& food : restaurant->getMenu()) {
             menuItems += "<div class='menu-item'>";
@@ -230,8 +212,6 @@ Response* RestaurantHandler::callback(Request* req) {
             menuItems += "</div></div>";
         }
         html.replace(html.find("MENU_ITEMS_PLACEHOLDER"), strlen("MENU_ITEMS_PLACEHOLDER"), menuItems);
-
-        // جای‌گذاری رزروها
         string reservations;
         for (const auto& table : restaurant->getTables()) {
             reservations += "<li>Table " + to_string(table->getId()) + ": ";
@@ -247,8 +227,6 @@ Response* RestaurantHandler::callback(Request* req) {
             reservations += "</li>";
         }
         html.replace(html.find("RESERVATIONS_PLACEHOLDER"), strlen("RESERVATIONS_PLACEHOLDER"), reservations);
-
-        // جای‌گذاری تخفیف‌ها
         string orderDiscount = "-";
         if (restaurant->getTotalPriceDiscount()) {
             orderDiscount = to_string(restaurant->getTotalPriceDiscount()->getValue()) +
@@ -256,15 +234,12 @@ Response* RestaurantHandler::callback(Request* req) {
                             " Minimum: " + to_string(restaurant->getTotalPriceDiscount()->getMinimum()) + " Toman";
         }
         html.replace(html.find("ORDER_DISCOUNT_PLACEHOLDER"), strlen("ORDER_DISCOUNT_PLACEHOLDER"), orderDiscount);
-
         string firstOrderDiscount = "-";
         if (restaurant->getFirstOrderDiscount()) {
             firstOrderDiscount = to_string(restaurant->getFirstOrderDiscount()->getValue()) +
                                  (restaurant->getFirstOrderDiscount()->getType() == "amount" ? " Toman" : "%");
         }
         html.replace(html.find("FIRST_ORDER_DISCOUNT_PLACEHOLDER"), strlen("FIRST_ORDER_DISCOUNT_PLACEHOLDER"), firstOrderDiscount);
-
-        // ایجاد پاسخ
         Response* res = new Response;
         res->setHeader("Content-Type", "text/html");
         res->setBody(html);
@@ -281,29 +256,22 @@ Response* ReserveHandler::callback(Request* req) {
     if (currentUser == nullptr) {
         return Response::redirect("/register");
     }
-    // Get form data
     string restaurantName = req->getBodyParam("restaurant_name");
     string tableId = req->getBodyParam("table_id");
     string startTime = req->getBodyParam("start_time");
     string endTime = req->getBodyParam("end_time");
     string foods = req->getBodyParam("foods");
-
-    // Validate required fields
     if (restaurantName.empty() || tableId.empty() || startTime.empty() || endTime.empty()) {
         string errorMessage = "All fields except 'foods' are required.";
         string redirectUrl = "/reserve_form?error=" + errorMessage;
         return Response::redirect(redirectUrl);
     }
-
     try {
-        // Reserve the table
         Reserve* reserve = uTaste->reserveTableInRestaurant(restaurantName, tableId, startTime, endTime, foods);
         int ID = reserve->getID();
-        // Redirect to the reservation confirmation page
         string redirectUrl = "/reserve?ID=" + to_string(ID) + "&name=" + restaurantName;
         return Response::redirect(redirectUrl);
     } catch (const invalid_argument& e) {
-        // Handle errors (e.g., invalid table ID, time conflict, etc.)
         string errorMessage = e.what();
         string redirectUrl = "/reserve_form?error=" + errorMessage;
         return Response::redirect(redirectUrl);
@@ -315,48 +283,33 @@ Response* ReserveConfirmationHandler::callback(Request* req) {
     if (currentUser == nullptr) {
         return Response::redirect("/register");
     }
-
-    // Get reservation ID and restaurant name from query parameters
     string reservationID = req->getQueryParam("ID");
     string restaurantName = req->getQueryParam("name");
-
     if (reservationID.empty() || restaurantName.empty()) {
-        // Handle error: reservation ID or restaurant name is missing
         return Response::redirect("/reserve_form?error=Reservation%20ID%20or%20restaurant%20name%20is%20missing.");
     }
-
     try {
-        // Fetch reservation details using the ID and restaurant name
         Reserve* reserve = currentUser->showReserve(restaurantName, reservationID);
         if (!reserve) {
             throw invalid_argument("Reservation not found.");
         }
-
-        // Fetch restaurant details
         Restaurant* restaurant = uTaste->findRestaurantByName(restaurantName);
         if (!restaurant) {
             throw invalid_argument("Restaurant not found.");
         }
-
-        // Read the reserve.html file
         ifstream file("static/reserve.html");
         if (!file.is_open()) {
             throw Server::Exception("Could not open reserve.html");
         }
-
         stringstream buffer;
         buffer << file.rdbuf();
         string html = buffer.str();
-
-        // Replace placeholders with actual data
         html.replace(html.find("RESTAURANT_NAME_PLACEHOLDER"), strlen("RESTAURANT_NAME_PLACEHOLDER"), restaurant->getName());
         html.replace(html.find("DISTRICT_PLACEHOLDER"), strlen("DISTRICT_PLACEHOLDER"), restaurant->getLocation()->getName());
-
-        // Replace ordered food items
         string orderedFoods;
         for (const auto& food : reserve->getOrder()) {
             orderedFoods += "<div class='menu-item'>";
-            orderedFoods += "<img src='dish.png' alt='" + food->getName() + "'>"; // مسیر عکس پیش‌فرض
+            orderedFoods += "<img src='dish.png' alt='" + food->getName() + "'>";
             orderedFoods += "<div class='menu-item-details'>";
             orderedFoods += "<h3>" + food->getName() + "</h3>";
             orderedFoods += "<p>Price: " + to_string(food->getPrice()) + " Toman</p>";
@@ -367,27 +320,20 @@ Response* ReserveConfirmationHandler::callback(Request* req) {
             orderedFoods += "</div></div>";
         }
         html.replace(html.find("MENU_ITEMS_PLACEHOLDER"), strlen("MENU_ITEMS_PLACEHOLDER"), orderedFoods);
-
-        // Replace reservation details
         html.replace(html.find("TABLE_ID_PLACEHOLDER"), strlen("TABLE_ID_PLACEHOLDER"), to_string(reserve->getTable()->getId()));
         html.replace(html.find("START_TIME_PLACEHOLDER"), strlen("START_TIME_PLACEHOLDER"), to_string(reserve->getStartTime()));
         html.replace(html.find("END_TIME_PLACEHOLDER"), strlen("END_TIME_PLACEHOLDER"), to_string(reserve->getEndTime()));
-
-        // Replace discounts and prices
         html.replace(html.find("ORIGINAL_PRICE_PLACEHOLDER"), strlen("ORIGINAL_PRICE_PLACEHOLDER"), to_string(reserve->getPriceBeforeDiscount()));
         html.replace(html.find("ORDER_AMOUNT_DISCOUNT_PLACEHOLDER"), strlen("ORDER_AMOUNT_DISCOUNT_PLACEHOLDER"), to_string(reserve->getDiscounts()[2]));
         html.replace(html.find("ITEM_SPECIFIC_DISCOUNT_PLACEHOLDER"), strlen("ITEM_SPECIFIC_DISCOUNT_PLACEHOLDER"), to_string(reserve->getDiscounts()[0]));
         html.replace(html.find("FIRST_ORDER_DISCOUNT_PLACEHOLDER"), strlen("FIRST_ORDER_DISCOUNT_PLACEHOLDER"), to_string(reserve->getDiscounts()[1]));
         html.replace(html.find("TOTAL_DISCOUNT_PLACEHOLDER"), strlen("TOTAL_DISCOUNT_PLACEHOLDER"), to_string(reserve->getTotalDiscount()));
         html.replace(html.find("TOTAL_PRICE_PLACEHOLDER"), strlen("TOTAL_PRICE_PLACEHOLDER"), to_string(reserve->getPriceAfterDiscount()));
-
-        // Return HTML response
         Response* res = new Response;
         res->setHeader("Content-Type", "text/html");
         res->setBody(html);
         return res;
     } catch (const invalid_argument& e) {
-        // Handle errors
         stringstream html;
         html << "<!DOCTYPE html>\n";
         html << "<html>\n";
@@ -407,7 +353,6 @@ Response* ReserveConfirmationHandler::callback(Request* req) {
         html << "</div>\n";
         html << "</body>\n";
         html << "</html>\n";
-
         Response* res = new Response;
         res->setHeader("Content-Type", "text/html");
         res->setBody(html.str());
@@ -428,65 +373,57 @@ Response* ShowReservesHandler::callback(Request* req) {
     if (currentUser == nullptr) {
         return Response::redirect("/register");
     }
-
-    // Get query parameters
     string restaurantName = req->getQueryParam("restaurant_name");
     string reservationID = req->getQueryParam("reservation_id");
-
-    // Validate input: اگر reservation_id وارد شده، restaurant_name هم باید وارد شود
     if (!reservationID.empty() && restaurantName.empty()) {
         string errorMessage = "Restaurant name is required when reservation ID is provided.";
         return Response::redirect("/show_reserves?error=" + errorMessage);
     }
-
-    // Fetch reservations based on filters
     vector<Reserve*> reservations;
-    if (restaurantName.empty() && reservationID.empty()) {
-        // نمایش همه رزروهای کاربر
+    string errorMessage;
+
+    if (restaurantName.empty() && reservationID.empty())
         reservations = currentUser->getReserves();
-    } else if (!restaurantName.empty() && reservationID.empty()) {
-        // نمایش رزروهای کاربر برای یک رستوران خاص
+    else if (!restaurantName.empty() && reservationID.empty()) {
         reservations = currentUser->getSpecificRestaurantReserves(restaurantName);
+        if (reservations.empty())
+            errorMessage = "No reservations found for the specified restaurant.";
     } else if (!restaurantName.empty() && !reservationID.empty()) {
-        // نمایش یک رزرو خاص
-        Reserve* reserve = currentUser->showReserve(restaurantName, reservationID);
-        if (reserve) {
-            reservations.push_back(reserve);
+        try {
+            Reserve* reserve = currentUser->showReserve(restaurantName, reservationID);
+            if (reserve) {
+                reservations.push_back(reserve);
+            } else {
+                errorMessage = "Reservation not found.";
+            }
+        } catch (const std::exception& e) {
+            errorMessage = e.what();
         }
     }
-
-    // Read the show_reserves.html file
     ifstream file("static/show_reserves.html");
-    if (!file.is_open()) {
-        throw Server::Exception("Could not open show_reserves.html");
-    }
-
+    if (!file.is_open()) throw Server::Exception("Could not open show_reserves.html");
     stringstream buffer;
     buffer << file.rdbuf();
     string html = buffer.str();
-
-    // Replace placeholders with actual data
     string reservesList;
-    for (const auto& reserve : reservations) {
-        reservesList += "<div class='reserve-item'>";
-        reservesList += "<h3>Restaurant: " + reserve->getTable()->getRestaurant()->getName() + "</h3>";
-        reservesList += "<p>Reservation ID: " + to_string(reserve->getID()) + "</p>";
-        reservesList += "<p>Table: " + to_string(reserve->getTable()->getId()) + "</p>";
-        reservesList += "<p>Time: " + to_string(reserve->getStartTime()) + " - " + to_string(reserve->getEndTime()) + "</p>";
-        reservesList += "<a href='/reserve?ID=" + to_string(reserve->getID()) + "&name=" + reserve->getTable()->getRestaurant()->getName() + "'>View Details</a>";
-        reservesList += "</div>";
+    if (reservations.empty()) {
+        reservesList = "<p>No reservations found.</p>";
+    } else {
+        for (const auto& reserve : reservations) {
+            reservesList += "<div class='reserve-item'>";
+            reservesList += "<h3>Restaurant: " + reserve->getTable()->getRestaurant()->getName() + "</h3>";
+            reservesList += "<p>Reservation ID: " + to_string(reserve->getID()) + "</p>";
+            reservesList += "<p>Table: " + to_string(reserve->getTable()->getId()) + "</p>";
+            reservesList += "<p>Time: " + to_string(reserve->getStartTime()) + " - " + to_string(reserve->getEndTime()) + "</p>";
+            reservesList += "<a href='/reserve?ID=" + to_string(reserve->getID()) + "&name=" + reserve->getTable()->getRestaurant()->getName() + "'>View Details</a>";
+            reservesList += "</div>";
+        }
     }
     html.replace(html.find("RESERVES_LIST_PLACEHOLDER"), strlen("RESERVES_LIST_PLACEHOLDER"), reservesList);
-
-    // Handle error message
-    string errorMessage = req->getQueryParam("error");
-    if (!errorMessage.empty()) {
-        html.replace(html.find("ERROR_MESSAGE_PLACEHOLDER"), strlen("ERROR_MESSAGE_PLACEHOLDER"), "<p style='color: red;'>" + errorMessage + "</p>");
-    } else {
-        html.replace(html.find("ERROR_MESSAGE_PLACEHOLDER"), strlen("ERROR_MESSAGE_PLACEHOLDER"), "");
-    }
-
-    // Return HTML response
+    string queryErrorMessage = req->getQueryParam("error");
+    if (!queryErrorMessage.empty()) errorMessage = queryErrorMessage;
+    if (!errorMessage.empty()) html.replace(html.find("ERROR_MESSAGE_PLACEHOLDER"), strlen("ERROR_MESSAGE_PLACEHOLDER"), "<p style='color: red;'>" + errorMessage + "</p>");
+    else html.replace(html.find("ERROR_MESSAGE_PLACEHOLDER"), strlen("ERROR_MESSAGE_PLACEHOLDER"), "");
     Response* res = new Response;
     res->setHeader("Content-Type", "text/html");
     res->setBody(html);

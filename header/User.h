@@ -13,7 +13,7 @@ private:
     string password;
     District* location = nullptr;
     vector<Reserve*> reserves;
-    int budget = 100000000000;
+    int budget = 1000000000;
 public:
     User(const string& u,const string& p);
     string getUsername() { return username; }
@@ -22,7 +22,6 @@ public:
     void setLocation(District* district) { location = district; }
     void addReserve(Reserve* newReserve);
     bool checkConflicts(const string& startTime, const string& endTime);
-    void checkReserves();
 
     void showReserves();
     void showReservesForRestaurant(const string& restaurantName);
@@ -34,8 +33,8 @@ public:
     void deleteReserve(const string& restaurantName, const string& reserveID);
 
     void increaseBudget(const string& amount);
-    void showBudget() { cout << budget << endl; }
-    int getBudget() { return budget; }
+    void showBudget() const { cout << budget << endl; }
+    int getBudget() const { return budget; }
 };
 
 #endif //UTASTE_USER_H

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Reserve Table</title>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="icon" href="/static/favicon.ico"> <!-- مسیر مطلق برای favicon -->
+    <link rel="icon" href="/static/favicon.ico">
     <style>
         body {
             font-family: 'Raleway', sans-serif;
@@ -25,11 +25,13 @@
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             text-align: center;
+            width: 400px;
+            position: relative;
         }
 
         h1 {
             color: #333;
-            font-size: 2.5vw;
+            font-size: 24px;
             margin-bottom: 20px;
         }
 
@@ -80,9 +82,24 @@
             margin-bottom: 20px;
             display: none;
         }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: #d4af37;
+        }
     </style>
 </head>
 <body>
+<a href="/" class="back-button">Back</a>
 <div class="reserve-form-container">
     <h1>Reserve a Table</h1>
     <p id="error-message" class="error-message"></p>
@@ -104,7 +121,6 @@
         event.preventDefault();
         const formData = new FormData(form);
 
-        // Clear previous error message
         errorMessage.textContent = "";
         errorMessage.style.display = "none";
 
@@ -118,17 +134,14 @@
             });
 
             if (response.redirected) {
-                // If the server redirects, follow the redirect
                 window.location.href = response.url;
             } else if (response.ok) {
-                // Handle other successful responses
                 const data = await response.json();
                 if (data.error) {
                     errorMessage.textContent = data.error;
                     errorMessage.style.display = "block";
                 }
             } else {
-                // Handle errors
                 errorMessage.textContent = "An error occurred. Please try again.";
                 errorMessage.style.display = "block";
             }

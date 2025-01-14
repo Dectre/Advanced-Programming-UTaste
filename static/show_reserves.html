@@ -106,13 +106,32 @@
                 transform: translateY(0);
             }
         }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #d4af37;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s ease 1s forwards;
+        }
+
+        .back-button:hover {
+            background: #f9d976;
+            color: #000;
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 <body>
 <div class="reserves-container">
     <h1>Your Reservations</h1>
 
-    <!-- Search Bar -->
     <form class="search-bar" onsubmit="handleSearch(event)">
         <input type="text" name="restaurant_name" placeholder="Enter restaurant name">
         <input type="text" name="reservation_id" placeholder="Enter reservation ID">
@@ -125,9 +144,11 @@
     </div>
 </div>
 
+<a href="/" class="back-button">Back to Home</a>
+
 <script>
     function handleSearch(event) {
-        event.preventDefault(); // جلوگیری از ارسال خودکار فرم
+        event.preventDefault();
 
         const restaurantName = document.querySelector("input[name='restaurant_name']").value;
         const reservationID = document.querySelector("input[name='reservation_id']").value;
@@ -143,7 +164,7 @@
             url += "reservation_id=" + encodeURIComponent(reservationID);
         }
 
-        window.location.href = url; // هدایت به URL ساخته‌شده
+        window.location.href = url;
     }
 </script>
 </body>
